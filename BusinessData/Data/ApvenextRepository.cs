@@ -75,12 +75,10 @@ namespace BusinessData.Data
             //var parameterName = new SqlParameter("@ParameterName", parameter);
 
             // Ejecutamos el procedimiento almacenado
-            var result = await _context.ApvenextDto
-                //.FromSqlRaw("EXEC usp_GetApvenextData @ParameterName", parameterName)
-                .FromSqlRaw("EXEC USP_AP_M06S01N01_LISTAR_PROVEEDORES_APVENFIL_SQL ").ToListAsync();
-                //.Select(new ApvenextDTO { })
-                //.ToListAsync();
-            return result;
+            var resultado = await _context.Database
+            .SqlQueryRaw<ApvenextDTO>("EXEC USP_AP_M06S01N01_LISTAR_PROVEEDORES_APVENFIL_SQL")
+            .ToListAsync();
+            return resultado;
         }
     }
 }

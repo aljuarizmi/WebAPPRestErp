@@ -168,15 +168,15 @@
             "type": "string",
             "nullable": true
           },
-          "tarifa_Imp": {
+          "tarifaImp": {
             "type": "string",
             "nullable": true
           },
-          "tipo_Prov": {
+          "tipoProv": {
             "type": "string",
             "nullable": true
           },
-          "tipo_Documento": {
+          "tipoDocumento": {
             "type": "string",
             "nullable": true
           },
@@ -192,7 +192,7 @@
             "type": "string",
             "nullable": true
           },
-          "pais_Sunat": {
+          "paisSunat": {
             "type": "string",
             "nullable": true
           },
