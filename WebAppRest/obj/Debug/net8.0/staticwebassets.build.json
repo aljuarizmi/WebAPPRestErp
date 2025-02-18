@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "KektYxkom1Lr5+fvAHBPF0bfrkZl9+wpiItVEjhU2zY=",
+  "Source": "WebAppRest",
+  "BasePath": "_content/WebAppRest",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

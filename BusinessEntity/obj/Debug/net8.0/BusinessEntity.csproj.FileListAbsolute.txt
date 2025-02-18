@@ -1,0 +1,14 @@
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\bin\Debug\net8.0\BusinessEntity.deps.json
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\bin\Debug\net8.0\BusinessEntity.runtimeconfig.json
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\bin\Debug\net8.0\BusinessEntity.dll
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\bin\Debug\net8.0\BusinessEntity.pdb
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.csproj.AssemblyReference.cache
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.AssemblyInfoInputs.cache
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.AssemblyInfo.cs
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.csproj.CoreCompileInputs.cache
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.dll
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\refint\BusinessEntity.dll
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.pdb
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\BusinessEntity.genruntimeconfig.cache
+D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\obj\Debug\net8.0\ref\BusinessEntity.dll
