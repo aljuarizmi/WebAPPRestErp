@@ -1,0 +1,20 @@
+# Ignorar la carpeta .vs (configuración de Visual Studio)
+.vs/
+
+# Ignorar la carpeta bin y obj (compilación)
+bin/
+obj/
+
+# Ignorar archivos de configuración de usuario
+*.user
+*.suo
+
+# Ignorar paquetes de NuGet descargados
+packages/
+
+# Ignorar archivos de log y temporales
+*.log
+*.tmp
+
+# Ignorar configuraciones de depuración
+*.sln.docstates
