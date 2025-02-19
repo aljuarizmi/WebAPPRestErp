@@ -778,6 +778,9 @@
         }
       },
       "Common/1.0.0": {
+        "dependencies": {
+          "ClosedXML": "0.104.2"
+        },
         "runtime": {
           "Common.dll": {
             "assemblyVersion": "1.0.0",

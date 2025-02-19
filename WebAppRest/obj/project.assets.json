@@ -1263,6 +1263,9 @@
       "Common/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "ClosedXML": "0.104.2"
+        },
         "compile": {
           "bin/placeholder/Common.dll": {}
         },
@@ -3610,11 +3613,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\webapprest\\WebAppRest.csproj",
+      "projectUniqueName": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\WebAppRest\\WebAppRest.csproj",
       "projectName": "WebAppRest",
-      "projectPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\webapprest\\WebAppRest.csproj",
+      "projectPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\WebAppRest\\WebAppRest.csproj",
       "packagesPath": "C:\\Users\\usuario\\.nuget\\packages\\",
-      "outputPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\webapprest\\obj\\",
+      "outputPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\WebAppRest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

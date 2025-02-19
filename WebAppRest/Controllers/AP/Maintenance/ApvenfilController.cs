@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Common.ViewModels;
 using BusinessEntity.Data.Models;
 using ClosedXML.Excel;
+using Common.Utils;
 
 
 namespace WebAppRest.Controllers.AP.Maintenance
@@ -13,9 +14,11 @@ namespace WebAppRest.Controllers.AP.Maintenance
     public class ApvenfilController : ControllerBase
     {
         private readonly ApvenfilService _apvenfilService;
-        public ApvenfilController(ApvenfilService apvenfilService)
+        private readonly ExcelService _excelService;
+        public ApvenfilController(ApvenfilService apvenfilService, ExcelService excelService)
         {
             _apvenfilService = apvenfilService;
+            _excelService = excelService;
         }
 
         [HttpPost]
@@ -35,44 +38,18 @@ namespace WebAppRest.Controllers.AP.Maintenance
         [HttpGet("exportar-excel")]
         public async Task<IActionResult> ExportarExcel()
         {
-            // 1️⃣ Obtener los datos de la base de datos
+            // 1 Obtener los datos de la base de datos
             var proveedores = await _apvenfilService.F_ListarProveedores();
 
-            // 2️⃣ Crear el archivo Excel
-            using var workbook = new XLWorkbook();
-            var worksheet = workbook.Worksheets.Add("Proveedores");
-
+            if (proveedores == null || !proveedores.Any())
+                return BadRequest("No hay datos para exportar.");
             var propiedades = typeof(ApvenfilDTO).GetProperties();
-            int columna = 1;
-
-            foreach (var prop in propiedades){
-                worksheet.Cell(1, columna).Value = prop.Name; // Nombre de la propiedad como encabezado
-                worksheet.Cell(1, columna).Style.Font.Bold = true;
-                worksheet.Cell(1, columna).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                worksheet.Cell(1, columna).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                columna++;
-            }
-            // Rellenar con datos
-            int fila = 2;
-            foreach (var proveedor in proveedores){
-                columna = 1;
-                foreach (var prop in propiedades){
-                    var valor = prop.GetValue(proveedor) ?? ""; // Obtener valor de la propiedad
-                    worksheet.Cell(fila, columna).Value = valor.ToString();
-                    columna++;
-                }
-                fila++;
-            }
-
-            // 3️⃣ Guardar el archivo en memoria
-            using var stream = new MemoryStream();
-            workbook.SaveAs(stream);
-            stream.Position = 0;
-
-            // 4️⃣ Devolver el archivo como respuesta HTTP
-            return File(stream.ToArray(),
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "Reporte_Proveedores.xlsx");
+            string nombreHoja = "Reporte_Proveedores";
+            string nombreReporte = nombreHoja + "_" + DateTime.Now.ToString("yyyyMMdd_mmss");
+            string contentType = MimeType.Xlsx.GetMimeType();
+            var archivoExcel = _excelService.GenerarExcel(proveedores, propiedades, nombreHoja);
+            // Devolver el archivo como respuesta HTTP
+            return File(archivoExcel, contentType, nombreReporte + ".xlsx");
         }
     }
 }
