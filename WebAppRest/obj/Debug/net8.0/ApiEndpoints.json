@@ -48,7 +48,7 @@
   {
     "ContainingType": "WebAppRest.Controllers.AP.Maintenance.ApvenfilController",
     "Method": "InsertarProveedor",
-    "RelativePath": "api/Apvenfil/insertar",
+    "RelativePath": "api/Apvenfil",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

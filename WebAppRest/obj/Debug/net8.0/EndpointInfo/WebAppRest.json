@@ -83,7 +83,7 @@
         }
       }
     },
-    "/api/Apvenfil/insertar": {
+    "/api/Apvenfil": {
       "post": {
         "tags": [
           "Apvenfil"

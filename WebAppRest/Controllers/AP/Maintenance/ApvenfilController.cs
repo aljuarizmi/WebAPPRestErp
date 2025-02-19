@@ -16,10 +16,10 @@ namespace WebAppRest.Controllers.AP.Maintenance
             _apvenfilService = apvenfilService;
         }
 
-        [HttpPost("insertar")]
-        public async Task<IActionResult> InsertarProveedor(InsertarProveedor request)
+        [HttpPost]
+        public async Task<IActionResult> InsertarProveedor([FromBody] InsertarProveedor request)
         {
-            try {
+            //try {
                 if (request.Apvenfil == null || request.Apvenext == null)
                     return BadRequest("Los datos del proveedor y su detalle son obligatorios.");
 
@@ -29,9 +29,9 @@ namespace WebAppRest.Controllers.AP.Maintenance
                     return StatusCode(500, "Error al insertar el proveedor.");
 
                 return Ok("Proveedor insertado correctamente.");
-            } catch (Exception ex) {
-                return StatusCode(500, new { mensaje = "Ocurrió un error inesperado", detalle = ex.Message });
-            }
+            //} catch (Exception ex) {
+            //    return StatusCode(500, new { mensaje = "Ocurrió un error inesperado", detalle = ex.Message });
+            //}
             
         }
     }

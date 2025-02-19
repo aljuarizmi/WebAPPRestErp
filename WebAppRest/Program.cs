@@ -4,6 +4,7 @@ using BusinessData.Interfaces;
 using BusinessData.Data;
 using BusinessLogic.Services;
 using BusinessLogic.Interfaces;
+using WebAppRest.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCustomExceptionMiddleware(); // Usar el Middleware personalizado
 
 app.MapControllers();
 
