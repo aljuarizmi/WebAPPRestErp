@@ -8,6 +8,11 @@ D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\WebAppRest.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\WebAppRest.pdb
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Azure.Core.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Azure.Identity.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\ClosedXML.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\ClosedXML.Parser.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\ExcelNumberFormat.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
@@ -34,6 +39,8 @@ D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.Identi
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\RBush.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\SixLabors.Fonts.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -43,6 +50,7 @@ D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.Diagnosti
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.Drawing.Common.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.Formats.Asn1.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.IO.Packaging.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.IO.Pipelines.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.Memory.Data.dll
 D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest\bin\Debug\net8.0\System.Runtime.Caching.dll

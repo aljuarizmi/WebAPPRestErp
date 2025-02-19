@@ -62,6 +62,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebAppRest.Controllers.AP.Maintenance.ApvenfilController",
+    "Method": "ExportarExcel",
+    "RelativePath": "api/Apvenfil/exportar-excel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebAppRest.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

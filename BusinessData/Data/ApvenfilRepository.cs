@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,13 +39,19 @@ namespace BusinessData.Data
             return filasAfectadas;
         }
         // Usar un procedimiento almacenado con parámetros y mapear los resultados a un DTO
-        public async Task<IEnumerable<ApvenfilDTO>> GetByStoredProcedureAsync()
+        public async Task<IEnumerable<ApvenfilDTO>> F_ListarProveedores()
         {
             // Ejecutamos el procedimiento almacenado
-            var resultado = await _context.Database
-            .SqlQueryRaw<ApvenfilDTO>("EXEC USP_AP_M06S01N01_LISTAR_PROVEEDORES_APVENFIL_SQL")
-            .ToListAsync();
-            return resultado;
+            Type tipoModelo = typeof(ApvenfilDTO);
+            bool tieneAtributos= tipoModelo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Any();
+            if (tieneAtributos) {
+                var resultado = await _context.Database
+                .SqlQueryRaw<ApvenfilDTO>("EXEC USP_AP_M06S01N01_LISTAR_PROVEEDORES_APVENFIL_SQL")
+                .ToListAsync();
+                return resultado;
+            } else {
+                throw new Exception("El modelo ApvenfilDTO no tiene atributos definidos. No se puede ejecutar la consulta a la BD.");
+            }
         }
     }
 }

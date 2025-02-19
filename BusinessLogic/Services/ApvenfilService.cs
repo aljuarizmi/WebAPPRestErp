@@ -18,7 +18,7 @@ namespace BusinessLogic.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<ApvenfilDTO>> GetByStoredProcedureAsync() => await _repository.GetByStoredProcedureAsync();
+        public async Task<IEnumerable<ApvenfilDTO>> F_ListarProveedores() => await _repository.F_ListarProveedores();
         public async Task<int> F_InsertarProveedor(ApvenfilSql apvenfilbe, ApvenextSql apvenextbe) => await _repository.F_InsertarProveedor(apvenfilbe, apvenextbe);
     }
 }
