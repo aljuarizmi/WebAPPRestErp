@@ -1,6 +1,6 @@
 [
   {
-    "ContainingType": "WebAppRest.Controllers.AP.ApvenextController",
+    "ContainingType": "WebAppRest.Controllers.AP.Maintenance.ApvenextController",
     "Method": "GetAll",
     "RelativePath": "api/Apvenext",
     "HttpMethod": "GET",
@@ -26,7 +26,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebAppRest.Controllers.AP.ApvenextController",
+    "ContainingType": "WebAppRest.Controllers.AP.Maintenance.ApvenextController",
     "Method": "GetByStoredProcedure",
     "RelativePath": "api/Apvenext/procedure",
     "HttpMethod": "GET",
@@ -44,6 +44,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "WebAppRest.Controllers.AP.Maintenance.ApvenfilController",
+    "Method": "InsertarProveedor",
+    "RelativePath": "api/Apvenfil/insertar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BusinessEntity.Data.Models.InsertarProveedor",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "WebAppRest.Controllers.WeatherForecastController",

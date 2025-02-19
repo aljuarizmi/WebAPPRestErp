@@ -72,8 +72,6 @@ namespace BusinessData.Data
         // Usar un procedimiento almacenado con parámetros y mapear los resultados a un DTO
         public async Task<IEnumerable<ApvenextDTO>> GetByStoredProcedureAsync()
         {
-            //var parameterName = new SqlParameter("@ParameterName", parameter);
-
             // Ejecutamos el procedimiento almacenado
             var resultado = await _context.Database
             .SqlQueryRaw<ApvenextDTO>("EXEC USP_AP_M06S01N01_LISTAR_PROVEEDORES_APVENFIL_SQL")

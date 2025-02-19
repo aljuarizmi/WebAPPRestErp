@@ -19,6 +19,8 @@ builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionStr
 // Registrar el servicio en BusinessLogic que usa IApvenextRepository
 builder.Services.AddScoped<IApvenextRepository, ApvenextRepository>();
 builder.Services.AddScoped<ApvenextService>();
+builder.Services.AddScoped<IApvenfilRepository, ApvenfilRepository>();
+builder.Services.AddScoped<ApvenfilService>();
 
 var app = builder.Build();
 

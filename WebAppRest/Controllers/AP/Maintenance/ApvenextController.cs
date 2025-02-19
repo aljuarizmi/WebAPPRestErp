@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Services;
 using Common.ViewModels;
 
-namespace WebAppRest.Controllers.AP
+namespace WebAppRest.Controllers.AP.Maintenance
 {
     [Route("api/[controller]")]
     [ApiController]

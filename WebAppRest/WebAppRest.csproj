@@ -15,4 +15,12 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\AP\Reports\" />
+    <Folder Include="Controllers\AP\Processes\" />
+    <Folder Include="Controllers\AP\Transactions\" />
+    <Folder Include="Controllers\AR\" />
+    <Folder Include="Controllers\OE\" />
+  </ItemGroup>
+
 </Project>
