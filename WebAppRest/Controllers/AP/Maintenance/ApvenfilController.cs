@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Common.ViewModels;
 using BusinessEntity.Data.Models;
 
+
 namespace WebAppRest.Controllers.AP.Maintenance
 {
     [Route("api/[controller]")]
@@ -19,20 +20,15 @@ namespace WebAppRest.Controllers.AP.Maintenance
         [HttpPost]
         public async Task<IActionResult> InsertarProveedor([FromBody] InsertarProveedor request)
         {
-            //try {
-                if (request.Apvenfil == null || request.Apvenext == null)
-                    return BadRequest("Los datos del proveedor y su detalle son obligatorios.");
+            if (request.Apvenfil == null || request.Apvenext == null)
+                return BadRequest("Los datos del proveedor y son obligatorios.");
 
-                var resultado = await _apvenfilService.F_InsertarProveedor(request.Apvenfil, request.Apvenext);
+            var resultado = await _apvenfilService.F_InsertarProveedor(request.Apvenfil, request.Apvenext);
 
-                if (resultado <= 0)
-                    return StatusCode(500, "Error al insertar el proveedor.");
+            if (resultado <= 0)
+                return StatusCode(500, "Error al insertar el proveedor.");
 
-                return Ok("Proveedor insertado correctamente.");
-            //} catch (Exception ex) {
-            //    return StatusCode(500, new { mensaje = "Ocurrió un error inesperado", detalle = ex.Message });
-            //}
-            
+            return Ok("Proveedor insertado correctamente.");
         }
     }
 }
