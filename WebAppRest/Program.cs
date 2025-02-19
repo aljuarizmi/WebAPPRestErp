@@ -5,6 +5,7 @@ using BusinessData.Data;
 using BusinessLogic.Services;
 using BusinessLogic.Interfaces;
 using WebAppRest.Middlewares;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,31 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCustomExceptionMiddleware(); // Usar el Middleware personalizado
+
+app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
+    response.ContentType = "application/json";
+
+    var errorResponse = new
+    {
+        statusCode = response.StatusCode,
+        error = response.StatusCode switch
+        {
+            400 => "Bad Request",
+            401 => "Unauthorized",
+            403 => "Forbidden",
+            404 => "Not Found",
+            405 => "Method Not Allowed",
+            415 => "Unsupported Media Type",
+            _ => "Unexpected Error"
+        },
+        message = "Error en la solicitud.",
+        path = context.HttpContext.Request.Path
+    };
+
+    await response.WriteAsync(JsonSerializer.Serialize(errorResponse));
+});
 
 app.MapControllers();
 
