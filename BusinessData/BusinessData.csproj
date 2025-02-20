@@ -11,4 +11,8 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="dapper" Version="2.1.66" />
+  </ItemGroup>
+
 </Project>

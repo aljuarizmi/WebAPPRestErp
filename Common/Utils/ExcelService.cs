@@ -1,7 +1,8 @@
-﻿
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using Common.ViewModels;
 using System.Reflection;
+//using OfficeOpenXml;
+//using OfficeOpenXml.Style;
 
 public class ExcelService {
     /// <summary>
@@ -42,6 +43,46 @@ public class ExcelService {
         using var stream = new MemoryStream();
         workbook.SaveAs(stream);
         stream.Position = 0;
+        return stream.ToArray();
+    }
+
+    public byte[] GenerarExcelDinamico(IEnumerable<IDictionary<string, object>> datos, string nombreHoja)
+    {
+        using var workbook = new XLWorkbook();
+        var worksheet = workbook.Worksheets.Add(nombreHoja);
+
+        if (!datos.Any())
+            throw new Exception("No hay datos para exportar.");
+
+        // Obtener todas las claves del primer elemento (encabezados)
+        var encabezados = datos.First().Keys.ToList();
+
+        // Crear encabezados en la primera fila
+        for (int i = 0; i < encabezados.Count; i++){
+            worksheet.Cell(1, i + 1).Value = encabezados[i];
+            worksheet.Cell(1, i + 1).Style.Font.Bold = true;
+            worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+            worksheet.Cell(1, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            worksheet.Cell(1, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        }
+
+        // Llenar los datos
+        int row = 2;
+        foreach (var fila in datos){
+            for (int col = 0; col < encabezados.Count; col++){
+                var key = encabezados[col];
+                var valor = fila.ContainsKey(key) ? fila[key]?.ToString() ?? "" : "";
+                worksheet.Cell(row, col + 1).Value = valor;
+            }
+            row++;
+        }
+
+        // Autoajustar las columnas al contenido
+        worksheet.Columns().AdjustToContents();
+
+        // Guardar el archivo en memoria y devolverlo como array de bytes
+        using var stream = new MemoryStream();
+        workbook.SaveAs(stream);
         return stream.ToArray();
     }
 }

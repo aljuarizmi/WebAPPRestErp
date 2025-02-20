@@ -26,14 +26,16 @@ namespace WebAppRest.Controllers.AP
             parametros.PageIndex = 0;
             parametros.PageSize = 100;
             parametros.OrderColumn = "";
-            var documentos = await _apopnfilService.F_ListarDocumentos(parametros);
+            //var documentos = await _apopnfilService.F_ListarDocumentos(parametros);
+            var documentos = await _apopnfilService.F_ListarDocumentosDapper(parametros);
             if (documentos == null || !documentos.Any())
                 return BadRequest("No hay datos para exportar.");
-            var propiedades = typeof(ApopnfilDTO).GetProperties();
+            //var propiedades = typeof(ApopnfilDTO).GetProperties();
             string nombreHoja = "Reporte_Documentos";
             string nombreReporte = nombreHoja + "_" + DateTime.Now.ToString("yyyyMMdd_mmss");
             string contentType = MimeType.Xlsx.GetMimeType();
-            var archivoExcel = _excelService.GenerarExcel(documentos, propiedades, nombreHoja);
+            //var archivoExcel = _excelService.GenerarExcel(documentos, propiedades, nombreHoja);
+            var archivoExcel = _excelService.GenerarExcelDinamico(documentos, nombreHoja);
             // Devolver el archivo como respuesta HTTP
             return File(archivoExcel, contentType, nombreReporte + ".xlsx");
         }

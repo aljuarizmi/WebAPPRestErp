@@ -304,11 +304,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Desarrollo\\Angular\\webappresterp\\common\\Common.csproj",
+      "projectUniqueName": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\Common\\Common.csproj",
       "projectName": "Common",
-      "projectPath": "D:\\Desarrollo\\Angular\\webappresterp\\common\\Common.csproj",
+      "projectPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\Common\\Common.csproj",
       "packagesPath": "C:\\Users\\usuario\\.nuget\\packages\\",
-      "outputPath": "D:\\Desarrollo\\Angular\\webappresterp\\common\\obj\\",
+      "outputPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

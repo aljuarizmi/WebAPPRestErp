@@ -23,5 +23,7 @@ namespace BusinessLogic.Services
         /// <param name="parametros">Parámetro que contiene los filtros de consulta</param>
         /// <returns>Retorna una lista generica del tipo IEnumerable<ApopnfilDTO> con los datos de la consulta</returns>
         public async Task<IEnumerable<ApopnfilDTO>> F_ListarDocumentos(ApopnfilDTO parametros) => await _repository.F_ListarDocumentos(parametros);
+
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarDocumentosDapper(ApopnfilDTO parametros) => await _repository.F_ListarDocumentosDapper(parametros);
     }
 }
