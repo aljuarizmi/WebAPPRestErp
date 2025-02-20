@@ -149,7 +149,7 @@ namespace BusinessData.Data
             .Select(row =>
             {
                 var expando = new ExpandoObject();
-                var dict = (IDictionary<string, object>)expando;
+                var dict = (IDictionary<string, object?>)expando;
                 foreach (var prop in (IDictionary<string, object>)row){
                     dict[prop.Key] = prop.Value;
                 }

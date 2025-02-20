@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Desarrollo\\Angular\\WebAPPRestErp\\BusinessData\\BusinessData.csproj": {}
+    "D:\\Desarrollo\\Angular\\WebAPPRestErp\\businessdata\\BusinessData.csproj": {}
   },
   "projects": {
-    "D:\\Desarrollo\\Angular\\WebAPPRestErp\\BusinessData\\BusinessData.csproj": {
+    "D:\\Desarrollo\\Angular\\WebAPPRestErp\\businessdata\\BusinessData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\BusinessData\\BusinessData.csproj",
+        "projectUniqueName": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\businessdata\\BusinessData.csproj",
         "projectName": "BusinessData",
-        "projectPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\BusinessData\\BusinessData.csproj",
+        "projectPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\businessdata\\BusinessData.csproj",
         "packagesPath": "C:\\Users\\usuario\\.nuget\\packages\\",
-        "outputPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\BusinessData\\obj\\",
+        "outputPath": "D:\\Desarrollo\\Angular\\WebAPPRestErp\\businessdata\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
