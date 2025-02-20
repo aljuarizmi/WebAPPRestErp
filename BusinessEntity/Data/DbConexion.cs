@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BusinessEntity.Data.Models;
-using Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessEntity.Data;
@@ -17,6 +16,10 @@ public partial class DbConexion : DbContext
     {
     }
 
+    public virtual DbSet<ApopnfilSql> ApopnfilSqls { get; set; }
+
+    public virtual DbSet<ApopnhstSql> ApopnhstSqls { get; set; }
+
     public virtual DbSet<ApvenextSql> ApvenextSqls { get; set; }
 
     public virtual DbSet<ApvenfilSql> ApvenfilSqls { get; set; }
@@ -25,15 +28,797 @@ public partial class DbConexion : DbContext
 
     public virtual DbSet<ArcusfilSql> ArcusfilSqls { get; set; }
 
-    // Esto es necesario para que EF Core pueda mapear los resultados del procedimiento almacenado
-    //public virtual DbSet<ApvenextDTO> ApvenextDto { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=DATA_400;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=DATA_400;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ApopnfilSql>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("APOPNFIL_SQL", tb => tb.HasTrigger("TR_APOPNFIL_AUDI"));
+
+            entity.HasIndex(e => new { e.VendNo, e.VchrNo, e.VchrChkCd, e.VchrChkType, e.ApOpnDt, e.ApOpnTm }, "IAPOPNFIL_SQL0")
+                .IsUnique()
+                .IsClustered()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.AltCurrCd, e.AltVendNo, e.ApplyToNo, e.VchrChkType1, e.TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL1")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.OpnClosCd, e.Alt1CurrCd, e.Alt1VendNo, e.SepChkFg, e.Alt1ApplyToNo, e.Alt1TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL2")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.Status, e.A4glidentity }, "IAPOPNFIL_SQL3")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.Alt3VchrCd, e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.SeqNo, e.A4glidentity }, "IAPOPNFIL_SQL4")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.Alt5InvCd, e.Alt5CurrCd, e.Alt5VendNo, e.Alt5ApplyToNo, e.Alt5TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL5")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.Property(e => e.A4glidentity)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("numeric(9, 0)")
+                .HasColumnName("A4GLIdentity");
+            entity.Property(e => e.AlfCd)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alf_cd");
+            entity.Property(e => e.Alt1ApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt1_apply_to_no");
+            entity.Property(e => e.Alt1CurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt1_curr_cd");
+            entity.Property(e => e.Alt1TrxDt).HasColumnName("alt1_trx_dt");
+            entity.Property(e => e.Alt1VendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt1_vend_no");
+            entity.Property(e => e.Alt3VchrCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt3_vchr_cd");
+            entity.Property(e => e.Alt5ApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_apply_to_no");
+            entity.Property(e => e.Alt5CurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_curr_cd");
+            entity.Property(e => e.Alt5InvCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_inv_cd");
+            entity.Property(e => e.Alt5TrxDt).HasColumnName("alt5_trx_dt");
+            entity.Property(e => e.Alt5VendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_vend_no");
+            entity.Property(e => e.AltCurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt_curr_cd");
+            entity.Property(e => e.AltVendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt_vend_no");
+            entity.Property(e => e.Amt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("amt");
+            entity.Property(e => e.Ap1099Fg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_1099_fg");
+            entity.Property(e => e.ApDpNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_dp_no");
+            entity.Property(e => e.ApMnNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_mn_no");
+            entity.Property(e => e.ApOpenBaseImponi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_open_base_imponi");
+            entity.Property(e => e.ApOpenCodAduana)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_open_cod_aduana");
+            entity.Property(e => e.ApOpenDocImport)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_open_doc_import");
+            entity.Property(e => e.ApOpenFechaRendicion).HasColumnName("ap_open_fecha_rendicion");
+            entity.Property(e => e.ApOpenMontoAdv)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("ap_open_monto_adv");
+            entity.Property(e => e.ApOpenMontoFlt).HasColumnName("ap_open_monto_flt");
+            entity.Property(e => e.ApOpenMontoFob)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("ap_open_monto_fob");
+            entity.Property(e => e.ApOpenMontoSgr)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("ap_open_monto_sgr");
+            entity.Property(e => e.ApOpenNroPoliza)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_open_nro_poliza");
+            entity.Property(e => e.ApOpenPercTax)
+                .HasColumnType("decimal(6, 4)")
+                .HasColumnName("ap_open_perc_tax");
+            entity.Property(e => e.ApOpenRetenFlg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_open_reten_flg");
+            entity.Property(e => e.ApOpenTcVenpub)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("ap_open_tc_venpub");
+            entity.Property(e => e.ApOpenTipoReg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_open_tipo_reg");
+            entity.Property(e => e.ApOpnDt).HasColumnName("ap_opn_dt");
+            entity.Property(e => e.ApOpnTm).HasColumnName("ap_opn_tm");
+            entity.Property(e => e.ApPoNo)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_po_no");
+            entity.Property(e => e.ApSbNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_sb_no");
+            entity.Property(e => e.ApTermCode)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_term_code");
+            entity.Property(e => e.ApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("apply_to_no");
+            entity.Property(e => e.AssetTypeCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasColumnName("asset_type_cd");
+            entity.Property(e => e.CashAcctCurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_acct_curr_cd");
+            entity.Property(e => e.CashDpNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_dp_no");
+            entity.Property(e => e.CashMnNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_mn_no");
+            entity.Property(e => e.CashSbNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_sb_no");
+            entity.Property(e => e.ChkDt).HasColumnName("chk_dt");
+            entity.Property(e => e.ChkNo).HasColumnName("chk_no");
+            entity.Property(e => e.ChkPrtFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("chk_prt_fg");
+            entity.Property(e => e.ChkVchrNo).HasColumnName("chk_vchr_no");
+            entity.Property(e => e.CurrTrxRt)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("curr_trx_rt");
+            entity.Property(e => e.CurrTrxRt2)
+                .HasColumnType("numeric(11, 6)")
+                .HasColumnName("curr_trx_rt_2");
+            entity.Property(e => e.DebtSwapCd).HasColumnName("debt_swap_cd");
+            entity.Property(e => e.DetracGroup).HasColumnName("detrac_group");
+            entity.Property(e => e.DetracPayedBySystemFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("detrac_payed_by_system_fg");
+            entity.Property(e => e.DiscAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("disc_amt");
+            entity.Property(e => e.DiscDt).HasColumnName("disc_dt");
+            entity.Property(e => e.DiscTaken)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("disc_taken");
+            entity.Property(e => e.DueDt).HasColumnName("due_dt");
+            entity.Property(e => e.EdCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ed_cd");
+            entity.Property(e => e.ErCd)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("er_cd");
+            entity.Property(e => e.ExogenousFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("exogenous_fg");
+            entity.Property(e => e.Filler0001)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("filler_0001");
+            entity.Property(e => e.FrdDt).HasColumnName("frd_dt");
+            entity.Property(e => e.FullyPaidDt).HasColumnName("fully_paid_dt");
+            entity.Property(e => e.GainLossAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("gain_loss_amt");
+            entity.Property(e => e.InvNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("inv_no");
+            entity.Property(e => e.IsAdvancementFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_advancement_fg");
+            entity.Property(e => e.IsExrBaseFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_exr_base_fg");
+            entity.Property(e => e.IsExrFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_exr_fg");
+            entity.Property(e => e.IsPeFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_pe_fg");
+            entity.Property(e => e.LastDateProssDt).HasColumnName("Last_date_pross_dt");
+            entity.Property(e => e.LastDateProssDt2).HasColumnName("Last_date_pross_dt_2");
+            entity.Property(e => e.LastRevalDt).HasColumnName("last_reval_dt");
+            entity.Property(e => e.OpnClosCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("opn_clos_cd");
+            entity.Property(e => e.OrigTrxRt)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("orig_trx_rt");
+            entity.Property(e => e.OrigTrxRt2)
+                .HasColumnType("numeric(11, 6)")
+                .HasColumnName("orig_trx_rt_2");
+            entity.Property(e => e.PayAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("pay_amt");
+            entity.Property(e => e.PoChgFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("po_chg_fg");
+            entity.Property(e => e.Reference)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("reference");
+            entity.Property(e => e.ReferenceSp)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("reference_sp");
+            entity.Property(e => e.ReferencialApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("referencial_apply_to_no");
+            entity.Property(e => e.ReferencialVchrNo).HasColumnName("referencial_vchr_no");
+            entity.Property(e => e.RetRenNo).HasColumnName("ret_ren_no");
+            entity.Property(e => e.RetentionRatePct)
+                .HasColumnType("numeric(5, 2)")
+                .HasColumnName("retention_rate_pct");
+            entity.Property(e => e.SepChkFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("sep_chk_fg");
+            entity.Property(e => e.SeqNo).HasColumnName("seq_no");
+            entity.Property(e => e.SlInverseFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("sl_inverse_fg");
+            entity.Property(e => e.SlType)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("sl_type");
+            entity.Property(e => e.SlVchrNo).HasColumnName("sl_vchr_no");
+            entity.Property(e => e.Status)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("status");
+            entity.Property(e => e.TrxDt).HasColumnName("trx_dt");
+            entity.Property(e => e.VchrBank)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_bank");
+            entity.Property(e => e.VchrChkCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_chk_cd");
+            entity.Property(e => e.VchrChkType)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_chk_type");
+            entity.Property(e => e.VchrChkType1)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_chk_type_1");
+            entity.Property(e => e.VchrDetrac)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_detrac");
+            entity.Property(e => e.VchrDt).HasColumnName("vchr_dt");
+            entity.Property(e => e.VchrNo).HasColumnName("vchr_no");
+            entity.Property(e => e.VchrType)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_type");
+            entity.Property(e => e.VendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vend_no");
+            entity.Property(e => e.VoidChkDt).HasColumnName("void_chk_dt");
+        });
+
+        modelBuilder.Entity<ApopnhstSql>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("APOPNHST_SQL", tb => tb.HasTrigger("TR_APOPNHST_AUDI"));
+
+            entity.HasIndex(e => new { e.VendNo, e.ApOpnDt, e.ApOpnTm, e.VchrNo, e.VchrChkCd, e.VchrChkType }, "IAPOPNHST_SQL0")
+                .IsUnique()
+                .IsClustered()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.AltCurrCd, e.AltVendNo, e.ApplyToNo, e.VchrChkType1, e.TrxDt, e.A4glidentity }, "IAPOPNHST_SQL1")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.OpnClosCd, e.Alt1CurrCd, e.Alt1VendNo, e.SepChkFg, e.Alt1ApplyToNo, e.Alt1TrxDt, e.A4glidentity }, "IAPOPNHST_SQL2")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.Status, e.A4glidentity }, "IAPOPNHST_SQL3")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.Alt3VchrCd, e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.SeqNo, e.A4glidentity }, "IAPOPNHST_SQL4")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.Alt5InvCd, e.Alt5CurrCd, e.Alt5VendNo, e.Alt5ApplyToNo, e.Alt5TrxDt, e.A4glidentity }, "IAPOPNHST_SQL5")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.JnlCd, e.JnlBatchId, e.JnlDocNo, e.A4glidentity }, "IAPOPNHST_SQL6")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.IdNo, e.A4glidentity }, "IAPOPNHST_SQL7")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.DocNo, e.DocDt, e.A4glidentity }, "IAPOPNHST_SQL8")
+                .IsUnique()
+                .HasFillFactor(80);
+
+            entity.HasIndex(e => new { e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.VchrDt, e.JnlCd }, "IAPOPNHST_SQL9");
+
+            entity.Property(e => e.A4glidentity)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("numeric(9, 0)")
+                .HasColumnName("A4GLIdentity");
+            entity.Property(e => e.Alt1ApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt1_apply_to_no");
+            entity.Property(e => e.Alt1CurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt1_curr_cd");
+            entity.Property(e => e.Alt1TrxDt).HasColumnName("alt1_trx_dt");
+            entity.Property(e => e.Alt1VendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt1_vend_no");
+            entity.Property(e => e.Alt3VchrCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt3_vchr_cd");
+            entity.Property(e => e.Alt5ApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_apply_to_no");
+            entity.Property(e => e.Alt5CurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_curr_cd");
+            entity.Property(e => e.Alt5InvCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_inv_cd");
+            entity.Property(e => e.Alt5TrxDt).HasColumnName("alt5_trx_dt");
+            entity.Property(e => e.Alt5VendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt5_vend_no");
+            entity.Property(e => e.AltCurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt_curr_cd");
+            entity.Property(e => e.AltVendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("alt_vend_no");
+            entity.Property(e => e.Amt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("amt");
+            entity.Property(e => e.ApDpNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_dp_no");
+            entity.Property(e => e.ApHstBaseImponi)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_base_imponi");
+            entity.Property(e => e.ApHstCodAduana)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_cod_aduana");
+            entity.Property(e => e.ApHstDocImport)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_doc_import");
+            entity.Property(e => e.ApHstFechaRendicion).HasColumnName("ap_hst_fecha_rendicion");
+            entity.Property(e => e.ApHstMontoAdv)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("ap_hst_monto_adv");
+            entity.Property(e => e.ApHstMontoFlt).HasColumnName("ap_hst_monto_flt");
+            entity.Property(e => e.ApHstMontoFob)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("ap_hst_monto_fob");
+            entity.Property(e => e.ApHstMontoSgr)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("ap_hst_monto_sgr");
+            entity.Property(e => e.ApHstNroPoliza)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_nro_poliza");
+            entity.Property(e => e.ApHstPercTax)
+                .HasColumnType("decimal(6, 4)")
+                .HasColumnName("ap_hst_perc_tax");
+            entity.Property(e => e.ApHstRetenFlg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_reten_flg");
+            entity.Property(e => e.ApHstTcVenpub)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("ap_hst_tc_venpub");
+            entity.Property(e => e.ApHstTermCode)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_term_code");
+            entity.Property(e => e.ApHstTipoReg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_hst_tipo_reg");
+            entity.Property(e => e.ApMnNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_mn_no");
+            entity.Property(e => e.ApOpnDt).HasColumnName("ap_opn_dt");
+            entity.Property(e => e.ApOpnTm).HasColumnName("ap_opn_tm");
+            entity.Property(e => e.ApPoNo)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_po_no");
+            entity.Property(e => e.ApSbNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ap_sb_no");
+            entity.Property(e => e.ApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("apply_to_no");
+            entity.Property(e => e.CancelationProcessedFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cancelation_processed_fg");
+            entity.Property(e => e.CashAcctCurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_acct_curr_cd");
+            entity.Property(e => e.CashDpNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_dp_no");
+            entity.Property(e => e.CashMnNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_mn_no");
+            entity.Property(e => e.CashSbNo)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cash_sb_no");
+            entity.Property(e => e.ChkDt).HasColumnName("chk_dt");
+            entity.Property(e => e.ChkNo).HasColumnName("chk_no");
+            entity.Property(e => e.ChkVchrNo).HasColumnName("chk_vchr_no");
+            entity.Property(e => e.CjaCd)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("cja_cd");
+            entity.Property(e => e.CurrTrxRt)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("curr_trx_rt");
+            entity.Property(e => e.DebtSwapCd).HasColumnName("debt_swap_cd");
+            entity.Property(e => e.DeferredGroup).HasColumnName("deferred_group");
+            entity.Property(e => e.DiscAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("disc_amt");
+            entity.Property(e => e.DiscDt).HasColumnName("disc_dt");
+            entity.Property(e => e.DiscTaken)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("disc_taken");
+            entity.Property(e => e.DocDt).HasColumnName("doc_dt");
+            entity.Property(e => e.DocNo).HasColumnName("doc_no");
+            entity.Property(e => e.DueDt).HasColumnName("due_dt");
+            entity.Property(e => e.EdCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("ed_cd");
+            entity.Property(e => e.Filler0001)
+                .HasMaxLength(7)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("filler_0001");
+            entity.Property(e => e.FreightAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("freight_amt");
+            entity.Property(e => e.FullyPaidDt).HasColumnName("fully_paid_dt");
+            entity.Property(e => e.GainLossAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("gain_loss_amt");
+            entity.Property(e => e.GstAmount)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("gst_amount");
+            entity.Property(e => e.IdNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("id_no");
+            entity.Property(e => e.InvAmount)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("inv_amount");
+            entity.Property(e => e.InvNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("inv_no");
+            entity.Property(e => e.IsAdvancementFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_advancement_fg");
+            entity.Property(e => e.IsGeneratedByFfFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_generated_by_ff_fg");
+            entity.Property(e => e.IsGeneratedByReFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_generated_by_re_fg");
+            entity.Property(e => e.JnlBatchId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("jnl_batch_id");
+            entity.Property(e => e.JnlCd)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("jnl_cd");
+            entity.Property(e => e.JnlDocNo).HasColumnName("jnl_doc_no");
+            entity.Property(e => e.LastRevalDt).HasColumnName("last_reval_dt");
+            entity.Property(e => e.LiquidationCd)
+                .HasMaxLength(8)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("liquidation_cd");
+            entity.Property(e => e.MiscChrgAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("misc_chrg_amt");
+            entity.Property(e => e.NoAccEntryReference).HasColumnName("no_acc_entry_reference");
+            entity.Property(e => e.NoAccountingEntry)
+                .HasColumnType("numeric(10, 0)")
+                .HasColumnName("no_accounting_entry");
+            entity.Property(e => e.NonDiscAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("non_disc_amt");
+            entity.Property(e => e.Open1099VchrFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("open_1099_vchr_fg");
+            entity.Property(e => e.OpnClosCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("opn_clos_cd");
+            entity.Property(e => e.OrigTrxRt)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("orig_trx_rt");
+            entity.Property(e => e.PayAmt)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("pay_amt");
+            entity.Property(e => e.PoChgFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("po_chg_fg");
+            entity.Property(e => e.Reference)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("reference");
+            entity.Property(e => e.ReferencialApplyToNo)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("referencial_apply_to_no");
+            entity.Property(e => e.SepChkFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("sep_chk_fg");
+            entity.Property(e => e.SeqNo).HasColumnName("seq_no");
+            entity.Property(e => e.SlVchrNo).HasColumnName("sl_vchr_no");
+            entity.Property(e => e.Status)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("status");
+            entity.Property(e => e.TaxAmount)
+                .HasColumnType("decimal(14, 2)")
+                .HasColumnName("tax_amount");
+            entity.Property(e => e.TrxDt).HasColumnName("trx_dt");
+            entity.Property(e => e.Username)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("username");
+            entity.Property(e => e.VchrChkCd)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_chk_cd");
+            entity.Property(e => e.VchrChkType)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_chk_type");
+            entity.Property(e => e.VchrChkType1)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_chk_type_1");
+            entity.Property(e => e.VchrDt).HasColumnName("vchr_dt");
+            entity.Property(e => e.VchrNo).HasColumnName("vchr_no");
+            entity.Property(e => e.VchrType)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vchr_type");
+            entity.Property(e => e.VendNo)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("vend_no");
+            entity.Property(e => e.VoidAdLtFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("void_ad_lt_fg");
+            entity.Property(e => e.VoidChkDt).HasColumnName("void_chk_dt");
+            entity.Property(e => e.VoidNcFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("void_nc_fg");
+        });
+
         modelBuilder.Entity<ApvenextSql>(entity =>
         {
             entity
@@ -1374,8 +2159,6 @@ public partial class DbConexion : DbContext
                 .IsFixedLength()
                 .HasColumnName("zip");
         });
-
-        //modelBuilder.Entity<ApvenextDTO>().HasNoKey();  // ❌ Evita error de clave primaria
 
         OnModelCreatingPartial(modelBuilder);
     }
