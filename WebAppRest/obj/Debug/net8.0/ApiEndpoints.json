@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "WebAppRest.Controllers.AP.ApopnfilController",
+    "Method": "ExportarExcel",
+    "RelativePath": "api/Apopnfil/exportar-excel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "parametros",
+        "Type": "Common.ViewModels.ApopnfilDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebAppRest.Controllers.AP.Maintenance.ApvenextController",
     "Method": "GetAll",
     "RelativePath": "api/Apvenext",

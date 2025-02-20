@@ -23,6 +23,10 @@ builder.Services.AddScoped<IApvenextRepository, ApvenextRepository>();
 builder.Services.AddScoped<ApvenextService>();
 builder.Services.AddScoped<IApvenfilRepository, ApvenfilRepository>();
 builder.Services.AddScoped<ApvenfilService>();
+
+builder.Services.AddScoped<IApopnfilRepository, ApopnfilRepository>();
+builder.Services.AddScoped<ApopnfilService>();
+
 builder.Services.AddScoped<ExcelService>();
 
 

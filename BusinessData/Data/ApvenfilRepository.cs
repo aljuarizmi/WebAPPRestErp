@@ -38,7 +38,11 @@ namespace BusinessData.Data
             );
             return filasAfectadas;
         }
-        // Usar un procedimiento almacenado con parámetros y mapear los resultados a un DTO
+        /// <summary>
+        /// Procedimiento almacenado que lista todos los proveedores
+        /// </summary>
+        /// <returns>Retorna una lista generica del tipo IEnumerable<ApvenfilDTO></returns>
+        /// <exception cref="Exception">Devuelve una excepcion si el modelo no tiene atributos definidos</exception>
         public async Task<IEnumerable<ApvenfilDTO>> F_ListarProveedores()
         {
             // Ejecutamos el procedimiento almacenado

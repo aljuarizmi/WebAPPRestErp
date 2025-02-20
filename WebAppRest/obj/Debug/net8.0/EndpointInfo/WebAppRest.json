@@ -5,6 +5,37 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Apopnfil/exportar-excel": {
+      "post": {
+        "tags": [
+          "Apopnfil"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApopnfilDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApopnfilDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApopnfilDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Apvenext": {
       "get": {
         "tags": [
@@ -168,6 +199,565 @@
   },
   "components": {
     "schemas": {
+      "ApopnfilDTO": {
+        "type": "object",
+        "properties": {
+          "vendNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "vchrNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vchrChkCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "vchrChkType": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpnDt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "apOpnTm": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "altCurrCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "altVendNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "applyToNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "vchrChkType1": {
+            "type": "string",
+            "nullable": true
+          },
+          "trxDt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "opnClosCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt1CurrCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt1VendNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "sepChkFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt1ApplyToNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt1TrxDt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt3VchrCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "cashMnNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cashSbNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cashDpNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "seqNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "alt5InvCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt5CurrCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt5VendNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt5ApplyToNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "alt5TrxDt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vchrDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "vchrType": {
+            "type": "string",
+            "nullable": true
+          },
+          "apPoNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "invNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "amt": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "payAmt": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dueDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "discDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chkVchrNo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "chkDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "discAmt": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "discTaken": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "reference": {
+            "type": "string",
+            "nullable": true
+          },
+          "apMnNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "apSbNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "apDpNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullyPaidDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "voidChkDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "origTrxRt": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currTrxRt": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "gainLossAmt": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lastRevalDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ap1099Fg": {
+            "type": "string",
+            "nullable": true
+          },
+          "cashAcctCurrCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkPrtFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "filler0001": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenFechaRendicion": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "apOpenTipoReg": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenRetenFlg": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenCodAduana": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenPercTax": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "apOpenBaseImponi": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenDocImport": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenTcVenpub": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "apOpenNroPoliza": {
+            "type": "string",
+            "nullable": true
+          },
+          "apOpenMontoFob": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "apOpenMontoFlt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "apOpenMontoSgr": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "apOpenMontoAdv": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "apTermCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "a4glidentity": {
+            "type": "number",
+            "format": "double"
+          },
+          "origTrxRt2": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currTrxRt2": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "lastDateProssDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "lastDateProssDt2": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "alfCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "frdDt": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "slType": {
+            "type": "string",
+            "nullable": true
+          },
+          "detracPayedBySystemFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "detracGroup": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "slInverseFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "vchrBank": {
+            "type": "string",
+            "nullable": true
+          },
+          "vchrDetrac": {
+            "type": "string",
+            "nullable": true
+          },
+          "isExrFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "isExrBaseFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "retentionRatePct": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "isPeFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "slVchrNo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "debtSwapCd": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "edCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "isAdvancementFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "poChgFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "referencialApplyToNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "exogenousFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "referencialVchrNo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "referenceSp": {
+            "type": "string",
+            "nullable": true
+          },
+          "erCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "retRenNo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "assetTypeCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipoFg": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkSaldo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chkVoid": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkDes": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkHas": {
+            "type": "string",
+            "nullable": true
+          },
+          "trxDtIni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "trxDtFin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chkDes1": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkHas1": {
+            "type": "string",
+            "nullable": true
+          },
+          "dueDtIni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dueDtFin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chkDes2": {
+            "type": "string",
+            "nullable": true
+          },
+          "chkHas2": {
+            "type": "string",
+            "nullable": true
+          },
+          "vchrDtIni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vchrDtFin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "docIni": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "docFin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "aplIni": {
+            "type": "string",
+            "nullable": true
+          },
+          "aplFin": {
+            "type": "string",
+            "nullable": true
+          },
+          "doc1": {
+            "type": "string",
+            "nullable": true
+          },
+          "doc2": {
+            "type": "string",
+            "nullable": true
+          },
+          "doc3": {
+            "type": "string",
+            "nullable": true
+          },
+          "apl1": {
+            "type": "string",
+            "nullable": true
+          },
+          "apl2": {
+            "type": "string",
+            "nullable": true
+          },
+          "apl3": {
+            "type": "string",
+            "nullable": true
+          },
+          "jnlCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "jnlBatchId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userDefFld1": {
+            "type": "string",
+            "nullable": true
+          },
+          "vendTypeCd": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderColumn": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ApvenextDTO": {
         "type": "object",
         "properties": {
