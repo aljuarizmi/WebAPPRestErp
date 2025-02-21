@@ -6,16 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAppRest.Controllers.AP
 {
+    /// <summary>
+    /// controlador de la clase apopnfil
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ApopnfilController : ControllerBase
     {
         private readonly ApopnfilService _apopnfilService;
         private readonly ExcelService _excelService;
-        public ApopnfilController(ApopnfilService apopnfilService, ExcelService excelService)
+        private readonly IConfiguration _configuration;
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="apopnfilService"></param>
+        /// <param name="excelService"></param>
+        /// <param name="configuration"></param>
+        public ApopnfilController(ApopnfilService apopnfilService, ExcelService excelService, IConfiguration configuration)
         {
             _apopnfilService = apopnfilService;
             _excelService = excelService;
+            _configuration = configuration;
         }
         /// <summary>
         /// Funcion que devuelve la consulta de documentos en un archivo excel
@@ -26,6 +37,7 @@ namespace WebAppRest.Controllers.AP
         public async Task<IActionResult> ExportarExcel([FromBody] ApopnfilDTO parametros)
         {
             // 1 Obtener los datos de la base de datos
+            //string? cadena = CryptoService.Decrypt(_configuration["Credenciales:SU_Clave"]);
             parametros.TipoFg = "H";
             parametros.VendNo = "000000012960";
             parametros.PageIndex = 0;
