@@ -10,7 +10,9 @@ public class ExcelService {
     /// </summary>
     /// <typeparam name="T">Objeto del tipo lista generica no editable</typeparam>
     /// <param name="datos">Parametro que contiene los datos a exportar</param>
-    /// <returns></returns>
+    /// <param name="propiedades">Parametro que contiene los nombres de los encabezados</param>
+    /// <param name="nombreHoja">Parametro que contiene el nombre de la hoja/sheet a crear</param>
+    /// <returns>Retorna un objeto de tipo byte[] que contiene los datos del excel generado</returns>
     public byte[] GenerarExcel<T>(IEnumerable<T> datos, PropertyInfo[] propiedades, string nombreHoja) {
 
         nombreHoja = System.Text.RegularExpressions.Regex.Replace(nombreHoja, @"[\\\/\?\*\[\]\:]", "");
@@ -24,8 +26,10 @@ public class ExcelService {
         foreach (var prop in propiedades){
             worksheet.Cell(1, columna).Value = prop.Name; // Nombre de la propiedad como encabezado
             worksheet.Cell(1, columna).Style.Font.Bold = true;
+            worksheet.Cell(1, columna).Style.Fill.BackgroundColor = XLColor.LightGray; 
             worksheet.Cell(1, columna).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
             worksheet.Cell(1, columna).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            worksheet.Cell(1, columna).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
             columna++;
         }
         // 3 Rellenar con datos
@@ -45,7 +49,13 @@ public class ExcelService {
         stream.Position = 0;
         return stream.ToArray();
     }
-
+    /// <summary>
+    /// Funcion que genera un archivo excel a partir de la consulta de datos
+    /// </summary>
+    /// <param name="datos">Parametro que contiene los datos a exportar</param>
+    /// <param name="nombreHoja">Parametro que contiene el nombre de la hoja/sheet a crear</param>
+    /// <returns>Retorna un objeto de tipo byte[] que contiene los datos del excel generado</returns>
+    /// <exception cref="Exception"></exception>
     public byte[] GenerarExcelDinamico(IEnumerable<IDictionary<string, object>> datos, string nombreHoja)
     {
         using var workbook = new XLWorkbook();

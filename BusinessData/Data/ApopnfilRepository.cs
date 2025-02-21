@@ -150,8 +150,8 @@ namespace BusinessData.Data
             {
                 var expando = new ExpandoObject();
                 var dict = (IDictionary<string, object?>)expando;
-                foreach (var prop in (IDictionary<string, object>)row){
-                    dict[prop.Key] = prop.Value;
+                foreach (var prop in (IDictionary<string, object?>)row){
+                    dict[prop.Key] = prop.Value??new object();
                 }
                 return dict;
             }).ToList();

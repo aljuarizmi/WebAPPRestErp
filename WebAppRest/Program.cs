@@ -6,6 +6,9 @@ using BusinessLogic.Services;
 using BusinessLogic.Interfaces;
 using WebAppRest.Middlewares;
 using System.Text.Json;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+/*builder.Services.AddSwaggerGen(c =>
+{
+    //c.MapType<string>(() => new OpenApiSchema { Example = new OpenApiString("") });
+    c.EnableAnnotations();
+});*/
 
 builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
 
@@ -45,6 +54,7 @@ app.UseAuthorization();
 
 app.UseCustomExceptionMiddleware(); // Usar el Middleware personalizado
 
+//
 app.UseStatusCodePages(async context =>
 {
     var response = context.HttpContext.Response;

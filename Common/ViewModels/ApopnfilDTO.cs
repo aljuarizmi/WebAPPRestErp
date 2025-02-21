@@ -4,11 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.ViewModels
 {
+    /// <summary>
+    /// Modelo de la clase ApopnfilDTO que contiene los atributos que representan los parametros de consulta de documentos
+    /// </summary>
     public class ApopnfilDTO
     {
+        /// <summary>
+        /// El tipo de consulta que se hará
+        /// </summary>
+        /// <example>H</example>
         public string TipoFg { get; set; } = string.Empty;
         public int ChkSaldo { get; set; } = 1;
         public string ChkVoid { get; set; } = "0";

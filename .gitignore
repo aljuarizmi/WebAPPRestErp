@@ -1,20 +1,54 @@
-# Ignorar la carpeta .vs (configuración de Visual Studio)
+# Archivos generados por Visual Studio
 .vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Ignorar la carpeta bin y obj (compilación)
+# Archivos de compilación de .NET Core
 bin/
 obj/
-
-# Ignorar archivos de configuración de usuario
-*.user
-*.suo
-
-# Ignorar paquetes de NuGet descargados
-packages/
-
-# Ignorar archivos de log y temporales
+*.exe
+*.dll
+*.pdb
+*.cache
+*.ilk
 *.log
+artifacts/
+
+# Dependencias de paquetes
+packages/
+*.nupkg
+project.lock.json
+
+# Configuraciones de usuario y entorno (NO subir credenciales)
+.env
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+secrets/
+
+# Archivos de Entity Framework Core (Opcional)
+Migrations/
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# Archivos generados por Swagger
+swagger/
+swagger.json
+
+# Publicaciones y despliegues
+wwwroot/
+publish/
+coverage/
+
+# Archivos de sistema y caché
+.DS_Store
+Thumbs.db
+*.bak
 *.tmp
 
-# Ignorar configuraciones de depuración
-*.sln.docstates
+# Archivos de configuración de Visual Studio Code (si usas VS Code)
+.vscode/
