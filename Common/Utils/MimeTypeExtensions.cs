@@ -27,6 +27,15 @@ namespace Common.Utils
         Ppt,  // PowerPoint (antiguo)
         Pptx  // PowerPoint (nuevo)
     }
+
+    public enum Delimitador
+    {
+        Coma,         // ","
+        PuntoYComa,   // ";"
+        Tabulacion,   // "\t"
+        Pipe,         // "|"
+        Espacio       // " "
+    }
     public static class MimeTypeExtensions
     {
         public static string GetMimeType(this MimeType mimeType)
@@ -53,6 +62,19 @@ namespace Common.Utils
                 MimeType.Pptx => "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 
                 _ => "application/octet-stream",
+            };
+        }
+
+        public static string GetDelimitador(this Delimitador delimitador)
+        {
+            return delimitador switch
+            {
+                Delimitador.Coma => ",",
+                Delimitador.PuntoYComa => ";",
+                Delimitador.Tabulacion => "\t",
+                Delimitador.Pipe => "|",
+                Delimitador.Espacio => " ",
+                _ => " ",
             };
         }
     }

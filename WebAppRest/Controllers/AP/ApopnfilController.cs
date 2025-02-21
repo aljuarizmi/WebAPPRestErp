@@ -17,6 +17,11 @@ namespace WebAppRest.Controllers.AP
             _apopnfilService = apopnfilService;
             _excelService = excelService;
         }
+        /// <summary>
+        /// Funcion que devuelve la consulta de documentos en un archivo excel
+        /// </summary>
+        /// <param name="parametros">Lista de parametros que contiene los filtros a usar en la consulta</param>
+        /// <returns>Devuelve un objeto que contiene el archivo excel para su descarga</returns>
         [HttpPost("exportar-excel")]
         public async Task<IActionResult> ExportarExcel([FromBody] ApopnfilDTO parametros)
         {

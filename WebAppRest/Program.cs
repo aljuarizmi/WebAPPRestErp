@@ -31,6 +31,7 @@ builder.Services.AddSwaggerGen(options =>
 );
 
 builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
+builder.Services.AddSqlServer<DbAcceso>(builder.Configuration.GetConnectionString("DbAcceso"));
 
 // Registrar el servicio en BusinessLogic que usa IApvenextRepository
 builder.Services.AddScoped<IApvenextRepository, ApvenextRepository>();
