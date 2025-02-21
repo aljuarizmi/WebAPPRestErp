@@ -24,13 +24,15 @@ public partial class DbAcceso : DbContext
 
     public virtual DbSet<SygendbcSql> SygendbcSqls { get; set; }
 
+    public virtual DbSet<SygengadSql> SygengadSqls { get; set; }
+
     public virtual DbSet<SygenopcSql> SygenopcSqls { get; set; }
 
     public virtual DbSet<SygenusrSql> SygenusrSqls { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=SPANISH;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=SPANISH;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -263,6 +265,40 @@ public partial class DbAcceso : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("sy_show_logo_fg");
+        });
+
+        modelBuilder.Entity<SygengadSql>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("SYGENGAD_SQL");
+
+            entity.HasIndex(e => new { e.SyUser, e.BizGrpId }, "IDX0_SYGENGAD_SQL").IsUnique();
+
+            entity.Property(e => e.A4glidentity)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("A4GLIdentity");
+            entity.Property(e => e.BizGrpId).HasColumnName("biz_grp_id");
+            entity.Property(e => e.IsAdminFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_admin_fg");
+            entity.Property(e => e.IsAdminGenFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_admin_gen_fg");
+            entity.Property(e => e.IsFreeAccessFg)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("is_free_access_fg");
+            entity.Property(e => e.SyUser)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("sy_user");
         });
 
         modelBuilder.Entity<SygenopcSql>(entity =>
