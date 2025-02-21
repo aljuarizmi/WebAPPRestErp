@@ -21,9 +21,12 @@ builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
 {
+    //Permite mostrar la documentacion en swagger
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
+    //Permite poner los valores en cadena vacía para los campos que sean string en el swagger
+    options.MapType<string>(() => new OpenApiSchema { Example = new OpenApiString("") });
 }
 );
 
