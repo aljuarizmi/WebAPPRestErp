@@ -26,6 +26,31 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
+    // **Agregar definición de seguridad JWT para Swagger**
+    //Agregue una o más "securityDefinitions" que describan cómo se protege su API al Swagger generado.
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Please enter your token"
+    });
+    // **Agregar requerimiento de seguridad para todos los endpoints** (en rojo)
+    //Añade un requisito de seguridad global
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement{
+        {
+            new OpenApiSecurityScheme{
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
     //Permite poner los valores en cadena vacía para los campos que sean string en el swagger
     options.MapType<string>(() => new OpenApiSchema { Example = new OpenApiString("") });
 }

@@ -9,7 +9,7 @@ namespace WebAppRest.Controllers.SY
     /// <summary>
     /// Controlador para consultar los servidores disponibles
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/servers")]
     [ApiController]
     public class ServerController : ControllerBase
     {
@@ -30,9 +30,10 @@ namespace WebAppRest.Controllers.SY
         /// Devuelve la lista de servidores disponibles
         /// </summary>
         /// <returns></returns>
-        [HttpGet()]
-        public async Task<IEnumerable<ServerInfo>> GetServerInfo() {
+        [HttpGet]
+        public IEnumerable<ServerInfo> GetServerInfo() {
             string? servers = _configuration["Credenciales:Servers"];
+            servers = servers == null ? "|" : servers;
             string[] data = servers.Split("|");
             List<ServerInfo> serverList = new List<ServerInfo>();
             if (data != null) {
@@ -44,16 +45,27 @@ namespace WebAppRest.Controllers.SY
                     });
                 }
             }
-            //ConnectionManager objConexion = _connectionmanager;
-            SygendbcDTO parametros = new SygendbcDTO();
-            _connectionmanager.SERVER_NAME = data[1];
-            parametros.BizGrpId =Convert.ToInt32(data[0]);
-            parametros.SyCompany = null;
-            parametros.PageSize = 0;
-            parametros.PageIndex = -1;
-            parametros.OrderColumn = "sy_company";
-            serverList[0].empresas =await _sygendbcService.F_ListarEmpresas(parametros, _connectionmanager);
             return serverList;
+        }
+        /// <summary>
+        /// Devuelve la lista de empresas por grupo
+        /// </summary>
+        /// <param name="grp_id"></param>
+        /// <returns></returns>
+        [HttpGet("{grp_id}/companies")]
+        public async Task<IEnumerable<IDictionary<string, object>>> GetCompanyInfo(int? grp_id)
+        {
+            IEnumerable<IDictionary<string, object>> companies = new List<IDictionary<string, object>>();
+            if (grp_id != null) {
+                SygendbcDTO parametros = new SygendbcDTO();
+                parametros.BizGrpId = grp_id;
+                parametros.SyCompany = null;
+                parametros.PageSize = 0;
+                parametros.PageIndex = -1;
+                parametros.OrderColumn = "sy_company";
+                companies = await _sygendbcService.F_ListarEmpresas(parametros, _connectionmanager);
+            }
+            return companies;
         }
     }
 }
