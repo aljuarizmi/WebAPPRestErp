@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Common.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,9 @@ builder.Services.AddSwaggerGen(options =>
 );
 
 builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
-builder.Services.AddSqlServer<DbAcceso>(builder.Configuration.GetConnectionString("DbAcceso"));
+//builder.Services.AddSqlServer<DbAcceso>(builder.Configuration.GetConnectionString("DbAcceso"));
+//DbAcceso se inyecta como un servicio, ya que ahora la conexión es dinámica.
+builder.Services.AddScoped<DbAcceso>();
 
 // Registrar el servicio en BusinessLogic que usa IApvenextRepository
 builder.Services.AddScoped<IApvenextRepository, ApvenextRepository>();
@@ -42,7 +45,11 @@ builder.Services.AddScoped<ApvenfilService>();
 builder.Services.AddScoped<IApopnfilRepository, ApopnfilRepository>();
 builder.Services.AddScoped<ApopnfilService>();
 
+builder.Services.AddScoped<ISygendbcRepository, SygendbcRepository>();
+builder.Services.AddScoped<SygendbcService>();
+
 builder.Services.AddScoped<ExcelService>();
+builder.Services.AddScoped<ConnectionManager>();
 
 
 var app = builder.Build();

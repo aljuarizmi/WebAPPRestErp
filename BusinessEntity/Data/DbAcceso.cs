@@ -7,6 +7,7 @@ namespace BusinessEntity.Data;
 
 public partial class DbAcceso : DbContext
 {
+    private readonly string _connectionString;
     public DbAcceso()
     {
     }
@@ -14,6 +15,11 @@ public partial class DbAcceso : DbContext
     public DbAcceso(DbContextOptions<DbAcceso> options)
         : base(options)
     {
+    }
+
+    public DbAcceso(string connectionString)
+    {
+        _connectionString = connectionString;
     }
 
     public virtual DbSet<SqlsrchSql> SqlsrchSqls { get; set; }
@@ -30,9 +36,12 @@ public partial class DbAcceso : DbContext
 
     public virtual DbSet<SygenusrSql> SygenusrSqls { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=SPANISH;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
+        optionsBuilder.UseSqlServer(_connectionString);
+    }
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=SPANISH;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -87,11 +87,11 @@ namespace BusinessData.Data
             using var connection = _context.Database.GetDbConnection();
 
             // Verificamos si el modelo tiene propiedades
-            Type tipoModelo = typeof(ApopnfilDTO);
-            bool tieneAtributos = tipoModelo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Any();
+            //Type tipoModelo = typeof(ApopnfilDTO);
+            //bool tieneAtributos = tipoModelo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Any();
 
-            if (!tieneAtributos)
-                throw new Exception("El modelo ApopnfilDTO no tiene atributos definidos. No se puede ejecutar la consulta.");
+            //if (!tieneAtributos)
+            //    throw new Exception("El modelo ApopnfilDTO no tiene atributos definidos. No se puede ejecutar la consulta.");
 
             // Definir la consulta SQL con parámetros
             string sql = "EXEC USP_AP_M06S02N07_LISTAR_APOPNFIL_APOPNHST_SQL @tipo_fg,@chkSaldo,@chkVoid,@vend_no,@chkDes,@chkHas,@trx_dt_ini,@trx_dt_fin,@chkDes1,@chkHas1,"+
