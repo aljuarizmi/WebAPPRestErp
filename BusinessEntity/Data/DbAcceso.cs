@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BusinessEntity.Data.Models;
+﻿using BusinessEntity.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessEntity.Data;
@@ -36,7 +34,8 @@ public partial class DbAcceso : DbContext
 
     public virtual DbSet<SygenusrSql> SygenusrSqls { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
         optionsBuilder.UseSqlServer(_connectionString);
     }
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

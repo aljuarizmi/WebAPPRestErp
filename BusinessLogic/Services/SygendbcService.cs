@@ -2,15 +2,10 @@
 using BusinessLogic.Interfaces;
 using Common.Services;
 using Common.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class SygendbcService:ISygendbcService
+    public class SygendbcService : ISygendbcService
     {
         private readonly ISygendbcRepository _repository;
         public SygendbcService(ISygendbcRepository repository)

@@ -2,22 +2,15 @@
 using BusinessEntity.Data;
 using Common.ViewModels;
 using Dapper;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Common.Utils;
 
 namespace BusinessData.Data
 {
-    public class ApopnfilRepository: IApopnfilRepository
+    public class ApopnfilRepository : IApopnfilRepository
     {
         private readonly DbConexion _context;
         public ApopnfilRepository(DbConexion context)
@@ -30,14 +23,16 @@ namespace BusinessData.Data
         /// <param name="parametros">Parámetro que contiene los filtros de consulta</param>
         /// <returns>Retorna una lista generica del tipo IEnumerable<ApopnfilDTO> con los datos de la consulta</returns>
         /// <exception cref="Exception"></exception>
-        public async Task<IEnumerable<ApopnfilDTO>> F_ListarDocumentos(ApopnfilDTO parametros){
+        public async Task<IEnumerable<ApopnfilDTO>> F_ListarDocumentos(ApopnfilDTO parametros)
+        {
             Type tipoModelo = typeof(ApopnfilDTO);
             bool tieneAtributos = tipoModelo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Any();
-            if (tieneAtributos){
+            if (tieneAtributos)
+            {
                 var resultado = await _context.Database
-                .SqlQueryRaw<ApopnfilDTO>("EXEC USP_AP_M06S02N07_LISTAR_APOPNFIL_APOPNHST_SQL @tipo_fg,@chkSaldo,@chkVoid,@vend_no,@chkDes,@chkHas,@trx_dt_ini,@trx_dt_fin,@chkDes1,@chkHas1,"+
-                "@due_dt_ini,@due_dt_fin,@chkDes2,@chkHas2,@vchr_dt_ini,@vchr_dt_fin,@DocIni,@DocFin,@AplIni,@AplFin,"+
-                "@Inv_no,@Apply_to_no,@Doc1,@Doc2,@Doc3,@Apl1,@Apl2,@Apl3,@jnl_cd,@vchr_chk_cd,"+
+                .SqlQueryRaw<ApopnfilDTO>("EXEC USP_AP_M06S02N07_LISTAR_APOPNFIL_APOPNHST_SQL @tipo_fg,@chkSaldo,@chkVoid,@vend_no,@chkDes,@chkHas,@trx_dt_ini,@trx_dt_fin,@chkDes1,@chkHas1," +
+                "@due_dt_ini,@due_dt_fin,@chkDes2,@chkHas2,@vchr_dt_ini,@vchr_dt_fin,@DocIni,@DocFin,@AplIni,@AplFin," +
+                "@Inv_no,@Apply_to_no,@Doc1,@Doc2,@Doc3,@Apl1,@Apl2,@Apl3,@jnl_cd,@vchr_chk_cd," +
                 "@jnl_batch_id,@user_def_fld_1,@vend_type_cd,@pageSize,@pageIndex,@orderColumn,@referencial_apply_to_no",
                 new SqlParameter("@tipo_fg", parametros.TipoFg),
                 new SqlParameter("@chkSaldo", parametros.ChkSaldo),
@@ -79,11 +74,14 @@ namespace BusinessData.Data
                 )
                 .ToListAsync();
                 return resultado;
-            }else{
+            }
+            else
+            {
                 throw new Exception("El modelo ApopnfilDTO no tiene atributos definidos. No se puede ejecutar la consulta de los datos.");
             }
         }
-        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarDocumentosDapper(ApopnfilDTO parametros) {
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarDocumentosDapper(ApopnfilDTO parametros)
+        {
             using var connection = _context.Database.GetDbConnection();
 
             // Verificamos si el modelo tiene propiedades
@@ -94,13 +92,13 @@ namespace BusinessData.Data
             //    throw new Exception("El modelo ApopnfilDTO no tiene atributos definidos. No se puede ejecutar la consulta.");
 
             // Definir la consulta SQL con parámetros
-            string sql = "EXEC USP_AP_M06S02N07_LISTAR_APOPNFIL_APOPNHST_SQL @tipo_fg,@chkSaldo,@chkVoid,@vend_no,@chkDes,@chkHas,@trx_dt_ini,@trx_dt_fin,@chkDes1,@chkHas1,"+
-                "@due_dt_ini,@due_dt_fin,@chkDes2,@chkHas2,@vchr_dt_ini,@vchr_dt_fin,@DocIni,@DocFin,@AplIni,@AplFin,"+
-                "@Inv_no,@Apply_to_no,@Doc1,@Doc2,@Doc3,@Apl1,@Apl2,@Apl3,@jnl_cd,@vchr_chk_cd,"+
+            string sql = "EXEC USP_AP_M06S02N07_LISTAR_APOPNFIL_APOPNHST_SQL @tipo_fg,@chkSaldo,@chkVoid,@vend_no,@chkDes,@chkHas,@trx_dt_ini,@trx_dt_fin,@chkDes1,@chkHas1," +
+                "@due_dt_ini,@due_dt_fin,@chkDes2,@chkHas2,@vchr_dt_ini,@vchr_dt_fin,@DocIni,@DocFin,@AplIni,@AplFin," +
+                "@Inv_no,@Apply_to_no,@Doc1,@Doc2,@Doc3,@Apl1,@Apl2,@Apl3,@jnl_cd,@vchr_chk_cd," +
                 "@jnl_batch_id,@user_def_fld_1,@vend_type_cd,@pageSize,@pageIndex,@orderColumn,@referencial_apply_to_no";
 
             // Parámetros para el procedimiento almacenado
-            var parametrosSP = new 
+            var parametrosSP = new
             {
                 tipo_fg = parametros.TipoFg,
                 chkSaldo = parametros.ChkSaldo,
@@ -150,8 +148,9 @@ namespace BusinessData.Data
             {
                 var expando = new ExpandoObject();
                 var dict = (IDictionary<string, object?>)expando;
-                foreach (var prop in (IDictionary<string, object?>)row){
-                    dict[prop.Key] = prop.Value??new object();
+                foreach (var prop in (IDictionary<string, object?>)row)
+                {
+                    dict[prop.Key] = prop.Value ?? new object();
                 }
                 return dict;
             }).ToList();

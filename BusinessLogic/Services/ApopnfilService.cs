@@ -1,15 +1,10 @@
 ﻿using BusinessData.Interfaces;
 using BusinessLogic.Interfaces;
 using Common.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class ApopnfilService: IApopnfilService
+    public class ApopnfilService : IApopnfilService
     {
         private readonly IApopnfilRepository _repository;
 

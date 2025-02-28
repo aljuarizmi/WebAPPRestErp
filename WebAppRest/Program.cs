@@ -1,19 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-using BusinessEntity.Data;
-using BusinessData.Interfaces;
 using BusinessData.Data;
+using BusinessData.Interfaces;
+using BusinessEntity.Data;
 using BusinessLogic.Services;
-using BusinessLogic.Interfaces;
-using WebAppRest.Middlewares;
-using System.Text.Json;
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Common.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Common.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
+using WebAppRest.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +78,9 @@ builder.Services.AddScoped<SygendbcService>();
 builder.Services.AddScoped<ISygengadRepository, SygengadRepository>();
 builder.Services.AddScoped<SygengadService>();
 
+builder.Services.AddScoped<ISygenopcRepository, SygenopcRepository>();
+builder.Services.AddScoped<SygenopcService>();
+
 builder.Services.AddScoped<ExcelService>();
 
 builder.Services.AddScoped<ConnectionManager>();
@@ -87,7 +88,8 @@ builder.Services.AddScoped<ConnectionManager>();
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-    options => {
+    options =>
+    {
         //options.TokenValidationParameters = new TokenValidationParameters: Define las reglas para validar los tokens JWT.
         options.TokenValidationParameters = new TokenValidationParameters
         {

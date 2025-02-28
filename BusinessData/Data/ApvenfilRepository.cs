@@ -3,16 +3,11 @@ using BusinessEntity.Data;
 using BusinessEntity.Data.Models;
 using Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessData.Data
 {
-    public class ApvenfilRepository: IApvenfilRepository
+    public class ApvenfilRepository : IApvenfilRepository
     {
         private readonly DbConexion _context;
 
@@ -20,7 +15,7 @@ namespace BusinessData.Data
         {
             _context = context;
         }
-        public async Task<int> F_InsertarProveedor(ApvenfilSql apvenfilbe,ApvenextSql apvenextbe)
+        public async Task<int> F_InsertarProveedor(ApvenfilSql apvenfilbe, ApvenextSql apvenextbe)
         {
             int filasAfectadas = await _context.Database.ExecuteSqlRawAsync(
                 "EXEC usp_ar_insertar_prov @p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, " +
@@ -47,13 +42,16 @@ namespace BusinessData.Data
         {
             // Ejecutamos el procedimiento almacenado
             Type tipoModelo = typeof(ApvenfilDTO);
-            bool tieneAtributos= tipoModelo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Any();
-            if (tieneAtributos) {
+            bool tieneAtributos = tipoModelo.GetProperties(BindingFlags.Public | BindingFlags.Instance).Any();
+            if (tieneAtributos)
+            {
                 var resultado = await _context.Database
                 .SqlQueryRaw<ApvenfilDTO>("EXEC USP_AP_M06S01N01_LISTAR_PROVEEDORES_APVENFIL_SQL")
                 .ToListAsync();
                 return resultado;
-            } else {
+            }
+            else
+            {
                 throw new Exception("El modelo ApvenfilDTO no tiene atributos definidos. No se puede ejecutar la consulta a la BD.");
             }
         }

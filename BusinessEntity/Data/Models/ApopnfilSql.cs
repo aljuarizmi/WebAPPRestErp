@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BusinessEntity.Data.Models;
+﻿namespace BusinessEntity.Data.Models;
 
 public partial class ApopnfilSql
 {

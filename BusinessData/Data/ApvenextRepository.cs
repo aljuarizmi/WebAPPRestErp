@@ -1,18 +1,12 @@
 ﻿using BusinessData.Interfaces;
-using BusinessEntity.Data.Models;
 using BusinessEntity.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
+using BusinessEntity.Data.Models;
 using Common.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessData.Data
 {
-    public class ApvenextRepository: IApvenextRepository
+    public class ApvenextRepository : IApvenextRepository
     {
         private readonly DbConexion _context;
 

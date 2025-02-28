@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Common.ViewModels;
-using BusinessLogic.Services;
+﻿using BusinessLogic.Services;
 using Common.Services;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Azure.Core;
+using Common.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAppRest.Controllers.SY
 {
@@ -25,7 +22,8 @@ namespace WebAppRest.Controllers.SY
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="sygendbcService"></param>
-        public ServerController(IConfiguration configuration, SygendbcService sygendbcService, ConnectionManager connectionmanager, SygengadService sygengadService, AuthService authService) {
+        public ServerController(IConfiguration configuration, SygendbcService sygendbcService, ConnectionManager connectionmanager, SygengadService sygengadService, AuthService authService)
+        {
             _configuration = configuration;
             _sygendbcService = sygendbcService;
             _connectionmanager = connectionmanager;
@@ -37,13 +35,16 @@ namespace WebAppRest.Controllers.SY
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<ServerInfo> GetServerInfo() {
+        public IEnumerable<ServerInfo> GetServerInfo()
+        {
             string? servers = _configuration["Credenciales:Servers"];
             servers = servers == null ? "|" : servers;
             string[] data = servers.Split("|");
             List<ServerInfo> serverList = new List<ServerInfo>();
-            if (data != null) {
-                if (data.Length > 0) {
+            if (data != null)
+            {
+                if (data.Length > 0)
+                {
                     serverList.Add(new ServerInfo
                     {
                         server_id = Convert.ToInt32(data[0]),
@@ -63,7 +64,8 @@ namespace WebAppRest.Controllers.SY
         public async Task<IEnumerable<IDictionary<string, object>>> GetCompanyInfo(int? grp_id, [FromQuery] string server_name)
         {
             IEnumerable<IDictionary<string, object>> companies = new List<IDictionary<string, object>>();
-            if (grp_id != null) {
+            if (grp_id != null)
+            {
                 SygendbcDTO parametros = new SygendbcDTO();
                 parametros.BizGrpId = grp_id;
                 parametros.SyCompany = null;
@@ -80,27 +82,39 @@ namespace WebAppRest.Controllers.SY
         {
             string token = "";
             IEnumerable<IDictionary<string, object>> _userInfo = new List<IDictionary<string, object>>();
-            if (parametros.BizGrpId != null){
+            if (parametros.BizGrpId != null)
+            {
                 //SygengadDTO parametros = new SygengadDTO();
                 //parametros.BizGrpId = grp_id;
                 //parametros.SyUser = user;
                 _connectionmanager.SERVER_NAME = parametros.ServerName;
                 _userInfo = await _sygengadService.F_ListarUsuarioGrupo(parametros, _connectionmanager);
-                if (_userInfo != null){
-                    if (_userInfo.Count() > 0){
+                if (_userInfo != null)
+                {
+                    if (_userInfo.Count() > 0)
+                    {
                         var userData = _userInfo.FirstOrDefault();
                         string userInfo = userData["sy_user_psc"].ToString();
-                        if (parametros.SyUserPsc == userInfo){
+                        if (parametros.SyUserPsc == userInfo)
+                        {
                             token = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase);
                         }
-                        else {
+                        else
+                        {
                             //La contraseña es incorrecta
+                            return BadRequest(new { message = "La contraseña es incorrecta" });
                         }
-                    }else {
-                        //No existe el usuario consultado
                     }
-                }else { 
+                    else
+                    {
+                        //No existe el usuario consultado
+                        return BadRequest(new { message = "No existe el usuario" });
+                    }
+                }
+                else
+                {
                     //El resultado es nulo
+                    return NotFound();
                 }
             }
             return Ok(new { token = token });

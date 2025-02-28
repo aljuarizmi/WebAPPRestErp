@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using BusinessLogic.Services;
+﻿using BusinessLogic.Services;
 using Common.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAppRest.Controllers.AP.Maintenance
 {

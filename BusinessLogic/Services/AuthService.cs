@@ -1,12 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
@@ -14,11 +10,12 @@ namespace BusinessLogic.Services
     {
         private readonly IConfiguration _configuration;
 
-        public AuthService(IConfiguration configuration){
+        public AuthService(IConfiguration configuration)
+        {
             _configuration = configuration;
         }
 
-        public string GenerateToken(string username, string password,string server,string database)
+        public string GenerateToken(string username, string password, string server, string database)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -30,9 +27,10 @@ namespace BusinessLogic.Services
                 //new Claim(ClaimTypes.Role, role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // ID único del token
                 new Claim("SERVER_NAME", server),
-                new Claim("DB_NAME", database),
+                new Claim("DB_NAME", "DATA_"+database),
                 new Claim("USER_ID", username),
-                new Claim("PASSWORD_ID", password)
+                new Claim("PASSWORD_ID", password),
+                new Claim("COMPANY", database)
             };
             var token = new JwtSecurityToken(
                 //issuer: _configuration["JWT:Issuer"],

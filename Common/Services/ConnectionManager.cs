@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Common.Utils;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
-using Common.Utils;
 
 namespace Common.Services
 {
@@ -19,7 +14,8 @@ namespace Common.Services
         /// </summary>
         /// <param name="httpContextAccessor"></param>
         /// <param name="configuration"></param>
-        public ConnectionManager(IHttpContextAccessor httpContextAccessor, IConfiguration configuration){
+        public ConnectionManager(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
         }
@@ -28,7 +24,8 @@ namespace Common.Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public string F_ObtenerCredencialesConfig(){
+        public string F_ObtenerCredencialesConfig()
+        {
             //var identity = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
             //var baseDeDatos = identity?.Claims.FirstOrDefault(c => c.Type == "BaseDeDatos")?.Value;
             //if (string.IsNullOrEmpty(baseDeDatos)){
@@ -43,7 +40,7 @@ namespace Common.Services
             //Reemplazamos el nobre del servidor
             connectionStringTemplate = connectionStringTemplate.Replace("{SERVER_NAME}", this.SERVER_NAME);
             //Reemplazamos el nombre de la BD de configuracion
-            connectionStringTemplate =connectionStringTemplate.Replace("{DB_NAME}", _configuration["Credenciales:Configuration"]);
+            connectionStringTemplate = connectionStringTemplate.Replace("{DB_NAME}", _configuration["Credenciales:Configuration"]);
             //Reemplazamos el usuario con privilegios
             connectionStringTemplate = connectionStringTemplate.Replace("{USER_ID}", clave[0]);
             //Reemplazamos la clave del usuario con privilegios
@@ -52,13 +49,15 @@ namespace Common.Services
             return connectionStringTemplate;
         }
 
-        public string F_ObtenerCredenciales(){
+        public string F_ObtenerCredenciales()
+        {
             var identity = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
             this.SERVER_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "SERVER_NAME")?.Value;
             this.DB_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "DB_NAME")?.Value;
             this.USER_ID = identity?.Claims.FirstOrDefault(c => c.Type == "USER_ID")?.Value;
             this.PASSWORD_ID = identity?.Claims.FirstOrDefault(c => c.Type == "PASSWORD_ID")?.Value;
-            if (string.IsNullOrEmpty(this.SERVER_NAME)){
+            if (string.IsNullOrEmpty(this.SERVER_NAME))
+            {
                 throw new Exception("No se encontró la base de datos en el token JWT.");
             }
             //Obtenemos la plantilla de la cadena de conexion

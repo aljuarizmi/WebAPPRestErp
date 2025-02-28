@@ -2,19 +2,14 @@
 using BusinessEntity.Data;
 using Common.Services;
 using Common.ViewModels;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using Dapper;
-using System.Threading.Tasks;
 
 namespace BusinessData.Data
 {
-    public class SygengadRepository: ISygengadRepository
+    public class SygengadRepository : ISygengadRepository
     {
         private DbAcceso _context;
         public SygengadRepository(DbAcceso context)
@@ -41,15 +36,23 @@ namespace BusinessData.Data
             {
                 var expando = new ExpandoObject();
                 var dict = (IDictionary<string, object?>)expando;
-                foreach (var prop in (IDictionary<string, object?>)row){
-                    if (prop.Key != null){
-                        if (prop.Value != null){
-                            if ((prop.Value is String) || (prop.Value is string)){
+                foreach (var prop in (IDictionary<string, object?>)row)
+                {
+                    if (prop.Key != null)
+                    {
+                        if (prop.Value != null)
+                        {
+                            if ((prop.Value is String) || (prop.Value is string))
+                            {
                                 dict[prop.Key] = prop.Value.ToString().Trim();
-                            }else{
+                            }
+                            else
+                            {
                                 dict[prop.Key] = prop.Value;
                             }
-                        }else{
+                        }
+                        else
+                        {
                             dict[prop.Key] = new object();
                         }
                     }

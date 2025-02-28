@@ -2,15 +2,10 @@
 using BusinessEntity.Data.Models;
 using BusinessLogic.Interfaces;
 using Common.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class ApvenextService: IApvenextService
+    public class ApvenextService : IApvenextService
     {
         private readonly IApvenextRepository _repository;
 

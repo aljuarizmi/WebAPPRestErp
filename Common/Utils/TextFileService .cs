@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Common.Utils
 {
     public class TextFileService
     {
-        public byte[] GenerarArchivoTexto(IEnumerable<IDictionary<string, object>> datos, Delimitador delimitador=Delimitador.Pipe)
+        public byte[] GenerarArchivoTexto(IEnumerable<IDictionary<string, object>> datos, Delimitador delimitador = Delimitador.Pipe)
         {
             if (datos == null || !datos.Any())
                 throw new ArgumentException("No hay datos para exportar.");

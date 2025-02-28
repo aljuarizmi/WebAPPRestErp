@@ -9,27 +9,26 @@ using System.Dynamic;
 
 namespace BusinessData.Data
 {
-    public class SygendbcRepository : ISygendbcRepository
+    public class SygenopcRepository : ISygenopcRepository
     {
         private DbAcceso _context;
-        public SygendbcRepository(DbAcceso context)
+        public SygenopcRepository(DbAcceso context)
         {
             this._context = context;
         }
-        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarEmpresas(SygendbcDTO parametros, ConnectionManager objConexion)
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarMenu(SygenacsDTO parametros, ConnectionManager objConexion)
         {
             this._context = new DbAcceso(objConexion.F_ObtenerCredencialesConfig());
             using var connection = _context.Database.GetDbConnection();
             // Definir la consulta SQL con parámetros
-            string sql = "EXEC USP_SY_LIST_SYGENDBC_SQL @sy_company,@biz_grp_id,@pageSize,@pageIndex,@orderColumn";
+            string sql = "EXEC Menu_Test5 @VerSoloERP,@VerOrdenado,@sy_user,@sy_company";
             // Parámetros para el procedimiento almacenado
             var parametrosSP = new
             {
-                sy_company = parametros.SyCompany,
-                biz_grp_id = parametros.BizGrpId,
-                pageSize = parametros.PageSize,
-                pageIndex = parametros.PageIndex,
-                orderColumn = parametros.OrderColumn
+                VerSoloERP = 0,
+                VerOrdenado = 1,
+                sy_user = parametros.SyUser,
+                sy_company = parametros.SyCompany
             };
             if (connection.State == ConnectionState.Closed)
                 await connection.OpenAsync();
@@ -43,23 +42,20 @@ namespace BusinessData.Data
                 {
                     if (prop.Key != null)
                     {
-                        if ((prop.Key == "sy_company") || (prop.Key == "sy_company_descr") || (prop.Key == "biz_grp_id"))
+                        if (prop.Value != null)
                         {
-                            if (prop.Value != null)
+                            if ((prop.Value is String) || (prop.Value is string))
                             {
-                                if ((prop.Value is String) || (prop.Value is string))
-                                {
-                                    dict[prop.Key] = prop.Value.ToString().Trim();
-                                }
-                                else
-                                {
-                                    dict[prop.Key] = prop.Value;
-                                }
+                                dict[prop.Key] = prop.Value.ToString().Trim();
                             }
                             else
                             {
-                                dict[prop.Key] = new object();
+                                dict[prop.Key] = prop.Value;
                             }
+                        }
+                        else
+                        {
+                            dict[prop.Key] = new object();
                         }
                     }
                 }

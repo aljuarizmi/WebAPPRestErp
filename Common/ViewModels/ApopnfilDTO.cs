@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Common.ViewModels
 {
@@ -17,7 +10,7 @@ namespace Common.ViewModels
         /// <summary>
         /// Tipo de consulta: H (historial), ICP (Info de cuentas proveedor)
         /// </summary>
-        [Display(Name ="Tipo de consulta: H (historial), ICP (Info de cuentas proveedor)",Prompt ="H")]
+        [Display(Name = "Tipo de consulta: H (historial), ICP (Info de cuentas proveedor)", Prompt = "H")]
         public string TipoFg { get; set; } = string.Empty;
         public int ChkSaldo { get; set; } = 1;
         public string ChkVoid { get; set; } = "0";

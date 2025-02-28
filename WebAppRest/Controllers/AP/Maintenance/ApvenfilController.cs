@@ -1,10 +1,8 @@
-﻿using BusinessLogic.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Common.ViewModels;
-using BusinessEntity.Data.Models;
-using ClosedXML.Excel;
+﻿using BusinessEntity.Data.Models;
+using BusinessLogic.Services;
 using Common.Utils;
+using Common.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace WebAppRest.Controllers.AP.Maintenance
