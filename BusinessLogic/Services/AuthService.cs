@@ -34,15 +34,13 @@ namespace BusinessLogic.Services
                 new Claim("USER_ID", username),
                 new Claim("PASSWORD_ID", password)
             };
-
             var token = new JwtSecurityToken(
                 //issuer: _configuration["JWT:Issuer"],
                 //audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1), // Token válido por 1 hora
+                expires: DateTime.Now.AddMinutes(60), // Token válido por 1 hora
                 signingCredentials: credentials
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

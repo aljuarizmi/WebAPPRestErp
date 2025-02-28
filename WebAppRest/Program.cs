@@ -11,6 +11,9 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Common.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +86,25 @@ builder.Services.AddScoped<ConnectionManager>();
 
 builder.Services.AddScoped<AuthService>();
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+    options => {
+        //options.TokenValidationParameters = new TokenValidationParameters: Define las reglas para validar los tokens JWT.
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            //Activa la validación de la firma del token.
+            ValidateIssuerSigningKey = true,
+            //Especifica la clave secreta (JWT:Key) para firmar y validar los tokens.
+            //Usa una clave simétrica (SymmetricSecurityKey), lo que significa que la misma clave se usa para firmar y verificar el token.
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            //Deshabilita la validación del emisor (Issuer) y del público (Audience).
+            //Esto significa que el token será aceptado sin importar de dónde provenga.
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    }
+);
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -93,7 +115,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();//Con esto definimos que vamos a usar autentificación
 app.UseAuthorization();
 
 app.UseCustomExceptionMiddleware(); // Usar el Middleware personalizado
@@ -103,7 +125,6 @@ app.UseStatusCodePages(async context =>
 {
     var response = context.HttpContext.Response;
     response.ContentType = "application/json";
-
     var errorResponse = new
     {
         statusCode = response.StatusCode,
@@ -120,7 +141,6 @@ app.UseStatusCodePages(async context =>
         message = "Error en la solicitud.",
         path = context.HttpContext.Request.Path
     };
-
     await response.WriteAsync(JsonSerializer.Serialize(errorResponse));
 });
 
