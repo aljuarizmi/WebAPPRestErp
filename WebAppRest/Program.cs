@@ -55,7 +55,8 @@ builder.Services.AddSwaggerGen(options =>
     options.MapType<string>(() => new OpenApiSchema { Example = new OpenApiString("") });
 }
 );
-
+//Se agrega AddHttpContextAccessor() para poder acceder a las variables guardads en el jwt del token
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
 //builder.Services.AddSqlServer<DbAcceso>(builder.Configuration.GetConnectionString("DbAcceso"));
 //DbAcceso se inyecta como un servicio, ya que ahora la conexión es dinámica.
@@ -73,9 +74,14 @@ builder.Services.AddScoped<ApopnfilService>();
 builder.Services.AddScoped<ISygendbcRepository, SygendbcRepository>();
 builder.Services.AddScoped<SygendbcService>();
 
+builder.Services.AddScoped<ISygengadRepository, SygengadRepository>();
+builder.Services.AddScoped<SygengadService>();
+
 builder.Services.AddScoped<ExcelService>();
+
 builder.Services.AddScoped<ConnectionManager>();
 
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
