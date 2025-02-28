@@ -198,4 +198,6 @@ public partial class ApopnfilSql
     public string? ErCd { get; set; }
 
     public int? RetRenNo { get; set; }
+
+    public string? AssetTypeCd { get; set; }
 }

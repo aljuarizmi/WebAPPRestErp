@@ -206,6 +206,10 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("apply_to_no");
+            entity.Property(e => e.AssetTypeCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasColumnName("asset_type_cd");
             entity.Property(e => e.CashAcctCurrCd)
                 .HasMaxLength(3)
                 .IsUnicode(false)
@@ -848,6 +852,18 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("license_car");
+            entity.Property(e => e.LicenseShipper)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("license_shipper");
+            entity.Property(e => e.OfficeCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("office_code");
+            entity.Property(e => e.Responsible)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("responsible");
             entity.Property(e => e.TrademarkCar)
                 .HasMaxLength(30)
                 .IsUnicode(false)
@@ -1448,11 +1464,16 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("arcusext_filler");
+            entity.Property(e => e.BirthDate).HasColumnName("birth_date");
             entity.Property(e => e.ClassCusNo)
                 .HasMaxLength(3)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("class_cus_no");
+            entity.Property(e => e.Comment)
+                .HasMaxLength(1000)
+                .IsUnicode(false)
+                .HasColumnName("comment");
             entity.Property(e => e.CrLmtGrp)
                 .HasColumnType("numeric(12, 0)")
                 .HasColumnName("cr_lmt_grp");
@@ -1625,6 +1646,10 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("par_mat_no");
+            entity.Property(e => e.ShoesSize)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasColumnName("shoes_size");
             entity.Property(e => e.TypDocIdSnt)
                 .HasMaxLength(3)
                 .IsUnicode(false)

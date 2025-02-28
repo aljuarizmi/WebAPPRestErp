@@ -88,4 +88,10 @@ public partial class ArcusextSql
     public string? InnerFg { get; set; }
 
     public string? PaFgDgh { get; set; }
+
+    public string? ShoesSize { get; set; }
+
+    public int? BirthDate { get; set; }
+
+    public string? Comment { get; set; }
 }
