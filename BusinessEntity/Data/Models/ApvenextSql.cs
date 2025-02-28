@@ -86,10 +86,4 @@ public partial class ApvenextSql
     public string? TrademarkCar { get; set; }
 
     public string? LcFg { get; set; }
-
-    public string? OfficeCode { get; set; }
-
-    public string? Responsible { get; set; }
-
-    public string? LicenseShipper { get; set; }
 }

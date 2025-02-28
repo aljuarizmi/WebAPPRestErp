@@ -28,9 +28,13 @@ public partial class DbConexion : DbContext
 
     public virtual DbSet<ArcusfilSql> ArcusfilSqls { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=DATA_400;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
+    public virtual DbSet<CmcurratSql> CmcurratSqls { get; set; }
+
+    public virtual DbSet<CmcurrteSql> CmcurrteSqls { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=JACKIE;Database=DATA_400;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,28 +46,17 @@ public partial class DbConexion : DbContext
 
             entity.HasIndex(e => new { e.VendNo, e.VchrNo, e.VchrChkCd, e.VchrChkType, e.ApOpnDt, e.ApOpnTm }, "IAPOPNFIL_SQL0")
                 .IsUnique()
-                .IsClustered()
-                .HasFillFactor(80);
+                .IsClustered();
 
-            entity.HasIndex(e => new { e.AltCurrCd, e.AltVendNo, e.ApplyToNo, e.VchrChkType1, e.TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL1")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.AltCurrCd, e.AltVendNo, e.ApplyToNo, e.VchrChkType1, e.TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL1").IsUnique();
 
-            entity.HasIndex(e => new { e.OpnClosCd, e.Alt1CurrCd, e.Alt1VendNo, e.SepChkFg, e.Alt1ApplyToNo, e.Alt1TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL2")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.OpnClosCd, e.Alt1CurrCd, e.Alt1VendNo, e.SepChkFg, e.Alt1ApplyToNo, e.Alt1TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL2").IsUnique();
 
-            entity.HasIndex(e => new { e.Status, e.A4glidentity }, "IAPOPNFIL_SQL3")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Status, e.A4glidentity }, "IAPOPNFIL_SQL3").IsUnique();
 
-            entity.HasIndex(e => new { e.Alt3VchrCd, e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.SeqNo, e.A4glidentity }, "IAPOPNFIL_SQL4")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Alt3VchrCd, e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.SeqNo, e.A4glidentity }, "IAPOPNFIL_SQL4").IsUnique();
 
-            entity.HasIndex(e => new { e.Alt5InvCd, e.Alt5CurrCd, e.Alt5VendNo, e.Alt5ApplyToNo, e.Alt5TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL5")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Alt5InvCd, e.Alt5CurrCd, e.Alt5VendNo, e.Alt5ApplyToNo, e.Alt5TrxDt, e.A4glidentity }, "IAPOPNFIL_SQL5").IsUnique();
 
             entity.Property(e => e.A4glidentity)
                 .ValueGeneratedOnAdd()
@@ -213,10 +206,6 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("apply_to_no");
-            entity.Property(e => e.AssetTypeCd)
-                .HasMaxLength(3)
-                .IsUnicode(false)
-                .HasColumnName("asset_type_cd");
             entity.Property(e => e.CashAcctCurrCd)
                 .HasMaxLength(3)
                 .IsUnicode(false)
@@ -429,40 +418,23 @@ public partial class DbConexion : DbContext
 
             entity.HasIndex(e => new { e.VendNo, e.ApOpnDt, e.ApOpnTm, e.VchrNo, e.VchrChkCd, e.VchrChkType }, "IAPOPNHST_SQL0")
                 .IsUnique()
-                .IsClustered()
-                .HasFillFactor(80);
+                .IsClustered();
 
-            entity.HasIndex(e => new { e.AltCurrCd, e.AltVendNo, e.ApplyToNo, e.VchrChkType1, e.TrxDt, e.A4glidentity }, "IAPOPNHST_SQL1")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.AltCurrCd, e.AltVendNo, e.ApplyToNo, e.VchrChkType1, e.TrxDt, e.A4glidentity }, "IAPOPNHST_SQL1").IsUnique();
 
-            entity.HasIndex(e => new { e.OpnClosCd, e.Alt1CurrCd, e.Alt1VendNo, e.SepChkFg, e.Alt1ApplyToNo, e.Alt1TrxDt, e.A4glidentity }, "IAPOPNHST_SQL2")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.OpnClosCd, e.Alt1CurrCd, e.Alt1VendNo, e.SepChkFg, e.Alt1ApplyToNo, e.Alt1TrxDt, e.A4glidentity }, "IAPOPNHST_SQL2").IsUnique();
 
-            entity.HasIndex(e => new { e.Status, e.A4glidentity }, "IAPOPNHST_SQL3")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Status, e.A4glidentity }, "IAPOPNHST_SQL3").IsUnique();
 
-            entity.HasIndex(e => new { e.Alt3VchrCd, e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.SeqNo, e.A4glidentity }, "IAPOPNHST_SQL4")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Alt3VchrCd, e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.SeqNo, e.A4glidentity }, "IAPOPNHST_SQL4").IsUnique();
 
-            entity.HasIndex(e => new { e.Alt5InvCd, e.Alt5CurrCd, e.Alt5VendNo, e.Alt5ApplyToNo, e.Alt5TrxDt, e.A4glidentity }, "IAPOPNHST_SQL5")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Alt5InvCd, e.Alt5CurrCd, e.Alt5VendNo, e.Alt5ApplyToNo, e.Alt5TrxDt, e.A4glidentity }, "IAPOPNHST_SQL5").IsUnique();
 
-            entity.HasIndex(e => new { e.JnlCd, e.JnlBatchId, e.JnlDocNo, e.A4glidentity }, "IAPOPNHST_SQL6")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.JnlCd, e.JnlBatchId, e.JnlDocNo, e.A4glidentity }, "IAPOPNHST_SQL6").IsUnique();
 
-            entity.HasIndex(e => new { e.IdNo, e.A4glidentity }, "IAPOPNHST_SQL7")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.IdNo, e.A4glidentity }, "IAPOPNHST_SQL7").IsUnique();
 
-            entity.HasIndex(e => new { e.DocNo, e.DocDt, e.A4glidentity }, "IAPOPNHST_SQL8")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.DocNo, e.DocDt, e.A4glidentity }, "IAPOPNHST_SQL8").IsUnique();
 
             entity.HasIndex(e => new { e.CashMnNo, e.CashSbNo, e.CashDpNo, e.ChkNo, e.VchrDt, e.JnlCd }, "IAPOPNHST_SQL9");
 
@@ -823,11 +795,9 @@ public partial class DbConexion : DbContext
         {
             entity
                 .HasNoKey()
-                .ToTable("APVENEXT_SQL", tb => tb.HasTrigger("TR_APVENEXT_AUDI"));
+                .ToTable("APVENEXT_SQL");
 
-            entity.HasIndex(e => e.VenextNo, "IAPVENEXT_SQL0")
-                .IsUnique()
-                .IsClustered();
+            entity.HasIndex(e => e.VenextNo, "APVENEXT_SQL0").IsClustered();
 
             entity.Property(e => e.A4glidentity)
                 .ValueGeneratedOnAdd()
@@ -878,19 +848,6 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("license_car");
-            entity.Property(e => e.LicenseShipper)
-                .HasMaxLength(30)
-                .IsUnicode(false)
-                .HasColumnName("license_shipper");
-            entity.Property(e => e.OfficeCode)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .IsFixedLength()
-                .HasColumnName("office_code");
-            entity.Property(e => e.Responsible)
-                .HasMaxLength(30)
-                .IsUnicode(false)
-                .HasColumnName("responsible");
             entity.Property(e => e.TrademarkCar)
                 .HasMaxLength(30)
                 .IsUnicode(false)
@@ -1052,20 +1009,15 @@ public partial class DbConexion : DbContext
         {
             entity
                 .HasNoKey()
-                .ToTable("APVENFIL_SQL", tb => tb.HasTrigger("TR_APVENFIL_AUDI"));
+                .ToTable("APVENFIL_SQL");
 
             entity.HasIndex(e => e.VendNo, "IAPVENFIL_SQL0")
                 .IsUnique()
-                .IsClustered()
-                .HasFillFactor(80);
+                .IsClustered();
 
-            entity.HasIndex(e => new { e.SortName, e.A4glidentity }, "IAPVENFIL_SQL1")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.SortName, e.A4glidentity }, "IAPVENFIL_SQL1").IsUnique();
 
-            entity.HasIndex(e => new { e.Zip, e.A4glidentity }, "IAPVENFIL_SQL2")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Zip, e.A4glidentity }, "IAPVENFIL_SQL2").IsUnique();
 
             entity.Property(e => e.A4glidentity)
                 .ValueGeneratedOnAdd()
@@ -1219,7 +1171,7 @@ public partial class DbConexion : DbContext
                 .HasColumnType("decimal(14, 2)")
                 .HasColumnName("disc_ytd");
             entity.Property(e => e.EmailAddr)
-                .HasMaxLength(50)
+                .HasMaxLength(20)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("email_addr");
@@ -1479,14 +1431,13 @@ public partial class DbConexion : DbContext
         {
             entity
                 .HasNoKey()
-                .ToTable("ARCUSEXT_SQL", tb => tb.HasTrigger("TR_ARCUSEXT_AUDI"));
+                .ToTable("ARCUSEXT_SQL");
 
             entity.HasIndex(e => e.UniversalCod, "ARCUSEXT_SQL1");
 
             entity.HasIndex(e => e.CusextNo, "IARCUSEXT_SQL0")
                 .IsUnique()
-                .IsClustered()
-                .HasFillFactor(80);
+                .IsClustered();
 
             entity.Property(e => e.A4glidentity)
                 .ValueGeneratedOnAdd()
@@ -1497,16 +1448,11 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("arcusext_filler");
-            entity.Property(e => e.BirthDate).HasColumnName("birth_date");
             entity.Property(e => e.ClassCusNo)
                 .HasMaxLength(3)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("class_cus_no");
-            entity.Property(e => e.Comment)
-                .HasMaxLength(1000)
-                .IsUnicode(false)
-                .HasColumnName("comment");
             entity.Property(e => e.CrLmtGrp)
                 .HasColumnType("numeric(12, 0)")
                 .HasColumnName("cr_lmt_grp");
@@ -1679,11 +1625,6 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("par_mat_no");
-            entity.Property(e => e.ShoesSize)
-                .HasMaxLength(5)
-                .IsUnicode(false)
-                .IsFixedLength()
-                .HasColumnName("shoes_size");
             entity.Property(e => e.TypDocIdSnt)
                 .HasMaxLength(3)
                 .IsUnicode(false)
@@ -1705,36 +1646,23 @@ public partial class DbConexion : DbContext
         {
             entity
                 .HasNoKey()
-                .ToTable("ARCUSFIL_SQL", tb => tb.HasTrigger("TR_ARCUSFIL_AUDI"));
+                .ToTable("ARCUSFIL_SQL");
 
             entity.HasIndex(e => e.CusNo, "IARCUSFIL_SQL0")
                 .IsUnique()
-                .IsClustered()
-                .HasFillFactor(80);
+                .IsClustered();
 
-            entity.HasIndex(e => new { e.SearchName, e.A4glidentity }, "IARCUSFIL_SQL1")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.SearchName, e.A4glidentity }, "IARCUSFIL_SQL1").IsUnique();
 
-            entity.HasIndex(e => new { e.Zip, e.A4glidentity }, "IARCUSFIL_SQL2")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Zip, e.A4glidentity }, "IARCUSFIL_SQL2").IsUnique();
 
-            entity.HasIndex(e => new { e.SlspsnNo, e.A4glidentity }, "IARCUSFIL_SQL3")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.SlspsnNo, e.A4glidentity }, "IARCUSFIL_SQL3").IsUnique();
 
-            entity.HasIndex(e => new { e.Collector, e.A4glidentity }, "IARCUSFIL_SQL4")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.Collector, e.A4glidentity }, "IARCUSFIL_SQL4").IsUnique();
 
-            entity.HasIndex(e => new { e.CusTypeCd, e.A4glidentity }, "IARCUSFIL_SQL5")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.CusTypeCd, e.A4glidentity }, "IARCUSFIL_SQL5").IsUnique();
 
-            entity.HasIndex(e => new { e.PhoneNo, e.A4glidentity }, "IARCUSFIL_SQL6")
-                .IsUnique()
-                .HasFillFactor(80);
+            entity.HasIndex(e => new { e.PhoneNo, e.A4glidentity }, "IARCUSFIL_SQL6").IsUnique();
 
             entity.HasIndex(e => new { e.UserDefFld1, e.A4glidentity }, "IARCUSFIL_SQL7");
 
@@ -1916,7 +1844,7 @@ public partial class DbConexion : DbContext
                 .HasColumnType("decimal(5, 2)")
                 .HasColumnName("dsc_pct");
             entity.Property(e => e.EiEmailAddr)
-                .HasMaxLength(50)
+                .HasMaxLength(40)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("ei_email_addr");
@@ -2158,6 +2086,89 @@ public partial class DbConexion : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("zip");
+        });
+
+        modelBuilder.Entity<CmcurratSql>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("CMCURRAT_SQL");
+
+            entity.HasIndex(e => new { e.CurrCd, e.CurrRtEffDt }, "ICMCURRAT_SQL0")
+                .IsUnique()
+                .IsClustered();
+
+            entity.Property(e => e.A4glidentity)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("numeric(9, 0)")
+                .HasColumnName("A4GLIdentity");
+            entity.Property(e => e.CurrCd)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("curr_cd");
+            entity.Property(e => e.CurrRt)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("curr_rt");
+            entity.Property(e => e.CurrRtCmt)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("curr_rt_cmt");
+            entity.Property(e => e.CurrRtEffDt).HasColumnName("curr_rt_eff_dt");
+            entity.Property(e => e.Filler0001)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("filler_0001");
+        });
+
+        modelBuilder.Entity<CmcurrteSql>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("CMCURRTE_SQL");
+
+            entity.HasIndex(e => new { e.RateExtCode, e.RateExtEfe }, "ICMCURRTE_SQL0")
+                .IsUnique()
+                .IsClustered();
+
+            entity.Property(e => e.A4glidentity)
+                .ValueGeneratedOnAdd()
+                .HasColumnType("numeric(9, 0)")
+                .HasColumnName("A4GLIdentity");
+            entity.Property(e => e.Filler)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("filler");
+            entity.Property(e => e.RateComCanc)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_com_canc");
+            entity.Property(e => e.RateComPro)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_com_pro");
+            entity.Property(e => e.RateComPub)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_com_pub");
+            entity.Property(e => e.RateExtCode)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("rate_ext_code");
+            entity.Property(e => e.RateExtEfe).HasColumnName("rate_ext_efe");
+            entity.Property(e => e.RateVenCanc)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_ven_canc");
+            entity.Property(e => e.RateVenDia)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_ven_dia");
+            entity.Property(e => e.RateVenPro)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_ven_pro");
+            entity.Property(e => e.RateVenPub)
+                .HasColumnType("decimal(11, 6)")
+                .HasColumnName("rate_ven_pub");
         });
 
         OnModelCreatingPartial(modelBuilder);
