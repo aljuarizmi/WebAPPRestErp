@@ -82,31 +82,20 @@ namespace WebAppRest.Controllers.SY
         {
             string token = "";
             IEnumerable<IDictionary<string, object>> _userInfo = new List<IDictionary<string, object>>();
-            if (parametros.BizGrpId != null)
-            {
-                //SygengadDTO parametros = new SygengadDTO();
-                //parametros.BizGrpId = grp_id;
-                //parametros.SyUser = user;
+            if (parametros.BizGrpId != null){
                 _connectionmanager.SERVER_NAME = parametros.ServerName;
                 _userInfo = await _sygengadService.F_ListarUsuarioGrupo(parametros, _connectionmanager);
-                if (_userInfo != null)
-                {
-                    if (_userInfo.Count() > 0)
-                    {
+                if (_userInfo != null){
+                    if (_userInfo.Count() > 0){
                         var userData = _userInfo.FirstOrDefault();
                         string userInfo = userData["sy_user_psc"].ToString();
-                        if (parametros.SyUserPsc == userInfo)
-                        {
-                            token = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase);
-                        }
-                        else
-                        {
+                        if (parametros.SyUserPsc == userInfo){
+                            token = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase, parametros.SyUser, parametros.SyUser);
+                        }else{
                             //La contraseña es incorrecta
                             return BadRequest(new { message = "La contraseña es incorrecta" });
                         }
-                    }
-                    else
-                    {
+                    }else{
                         //No existe el usuario consultado
                         return BadRequest(new { message = "No existe el usuario" });
                     }

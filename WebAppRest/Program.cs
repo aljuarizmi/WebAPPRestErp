@@ -58,7 +58,9 @@ builder.Services.AddSwaggerGen(options =>
 );
 //Se agrega AddHttpContextAccessor() para poder acceder a las variables guardads en el jwt del token
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
+//builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
+//DbConexion se inyecta como un servicio, ya que ahora la conexión es dinámica.
+builder.Services.AddScoped<DbConexion>();
 //builder.Services.AddSqlServer<DbAcceso>(builder.Configuration.GetConnectionString("DbAcceso"));
 //DbAcceso se inyecta como un servicio, ya que ahora la conexión es dinámica.
 builder.Services.AddScoped<DbAcceso>();
@@ -80,6 +82,12 @@ builder.Services.AddScoped<SygengadService>();
 
 builder.Services.AddScoped<ISygenopcRepository, SygenopcRepository>();
 builder.Services.AddScoped<SygenopcService>();
+
+builder.Services.AddScoped<ICmcurrteRepository, CmcurrteRepository>();
+builder.Services.AddScoped<CmcurrteService>();
+
+builder.Services.AddScoped<ICmcurratRepository, CmcurratRepository>();
+builder.Services.AddScoped<CmcurratService>();
 
 builder.Services.AddScoped<ExcelService>();
 
@@ -110,13 +118,13 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+/*if (app.Environment.IsDevelopment())
+{*/
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();//Con esto definimos que vamos a usar autentificación
 app.UseAuthorization();
 

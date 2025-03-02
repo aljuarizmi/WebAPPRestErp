@@ -1,0 +1,85 @@
+Configurar un Hostname en el Archivo hosts
+
+Puedes hacer que http://miapi.local funcione en lugar de http://localhost:8080.
+
+ Pasos:
+1️ Abrir el archivo hosts como administrador:
+ Ruta: C:\Windows\System32\drivers\etc\hosts
+
+2️ Agregar una línea al final del archivo:
+127.0.0.1  miapi.local
+
+Esto hace que miapi.local apunte a tu propia computadora.
+
+3️ Guardar el archivo (Si no te deja, asegúrate de abrirlo como administrador).
+
+4️ Configurar IIS para usar el nuevo nombre de dominio:
+
+Abre Administrador de IIS.
+Selecciona tu aplicación y haz clic en Enlaces (Bindings).
+Agrega un nuevo enlace con:
+Tipo: http
+Nombre de host: miapi.local
+Puerto: 8080 (o el que uses)
+Guarda y reinicia el sitio.
+
+5️ Accede a tu API con el nuevo nombre:
+
+http://miapi.local:8080/api
+
+---------------------------------------------------------------------------------
+2. Configurar un Dominio Personalizado con DNS (En una Red o Internet)
+Si quieres que la API esté disponible desde otras computadoras en la red (o incluso en Internet), necesitas:
+✅ Un nombre de dominio real (ej. miapi.com)
+✅ Configurar DNS para apuntarlo a tu PC
+✅ Habilitar IIS para aceptar conexiones externas
+
+Para redes locales, puedes usar un servidor DNS interno o configurar el hosts de cada PC.
+
+---------------------------------------------------------------------------------
+
+# Configurar variables
+$projectPath = "D:\Desarrollo\Angular\WebAPPRestErp\WebAppRest" # Ruta de tu proyecto .NET
+$publishPath = "D:\Desarrollo\Angular\WebAPPRestErp\Publish"    # Carpeta temporal de publicación
+$iisPath = "E:\Apps\Publicar\WebAppRest"                        # Carpeta donde IIS tiene la app
+$siteName = "WebAppRest"                                         # Nombre del sitio en IIS
+
+# Detener el sitio en IIS
+Write-Host "🔻 Deteniendo el sitio en IIS..."
+iisreset /stop
+
+# Publicar la aplicación
+Write-Host "🚀 Publicando la aplicación..."
+dotnet publish $projectPath -c Release -o $publishPath
+
+# Copiar archivos a IIS
+Write-Host "📂 Copiando archivos a la carpeta de IIS..."
+Remove-Item -Recurse -Force $iisPath\*  # Elimina archivos anteriores
+Copy-Item -Recurse -Force $publishPath\* $iisPath
+
+# Reiniciar el sitio en IIS
+Write-Host "✅ Reiniciando el sitio en IIS..."
+iisreset /start
+
+Write-Host "🎉 ¡Despliegue completado con éxito!"
+
+Guarda el script como deploy.ps1.
+Abre PowerShell como Administrador.
+Ejecuta el script con:
+Set-ExecutionPolicy Unrestricted -Scope Process
+.\deploy.ps1
+
+
+🔹 Explicación
+iisreset /stop → Detiene el servidor IIS.
+dotnet publish → Publica la aplicación en la carpeta temporal $publishPath.
+Remove-Item -Recurse -Force $iisPath\* → Elimina la versión anterior.
+Copy-Item -Recurse -Force $publishPath\* $iisPath → Copia la nueva versión a IIS.
+iisreset /start → Reinicia IIS para aplicar los cambios.
+
+
+---------------------------------------------------------------------------------
+Para publicar, ejecutar desde la ventana de comandos de VS2022 y desde el proyecto webapprest:
+dotnet publish -c Release -o "E:\Apps\Publicar\WebAppRest"
+
+Previamente borrar la carpeta WebAppRest de E:
