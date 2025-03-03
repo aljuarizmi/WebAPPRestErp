@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace WebAppRest.Controllers.SY
 {
-    [Route("api/[controller]")]
+    [Route("api/configurations")]
     [ApiController]
     public class SygenopcController : ControllerBase
     {
@@ -28,11 +28,12 @@ namespace WebAppRest.Controllers.SY
             _configuration = configuration;
         }
         [Authorize]
-        [HttpPost("accesos")]
-        public async Task<IActionResult> GetOpcionesMenu(SygenacsDTO parametros){
+        [HttpGet("menu")]
+        public async Task<IActionResult> GetOpcionesMenu(){
             IEnumerable<IDictionary<string, object>> opciones = new List<IDictionary<string, object>>();
             var identity = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
             _connectionmanager.SERVER_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "SERVER_NAME")?.Value;
+            SygenacsDTO parametros = new SygenacsDTO();
             parametros.SyUser = identity?.Claims.FirstOrDefault(c => c.Type == "USER_ID")?.Value;
             parametros.SyCompany = identity?.Claims.FirstOrDefault(c => c.Type == "DB_NUMBER")?.Value;
             opciones = await _sygenopcService.F_ListarMenu(parametros, _connectionmanager);
