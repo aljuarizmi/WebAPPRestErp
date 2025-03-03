@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Services;
 using Common.Services;
 using Common.ViewModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAppRest.Controllers.SY
@@ -8,7 +9,7 @@ namespace WebAppRest.Controllers.SY
     /// <summary>
     /// Controlador para consultar los servidores disponibles
     /// </summary>
-    [Route("api/servers")]
+    //[Route("api/servers")]
     [ApiController]
     public class ServerController : ControllerBase
     {
@@ -34,6 +35,7 @@ namespace WebAppRest.Controllers.SY
         /// Devuelve la lista de servidores disponibles
         /// </summary>
         /// <returns></returns>
+        [Route("api/servers")]
         [HttpGet]
         public IEnumerable<ServerInfo> GetServerInfo()
         {
@@ -60,7 +62,8 @@ namespace WebAppRest.Controllers.SY
         /// /// <param name="server_name"></param>
         /// <param name="grp_id"></param>
         /// <returns></returns>
-        [HttpGet("{grp_id}")]
+        [Route("api/servers/{grp_id}")]
+        [HttpGet]
         public async Task<IEnumerable<IDictionary<string, object>>> GetCompanyInfo(int? grp_id, [FromQuery] string server_name)
         {
             IEnumerable<IDictionary<string, object>> companies = new List<IDictionary<string, object>>();
@@ -77,8 +80,9 @@ namespace WebAppRest.Controllers.SY
             }
             return companies;
         }
-        [HttpPost("login")]
-        public async Task<IActionResult> GetUserCompany(SygengadDTO parametros)
+        [Route("auth/login")]
+        [HttpPost]
+        public async Task<IActionResult> Login(SygengadDTO parametros)
         {
             string token = "";
             IEnumerable<IDictionary<string, object>> _userInfo = new List<IDictionary<string, object>>();
@@ -93,15 +97,13 @@ namespace WebAppRest.Controllers.SY
                             token = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase, parametros.SyUser, parametros.SyUser);
                         }else{
                             //La contraseña es incorrecta
-                            return BadRequest(new { message = "La contraseña es incorrecta" });
+                            return BadRequest(new { message = "La contraseña es incorrecta. Por favor verifique sus credenciales de acceso al sistema." });
                         }
                     }else{
                         //No existe el usuario consultado
-                        return BadRequest(new { message = "No existe el usuario" });
+                        return BadRequest(new { message = "No existe el usuario " + parametros.SyUser + " o no pertenece al grupo empresarial" });
                     }
-                }
-                else
-                {
+                }else{
                     //El resultado es nulo
                     return NotFound();
                 }

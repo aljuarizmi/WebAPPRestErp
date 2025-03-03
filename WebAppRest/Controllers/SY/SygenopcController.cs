@@ -44,7 +44,7 @@ namespace WebAppRest.Controllers.SY
             cmcurrat.CurrCd = _configuration["CONFIG:TCMONOBLI"];
             cmcurrte =await _cmcurrteService.F_ListarTipoCambio(cmcurrte);
             cmcurrat = await _cmcurratService.F_ListarTipoCambio(cmcurrat);
-            List<SygenopcDTO> nodos = await _sygenopcService.F_ArmarMenu(opciones, cmcurrte, cmcurrat);
+            List<SygenopcDTO> nodos = _sygenopcService.F_ArmarMenu2(opciones, cmcurrte, cmcurrat);
             return Ok(nodos);
         }
     }

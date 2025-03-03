@@ -89,10 +89,65 @@ namespace BusinessLogic.Services
                     module.SyMenuLevel = (Int16)modulo["sy_menu_level"];
                     menu.Add(module);
                 }
-            }else { 
-            
             }
             return menu;
         }
+
+        public List<SygenopcDTO> F_ArmarMenu2(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat){
+            var menu = new List<SygenopcDTO>();
+            // Evaluamos si hay tipo de cambio válido
+            bool tipoCambio = cmcurrte?.RateVenDia > 0 && cmcurrat?.CurrRt > 0;
+            if (!datos.Any()) return menu;
+            // Agrupar los datos por nivel
+            var modulos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 3).ToList();
+            var subModulos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 6).ToLookup(d => d["id_padre"].ToString());
+            var nodos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 9).ToLookup(d => d["id_padre"].ToString());
+
+            foreach (var modulo in modulos){
+                var module = CrearSygenopcDTO(modulo);
+                module.Children = new List<SygenopcDTO>();
+
+                if (subModulos.Contains(modulo["id"].ToString())){
+                    foreach (var subModulo in subModulos[modulo["id"].ToString()]){
+                        var subModule = CrearSygenopcDTO(subModulo);
+                        subModule.Children = new List<SygenopcDTO>();
+
+                        if (nodos.Contains(subModulo["id"].ToString())){
+                            foreach (var nodo in nodos[subModulo["id"].ToString()]){
+                                var node = CrearSygenopcDTO(nodo);
+
+                                if (!tipoCambio && nodo.ContainsKey("cod")){
+                                    string cod = nodo["cod"]?.ToString() ?? "";
+                                    if ((cod.Contains("S03") || cod.Contains("S04")) && cod.Trim() != "M03S03N01"){
+                                        node.SyOpcActive = "N";
+                                        node.SyMenuName = "Revise el Tipo de Cambio del día";
+                                        node.SyMenuParent = null;
+                                        node.SyMenuCode = null;
+                                    }
+                                }
+                                subModule.Children.Add(node);
+                            }
+                        }
+                        module.Children.Add(subModule);
+                    }
+                }
+                menu.Add(module);
+            }
+            return menu;
+        }
+
+        // Función auxiliar para mapear objetos
+        private SygenopcDTO CrearSygenopcDTO(IDictionary<string, object> datos){
+            return new SygenopcDTO
+            {
+                SyMenuCode = datos["id"]?.ToString() ?? "",
+                SyMenuParent = datos["id_padre"]?.ToString() ?? "",
+                SyMenuName = datos["Nombre"]?.ToString() ?? "",
+                SyMenuLevel = Convert.ToInt32(datos["sy_menu_level"]),
+                SyOpcActive = "Y",
+                Children = null
+            };
+        }
+
     }
 }

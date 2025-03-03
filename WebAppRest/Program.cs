@@ -15,6 +15,15 @@ using WebAppRest.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodo", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -153,7 +162,7 @@ app.UseStatusCodePages(async context =>
     };
     await response.WriteAsync(JsonSerializer.Serialize(errorResponse));
 });
-
+app.UseCors("PermitirTodo"); // Habilitar CORS
 app.MapControllers();
 
 app.Run();
