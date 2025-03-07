@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace WebAppRest.Controllers.SY
 {
-    [Route("api/configurations")]
+    [Route("api/sy/access")]
     [ApiController]
     public class SygenopcController : ControllerBase
     {
@@ -28,13 +28,13 @@ namespace WebAppRest.Controllers.SY
             _configuration = configuration;
         }
         [Authorize]
-        [HttpGet("menu")]
+        [HttpGet]
         public async Task<IActionResult> GetOpcionesMenu(){
             IEnumerable<IDictionary<string, object>> opciones = new List<IDictionary<string, object>>();
             var identity = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
             _connectionmanager.SERVER_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "SERVER_NAME")?.Value;
             SygenacsDTO parametros = new SygenacsDTO();
-            parametros.SyUser = identity?.Claims.FirstOrDefault(c => c.Type == "USER_ID")?.Value;
+            parametros.SyUser = identity?.Claims.FirstOrDefault(c => c.Type == "USER_NAME")?.Value;
             parametros.SyCompany = identity?.Claims.FirstOrDefault(c => c.Type == "DB_NUMBER")?.Value;
             opciones = await _sygenopcService.F_ListarMenu(parametros, _connectionmanager);
             CmcurrteDTO cmcurrte = new CmcurrteDTO();
@@ -45,7 +45,7 @@ namespace WebAppRest.Controllers.SY
             cmcurrat.CurrCd = _configuration["CONFIG:TCMONOBLI"];
             cmcurrte =await _cmcurrteService.F_ListarTipoCambio(cmcurrte);
             cmcurrat = await _cmcurratService.F_ListarTipoCambio(cmcurrat);
-            List<SygenopcDTO> nodos = _sygenopcService.F_ArmarMenu2(opciones, cmcurrte, cmcurrat);
+            List<SygenopcDTO> nodos = _sygenopcService.F_ArmarMenu(opciones, cmcurrte, cmcurrat);
             return Ok(nodos);
         }
     }

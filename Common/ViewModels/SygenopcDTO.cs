@@ -10,6 +10,6 @@
         public List<SygenopcDTO>? Children { get; set; } = new List<SygenopcDTO>();
         //public string SyPkgId { get; set; } = null!;
         //public string? SyOpcLiteral { get; set; }
-        //public string? SyUrl { get; set; }
+        public string? SyUrl { get; set; } = string.Empty;
     }
 }

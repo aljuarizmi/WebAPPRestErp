@@ -17,7 +17,7 @@ namespace BusinessLogic.Services
         }
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarMenu(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarMenu(parametros, objConexion);
 
-        public async Task<List<SygenopcDTO>> F_ArmarMenu(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat) {
+        public async Task<List<SygenopcDTO>> F_ArmarMenu2(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat) {
             //Recorremos la lista generica para armar el menu
             List<SygenopcDTO> menu = new List<SygenopcDTO>();
             bool tipoCambio = true;
@@ -93,7 +93,7 @@ namespace BusinessLogic.Services
             return menu;
         }
 
-        public List<SygenopcDTO> F_ArmarMenu2(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat){
+        public List<SygenopcDTO> F_ArmarMenu(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat){
             var menu = new List<SygenopcDTO>();
             // Evaluamos si hay tipo de cambio válido
             bool tipoCambio = cmcurrte?.RateVenDia > 0 && cmcurrat?.CurrRt > 0;
@@ -144,6 +144,7 @@ namespace BusinessLogic.Services
                 SyMenuParent = datos["id_padre"]?.ToString() ?? "",
                 SyMenuName = datos["Nombre"]?.ToString() ?? "",
                 SyMenuLevel = Convert.ToInt32(datos["sy_menu_level"]),
+                SyUrl = "/principal/"+ datos["id"]?.ToString() ?? "",
                 SyOpcActive = "Y",
                 Children = null
             };

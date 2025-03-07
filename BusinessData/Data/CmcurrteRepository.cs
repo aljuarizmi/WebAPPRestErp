@@ -25,10 +25,6 @@ namespace BusinessData.Data
         }
         public async Task<CmcurrteDTO> F_ListarTipoCambio(CmcurrteDTO parametros)
         {
-            /*this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
-            var resultado = await _context.Database.SqlQuery<CmcurrteDTO>("EXEC USP_SY_LEER_CMCURRTE_SQL @FECHA,@TIPOCAMBIO", 
-                new SqlParameter("@FECHA", parametros.RateExtEfe),
-                new SqlParameter("@TIPOCAMBIO", parametros.RateExtCode)).FirstOrDefaultAsync();*/
             this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
             var sqlParams = new[]
             {

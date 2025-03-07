@@ -98,6 +98,9 @@ builder.Services.AddScoped<CmcurrteService>();
 builder.Services.AddScoped<ICmcurratRepository, CmcurratRepository>();
 builder.Services.AddScoped<CmcurratService>();
 
+builder.Services.AddScoped<ISqlsrchRepository, SqlsrchRepository>();
+builder.Services.AddScoped<SqlsrchService>();
+
 builder.Services.AddScoped<ExcelService>();
 
 builder.Services.AddScoped<ConnectionManager>();

@@ -43,10 +43,8 @@ namespace WebAppRest.Controllers.SY
             servers = servers == null ? "|" : servers;
             string[] data = servers.Split("|");
             List<ServerInfo> serverList = new List<ServerInfo>();
-            if (data != null)
-            {
-                if (data.Length > 0)
-                {
+            if (data != null){
+                if (data.Length > 0){
                     serverList.Add(new ServerInfo
                     {
                         server_id = Convert.ToInt32(data[0]),
@@ -62,29 +60,25 @@ namespace WebAppRest.Controllers.SY
         /// /// <param name="server_name"></param>
         /// <param name="grp_id"></param>
         /// <returns></returns>
-        [Route("api/servers/{grp_id}")]
-        [HttpGet]
-        public async Task<IEnumerable<IDictionary<string, object>>> GetCompanyInfo(int? grp_id, [FromQuery] string server_name)
-        {
+        [Route("api/servers/companies")]
+        [HttpPost]
+        public async Task<IEnumerable<IDictionary<string, object>>> GetCompanyInfo(SygendbcDTO parametros){
             IEnumerable<IDictionary<string, object>> companies = new List<IDictionary<string, object>>();
-            if (grp_id != null)
-            {
-                SygendbcDTO parametros = new SygendbcDTO();
-                parametros.BizGrpId = grp_id;
+            if (parametros.BizGrpId != null){
                 parametros.SyCompany = null;
                 parametros.PageSize = 0;
                 parametros.PageIndex = -1;
                 parametros.OrderColumn = "sy_company";
-                _connectionmanager.SERVER_NAME = server_name;
+                _connectionmanager.SERVER_NAME = parametros.SyServer;
                 companies = await _sygendbcService.F_ListarEmpresas(parametros, _connectionmanager);
             }
             return companies;
         }
-        [Route("auth/login")]
+        [Route("api/auth/login")]
         [HttpPost]
         public async Task<IActionResult> Login(SygengadDTO parametros)
         {
-            string token = "";
+            TokenResponse tokenJwt = new TokenResponse();
             IEnumerable<IDictionary<string, object>> _userInfo = new List<IDictionary<string, object>>();
             if (parametros.BizGrpId != null){
                 _connectionmanager.SERVER_NAME = parametros.ServerName;
@@ -94,7 +88,7 @@ namespace WebAppRest.Controllers.SY
                         var userData = _userInfo.FirstOrDefault();
                         string userInfo = userData["sy_user_psc"].ToString();
                         if (parametros.SyUserPsc == userInfo){
-                            token = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase, parametros.SyUser, parametros.SyUser);
+                            tokenJwt = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase, parametros.SyUser, parametros.SyUser, parametros.BizGrpId.ToString());
                         }else{
                             //La contraseña es incorrecta
                             return BadRequest(new { message = "La contraseña es incorrecta. Por favor verifique sus credenciales de acceso al sistema." });
@@ -108,7 +102,7 @@ namespace WebAppRest.Controllers.SY
                     return NotFound();
                 }
             }
-            return Ok(new { token = token });
+            return Ok(new { token=tokenJwt.Token });
         }
     }
 }
