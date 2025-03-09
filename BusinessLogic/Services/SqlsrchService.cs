@@ -8,6 +8,7 @@ using BusinessLogic.Interfaces;
 using Common.Services;
 using Common.ViewModels;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 
 namespace BusinessLogic.Services
 {
@@ -30,6 +31,9 @@ namespace BusinessLogic.Services
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarConsulta(SqlsrchDTO parametros) => await _repository.F_ListarConsulta(parametros);
         public string BuildFilter(List<string> listFiltroDatoBuscar, List<string> listFiltroTipoBuscar, List<string> listCampos){
             string strFiltroAux = "";
+            //listFiltroDatoBuscar: contiene el dato a buscar
+            //listFiltroTipoBuscar: contiene el tipo de busqueda que se va a realizar. Siempre es cero
+            //listCampos: contiene el nombre del campo sobre el cual se va buscar el dato
             if (listFiltroDatoBuscar != null){
                 for (int i = 0; i < listFiltroDatoBuscar.Count; i++){
                     if (!string.IsNullOrEmpty(listFiltroDatoBuscar[i])){
@@ -114,22 +118,25 @@ namespace BusinessLogic.Services
                 }
             }
         }
-        private void P_inicilizarFiltro(IEnumerable<IDictionary<string, object>> datos, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos)
+        private void P_inicilizarFiltro(IEnumerable<IDictionary<string, object>> datos, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, ref List<object> listColumnas)
         {
             listFiltroDatoBuscar = new List<string>();
             listFiltroTipoBuscar = new List<string>();
             listCampos = new List<string>();
+            listColumnas = new List<object>();
             if (!datos.Any()) return;
             var columnas = datos.First().Keys.ToList();
             foreach (var columna in columnas){
                 listFiltroDatoBuscar.Add("");
                 listFiltroTipoBuscar.Add("0");
                 listCampos.Add(columna);
+                listColumnas.Add(new { Key = columna, Label = columna });
             }
         }
-        public SqlsrchDTO P_ContruirGrilla(IEnumerable<IDictionary<string, object>> datos, string BusquedaConFiltro, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, string CodigoPrincipal, string CampoDescripcion)
+        public SqlsrchDTO P_ContruirGrilla(IEnumerable<IDictionary<string, object>> datos, string BusquedaConFiltro, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, string CodigoPrincipal, string CampoDescripcion, ref List<object> listColumnas)
         {
             var objParResultado = new SqlsrchDTO();
+            List<object>? data = new List<object>();
             var i = 0;
             string thead = "", tbody = "", tr1 = "", tr2 = "", trfile = "", tdfile = "", table = "", script, codigo = "", descripcion = "";
             if (!datos.Any()) return objParResultado;
@@ -152,13 +159,14 @@ namespace BusinessLogic.Services
                 script = i % 2 == 0 ?
                     //$"onclick=\"javascript:SelectFileclick('dgvSearchData_{i}','NORMAL');F_SelectFileclick_iframe('{codigo.Replace("'", "").Trim()}','{descripcion.Replace("'", "").Trim()}');\"" :
                     //$"onclick=\"javascript:SelectFileclick('dgvSearchData_{i}','ALTERNATIVA');F_SelectFileclick_iframe('{codigo.Replace("'", "").Trim()}','{descripcion.Replace("'", "").Trim()}');\"";
-
                     $"(click)=\"SelectFileclick();F_SelectFileclick_iframe();\"" :
                     $"(click)=\"SelectFileclick();F_SelectFileclick_iframe();\"";
-
                 trfile += $"<tr id=\"dgvSearchData_{i}\" {script} style=\"font-size: x-small; cursor: pointer;\">";
                 tdfile = string.Join("", columnas.Select(col => $"<td>{fila[col]?.ToString().Trim() ?? ""}</td>"));
                 trfile += tdfile + "</tr>";
+
+                var obj = new Dictionary<string, object>(fila);
+                data.Add(obj);
                 i++;
             }
 
@@ -166,11 +174,12 @@ namespace BusinessLogic.Services
             tbody = $"<tbody>{trfile}</tbody>";
             table = @$"<table class=""table-custom table-bordered table-striped table-hover"" id=""tblSerieLote"" data-row-style=""rowStyle"">{thead}{tbody}</table>";
             if (BusquedaConFiltro == "NO"){
-                P_inicilizarFiltro(datos, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos);
+                P_inicilizarFiltro(datos, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, ref listColumnas);
             }
             //objParResultado.tbody = tbody;
             //objParResultado.thead = thead;
             objParResultado.table = table;
+            objParResultado.data = data;
             return objParResultado;
         }
         public async Task<SqlsrchDTO> F_Buscar(SqlsrchDTO parametros) {
@@ -247,10 +256,12 @@ namespace BusinessLogic.Services
                     List<string> listFiltroDatoBuscar = parametros.listFiltroDatoBuscar;
                     List<string> listFiltroTipoBuscar = parametros.listFiltroTipoBuscar;
                     List<string> listCampos = parametros.listCampos;
-                    resultado = P_ContruirGrilla(busqueda, parametros.BusquedaConFiltro, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, parametros.CodigoPrincipal, parametros.CampoDescripcion);
+                    List<object> listColumnas = parametros.listColumnas;
+                    resultado = P_ContruirGrilla(busqueda, parametros.BusquedaConFiltro, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, parametros.CodigoPrincipal, parametros.CampoDescripcion, ref listColumnas);
                     resultado.listCampos = listCampos;
                     resultado.listFiltroDatoBuscar = listFiltroDatoBuscar;
                     resultado.listFiltroTipoBuscar = listFiltroTipoBuscar;
+                    resultado.listColumnas = listColumnas;
                 }
             }
             return resultado;

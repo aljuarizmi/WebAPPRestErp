@@ -73,8 +73,7 @@ public class ExcelService
         var encabezados = datos.First().Keys.ToList();
 
         // Crear encabezados en la primera fila
-        for (int i = 0; i < encabezados.Count; i++)
-        {
+        for (int i = 0; i < encabezados.Count; i++){
             worksheet.Cell(1, i + 1).Value = encabezados[i];
             worksheet.Cell(1, i + 1).Style.Font.Bold = true;
             worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.LightGray;
@@ -84,10 +83,8 @@ public class ExcelService
 
         // Llenar los datos
         int row = 2;
-        foreach (var fila in datos)
-        {
-            for (int col = 0; col < encabezados.Count; col++)
-            {
+        foreach (var fila in datos){
+            for (int col = 0; col < encabezados.Count; col++){
                 var key = encabezados[col];
                 var valor = fila.ContainsKey(key) ? fila[key]?.ToString() ?? "" : "";
                 worksheet.Cell(row, col + 1).Value = valor;
