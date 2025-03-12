@@ -54,4 +54,4 @@ Thumbs.db
 .vscode/
 
 WebAppRest/Logs/*
-
+!WebAppRest/Logs/.gitkeep
