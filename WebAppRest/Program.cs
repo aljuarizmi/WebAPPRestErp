@@ -1,4 +1,4 @@
-using BusinessData.Data;
+Ôªøusing BusinessData.Data;
 using BusinessData.Interfaces;
 using BusinessEntity.Data;
 using BusinessLogic.Services;
@@ -12,8 +12,19 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using WebAppRest.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Configurar Serilog para guardar logs en "logs/log_YYYYMMDD.txt"
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Error()
+    //.Enrich.FromLogContext()
+    //.WriteTo.Console()
+    .WriteTo.File("Logs/log_.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddCors(options =>
 {
@@ -36,8 +47,8 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
-    // **Agregar definiciÛn de seguridad JWT para Swagger**
-    //Agregue una o m·s "securityDefinitions" que describan cÛmo se protege su API al Swagger generado.
+    // **Agregar definici√≥n de seguridad JWT para Swagger**
+    //Agregue una o m√°s "securityDefinitions" que describan c√≥mo se protege su API al Swagger generado.
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -48,7 +59,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Please enter your token"
     });
     // **Agregar requerimiento de seguridad para todos los endpoints** (en rojo)
-    //AÒade un requisito de seguridad global
+    //A√±ade un requisito de seguridad global
     options.AddSecurityRequirement(new OpenApiSecurityRequirement{
         {
             new OpenApiSecurityScheme{
@@ -61,17 +72,17 @@ builder.Services.AddSwaggerGen(options =>
             new string[] { }
         }
     });
-    //Permite poner los valores en cadena vacÌa para los campos que sean string en el swagger
+    //Permite poner los valores en cadena vac√≠a para los campos que sean string en el swagger
     options.MapType<string>(() => new OpenApiSchema { Example = new OpenApiString("") });
 }
 );
 //Se agrega AddHttpContextAccessor() para poder acceder a las variables guardads en el jwt del token
 builder.Services.AddHttpContextAccessor();
 //builder.Services.AddSqlServer<DbConexion>(builder.Configuration.GetConnectionString("DbConnection"));
-//DbConexion se inyecta como un servicio, ya que ahora la conexiÛn es din·mica.
+//DbConexion se inyecta como un servicio, ya que ahora la conexi√≥n es din√°mica.
 builder.Services.AddScoped<DbConexion>();
 //builder.Services.AddSqlServer<DbAcceso>(builder.Configuration.GetConnectionString("DbAcceso"));
-//DbAcceso se inyecta como un servicio, ya que ahora la conexiÛn es din·mica.
+//DbAcceso se inyecta como un servicio, ya que ahora la conexi√≥n es din√°mica.
 builder.Services.AddScoped<DbAcceso>();
 
 // Registrar el servicio en BusinessLogic que usa IApvenextRepository
@@ -113,13 +124,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         //options.TokenValidationParameters = new TokenValidationParameters: Define las reglas para validar los tokens JWT.
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            //Activa la validaciÛn de la firma del token.
+            //Activa la validaci√≥n de la firma del token.
             ValidateIssuerSigningKey = true,
             //Especifica la clave secreta (JWT:Key) para firmar y validar los tokens.
-            //Usa una clave simÈtrica (SymmetricSecurityKey), lo que significa que la misma clave se usa para firmar y verificar el token.
+            //Usa una clave sim√©trica (SymmetricSecurityKey), lo que significa que la misma clave se usa para firmar y verificar el token.
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-            //Deshabilita la validaciÛn del emisor (Issuer) y del p˙blico (Audience).
-            //Esto significa que el token ser· aceptado sin importar de dÛnde provenga.
+            //Deshabilita la validaci√≥n del emisor (Issuer) y del p√∫blico (Audience).
+            //Esto significa que el token ser√° aceptado sin importar de d√≥nde provenga.
             ValidateIssuer = false,
             ValidateAudience = false
         };
@@ -137,7 +148,7 @@ var app = builder.Build();
 //}
 
 //app.UseHttpsRedirection();
-app.UseAuthentication();//Con esto definimos que vamos a usar autentificaciÛn
+app.UseAuthentication();//Con esto definimos que vamos a usar autentificaci√≥n
 app.UseAuthorization();
 
 app.UseCustomExceptionMiddleware(); // Usar el Middleware personalizado

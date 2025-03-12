@@ -52,3 +52,6 @@ Thumbs.db
 
 # Archivos de configuración de Visual Studio Code (si usas VS Code)
 .vscode/
+
+Logs/*
+!Logs/.gitkeep

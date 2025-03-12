@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Serilog;
 
 namespace WebAppRest.Middlewares
 {
@@ -29,38 +30,34 @@ namespace WebAppRest.Middlewares
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
+        private static Task HandleExceptionAsync(HttpContext context, Exception exception){
             var response = context.Response;
+            var userName = context.User?.Identity?.IsAuthenticated == true
+            ? context.User.Identity.Name
+            : "UsuarioNoAutenticado";
             response.ContentType = "application/json";
+
+            Log.Error(exception, "Error procesando la solicitud. Usuario: {User}, Ruta: {Path}", userName, context.Request.Path);
+
             //response.StatusCode = (int)HttpStatusCode.InternalServerError;
             // Código de error por defecto (500 - Internal Server Error)
             int statusCode = (int)HttpStatusCode.InternalServerError;
             string errorType = "Internal Server Error";
 
             // Si la excepción es de tipo conocido, se puede personalizar el código de estado
-            if (exception is UnauthorizedAccessException)
-            {
+            if (exception is UnauthorizedAccessException){
                 statusCode = (int)HttpStatusCode.Unauthorized;//401
                 errorType = "Unauthorized";
-            }
-            else if (exception is ArgumentException || exception is InvalidOperationException)
-            {
+            }else if (exception is ArgumentException || exception is InvalidOperationException){
                 statusCode = (int)HttpStatusCode.BadRequest;//400
                 errorType = "Bad Request";
-            }
-            else if (exception is NotSupportedException)
-            {
+            }else if (exception is NotSupportedException){
                 statusCode = (int)HttpStatusCode.UnsupportedMediaType;//415
                 errorType = "Unsupported Media Type";
-            }
-            else if (exception is KeyNotFoundException)
-            {
+            }else if (exception is KeyNotFoundException){
                 statusCode = (int)HttpStatusCode.NotFound;//404
                 errorType = "Not Found";
-            }
-            else if (exception is HttpRequestException)
-            {
+            }else if (exception is HttpRequestException){
                 statusCode = (int)HttpStatusCode.ServiceUnavailable;//503
                 errorType = "Service Unavailable";
             }

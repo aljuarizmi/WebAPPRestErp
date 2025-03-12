@@ -118,7 +118,7 @@ namespace BusinessLogic.Services
                 }
             }
         }
-        private void P_inicilizarFiltro(IEnumerable<IDictionary<string, object>> datos, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, ref List<object> listColumnas)
+        private void P_inicilizarFiltro(IEnumerable<IDictionary<string, object>> datos, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, ref List<object> listColumnas,ref List<object> listTipos)
         {
             listFiltroDatoBuscar = new List<string>();
             listFiltroTipoBuscar = new List<string>();
@@ -131,9 +131,10 @@ namespace BusinessLogic.Services
                 listFiltroTipoBuscar.Add("0");
                 listCampos.Add(columna);
                 listColumnas.Add(new { Key = columna, Label = columna });
+                listTipos.Add(new { Value = "0", Label = "Empieza con" });
             }
         }
-        public SqlsrchDTO P_ContruirGrilla(IEnumerable<IDictionary<string, object>> datos, string BusquedaConFiltro, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, string CodigoPrincipal, string CampoDescripcion, ref List<object> listColumnas)
+        public SqlsrchDTO P_ContruirGrilla(IEnumerable<IDictionary<string, object>> datos, string BusquedaConFiltro, ref List<string> listFiltroDatoBuscar, ref List<string> listFiltroTipoBuscar, ref List<string> listCampos, string CodigoPrincipal, string CampoDescripcion, ref List<object> listColumnas,ref List<object> listTipos)
         {
             var objParResultado = new SqlsrchDTO();
             List<object>? data = new List<object>();
@@ -169,12 +170,11 @@ namespace BusinessLogic.Services
                 data.Add(obj);
                 i++;
             }
-
             thead = @$"<thead><tr class=""headings"">{tr1}</tr><tr class=""headings"">{tr2}</tr></thead>";
             tbody = $"<tbody>{trfile}</tbody>";
             table = @$"<table class=""table-custom table-bordered table-striped table-hover"" id=""tblSerieLote"" data-row-style=""rowStyle"">{thead}{tbody}</table>";
             if (BusquedaConFiltro == "NO"){
-                P_inicilizarFiltro(datos, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, ref listColumnas);
+                P_inicilizarFiltro(datos, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, ref listColumnas,ref listTipos);
             }
             //objParResultado.tbody = tbody;
             //objParResultado.thead = thead;
@@ -257,11 +257,13 @@ namespace BusinessLogic.Services
                     List<string> listFiltroTipoBuscar = parametros.listFiltroTipoBuscar;
                     List<string> listCampos = parametros.listCampos;
                     List<object> listColumnas = parametros.listColumnas;
-                    resultado = P_ContruirGrilla(busqueda, parametros.BusquedaConFiltro, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, parametros.CodigoPrincipal, parametros.CampoDescripcion, ref listColumnas);
+                    List<object> listTipos = parametros.listTipos;
+                    resultado = P_ContruirGrilla(busqueda, parametros.BusquedaConFiltro, ref listFiltroDatoBuscar, ref listFiltroTipoBuscar, ref listCampos, parametros.CodigoPrincipal, parametros.CampoDescripcion, ref listColumnas, ref listTipos);
                     resultado.listCampos = listCampos;
                     resultado.listFiltroDatoBuscar = listFiltroDatoBuscar;
                     resultado.listFiltroTipoBuscar = listFiltroTipoBuscar;
                     resultado.listColumnas = listColumnas;
+                    resultado.listTipos = listTipos;
                 }
             }
             return resultado;

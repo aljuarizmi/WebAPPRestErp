@@ -200,7 +200,8 @@ namespace BusinessData.Data
                 var dict = (IDictionary<string, object?>)expando;
                 foreach (var prop in (IDictionary<string, object?>)row){
                     if (prop.Key != null){
-                        dict[prop.Key] = prop.Value ?? "";
+                        //dict[prop.Key] = prop.Value ?? "";
+                        dict[prop.Key] = prop.Value is string strValue ? strValue.Trim() : prop.Value ?? "";
                     }
                 }
                 return dict;

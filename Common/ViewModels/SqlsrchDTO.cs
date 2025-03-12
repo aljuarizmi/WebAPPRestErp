@@ -25,6 +25,7 @@ namespace Common.ViewModels
         public List<string>? listFiltroTipoBuscar { get; set; }
         public List<string>? listCampos { get; set; }
         public List<object>? listColumnas { get; set; }
+        public List<object>? listTipos { get; set; }
         public List<object>? data { get; set; }
         public string? CodigoPrincipal { get; set; }
         public string? CampoDescripcion { get; set; }
