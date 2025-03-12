@@ -144,7 +144,13 @@ var app = builder.Build();
 /*if (app.Environment.IsDevelopment())
 {*/
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
+        c.DefaultModelExpandDepth(1); // Hace que los modelos ocupen menos espacio
+        c.DefaultModelsExpandDepth(-1); // Evita que la lista de modelos se expanda automáticamente
+
+    });
 //}
 
 //app.UseHttpsRedirection();
