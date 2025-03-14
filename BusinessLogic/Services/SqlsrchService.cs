@@ -268,5 +268,84 @@ namespace BusinessLogic.Services
             }
             return resultado;
         }
+        public async Task<IDictionary<string, object>> F_BuscarCodigo(SqlsrchDTO parametros)
+        {
+            IDictionary<string, object> resultado=null;
+            IEnumerable<IDictionary<string, object>> busqueda = null;
+            IDictionary<string, object> buscador = await _repository.F_ListarBuscador(parametros);
+            if (buscador != null) {
+                if (buscador.Any()) {
+                    parametros.SearchSelect = buscador["SELECT"]?.ToString();
+                    parametros.SearchTable = buscador["FROM"]?.ToString();
+                    parametros.SearchJoins = buscador["INNER_JOIN"]?.ToString();
+                    parametros.SearchWhere = buscador["WHERE"]?.ToString();
+                    parametros.SearchWhere = DeterminarFiltroPrincipal(parametros);
+                    parametros.SearchSelect = F_PulirSelect(parametros);
+                    parametros.SearchWhereDefaults = buscador["WHERE_DEFAULT"]?.ToString();
+                    parametros.SearchOrderBy = buscador["ORDER_BY"]?.ToString();
+                    parametros.SearchNumeroRegistros = "1";
+                    F_Armar_SQLFILTER(ref parametros);
+                    busqueda = await _repository.F_ListarConsulta(parametros);
+                    if (busqueda != null) {
+                        if (busqueda.Any()) {
+                            resultado = busqueda.FirstOrDefault();
+                        }
+                    }
+                }
+            }
+            return resultado;
+        }
+        public string DeterminarFiltroPrincipal(SqlsrchDTO parametros){
+            string strTabla = parametros.SearchTable.ToUpper().Replace("FROM ", "");
+            string strWhere = parametros.SearchWhere;
+            string strCodigo = parametros.codigo.ToString().Trim();
+            strWhere = (strWhere.Trim().ToUpper() != "WHERE" ? strWhere + " AND " : strWhere) +
+                       strTabla + "." + parametros.CodigoPrincipal + " = '" + strCodigo.Replace("'", "''") + "'";
+            return strWhere;
+        }
+        public string F_PulirSelect(SqlsrchDTO parametros){
+            if (!string.IsNullOrEmpty(parametros.selectRowDatos)){
+                string[] ArrSelect = parametros.selectRowDatos.Split(',');
+                string StrSelect = parametros.SearchSelect;
+                string StrTabla = parametros.SearchTable.ToUpper().Replace("FROM ", "");
+                foreach (string item in ArrSelect){
+                    if (!StrSelect.Contains(item)){
+                        StrSelect += "," + StrTabla + "." + item;
+                    }
+                }
+                return StrSelect;
+            }else{
+                return parametros.SearchSelect;
+            }
+        }
+        public string F_CalcularFiltro(string filtro){
+            string[] arrFiltro;
+            string strEspaciosVacios = new string(' ', 60); // Espacios en blanco
+            filtro = filtro.Replace("'", "");
+            arrFiltro = filtro.Split('|');
+            int longitud = arrFiltro.Length;
+            if (longitud <= 0)
+                throw new Exception("Error en el filtro en estructura");
+            if ((longitud % 2) != 0)
+                throw new Exception("Error en el filtro no par");
+            int longitudFor = longitud / 2;
+            int intVacios;
+            string strValor = "";
+            for (int i = 0; i < longitudFor; i++){
+                strValor = arrFiltro[i * 2].Trim();
+                intVacios = int.Parse(arrFiltro[(i * 2) + 1]);
+                if (strValor.Length > intVacios){
+                    return strValor;
+                }
+                if ((strValor.Length - intVacios) < 0){
+                    strValor = strValor + strEspaciosVacios.Substring(0, intVacios - strValor.Length);
+                }else{
+                    strValor = strValor + strEspaciosVacios.Substring(0, strValor.Length - intVacios);
+                }
+                return strValor;
+            }
+            return ""; // Retorno por defecto en caso de que el loop no entre
+        }
+
     }
 }

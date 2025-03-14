@@ -8,8 +8,8 @@ namespace Common.ViewModels
 {
     public partial class SqlsrchDTO
     {
-        public string SearchFieldId { get; set; } = null!;
-        public short SearchNo { get; set; }
+        public string? SearchFieldId { get; set; }
+        public short? SearchNo { get; set; }
         public string? SearchNumeroRegistros { get; set; }
         public string? SearchSelect { get; set; }
         public string? SearchTable { get; set; }
@@ -21,16 +21,18 @@ namespace Common.ViewModels
         public bool HabilitarWhere { get; set; }
         public string? BusquedaConFiltro { get; set; }
         public string? SQLFILTER { get; set; }
-        public List<string>? listFiltroDatoBuscar { get; set; }
-        public List<string>? listFiltroTipoBuscar { get; set; }
-        public List<string>? listCampos { get; set; }
-        public List<object>? listColumnas { get; set; }
-        public List<object>? listTipos { get; set; }
-        public List<object>? data { get; set; }
+        public List<string> listFiltroDatoBuscar { get; set; } = new List<string>();
+        public List<string> listFiltroTipoBuscar { get; set; } = new List<string>();
+        public List<string> listCampos { get; set; } = new List<string>();
+        public List<object> listColumnas { get; set; } = new List<object>();
+        public List<object> listTipos { get; set; } = new List<object>();
+        public List<object> data { get; set; } = new List<object>();
         public string? CodigoPrincipal { get; set; }
         public string? CampoDescripcion { get; set; }
         public string? tbody { get; set; }
         public string? thead { get; set; }
         public string? table { get; set; }
+        public object? codigo { get; set; }
+        public string? selectRowDatos { get; set; }
     }
 }

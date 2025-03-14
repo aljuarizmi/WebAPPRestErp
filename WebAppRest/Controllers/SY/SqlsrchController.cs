@@ -37,6 +37,14 @@ namespace WebAppRest.Controllers.SY
             return Ok(consulta);
         }
         [Authorize]
+        [HttpPost("searchCodigo")]
+        public async Task<IActionResult> GetConsultaCodigo(SqlsrchDTO parametros)
+        {
+            IDictionary<string, object> consulta;
+            consulta = await _sqlsrchService.F_BuscarCodigo(parametros);
+            return Ok(consulta);
+        }
+        [Authorize]
         [HttpPost("searchers")]
         public async Task<IActionResult> GetConsultaBuscadores(SqlsrchDTO parametros)
         {

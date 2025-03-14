@@ -21,7 +21,9 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Error()
     //.Enrich.FromLogContext()
     //.WriteTo.Console()
-    .WriteTo.File("Logs/log_.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("Logs/log_.txt", 
+                rollingInterval: RollingInterval.Day,
+                restrictedToMinimumLevel:Serilog.Events.LogEventLevel.Error)
     .CreateLogger();
 
 builder.Host.UseSerilog();
