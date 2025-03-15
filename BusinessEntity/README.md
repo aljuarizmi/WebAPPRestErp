@@ -1,1 +1,2 @@
-﻿
+﻿//Comando para scaffold de DbConexion en net core
+dotnet ef dbcontext scaffold "Server=JACKIE;Database=DATA_400;User Id=ADMIN_SQL;Password=FINDEAÑO;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer --context DbConexion --context-dir .\Data --output-dir .\Data\Models --project D:\Desarrollo\Angular\WebAPPRestErp\BusinessEntity\BusinessEntity.csproj --table APOPNFIL_SQL --table APOPNHST_SQL --table APVENFIL_SQL --table APVENEXT_SQL --table ARCUSFIL_SQL --table ARCUSEXT_SQL --table CMCURRAT_SQL --table CMCURRTE_SQL --table COMPFILE_SQL --table SYPRDFIL_SQL --table SYACTFIL_SQL --table SYCSHFIL_SQL --table TAXDETL_SQL --table TAXSCHED_SQL --force

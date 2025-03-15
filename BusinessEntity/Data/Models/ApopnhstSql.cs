@@ -1,4 +1,7 @@
-﻿namespace BusinessEntity.Data.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace BusinessEntity.Data.Models;
 
 public partial class ApopnhstSql
 {
