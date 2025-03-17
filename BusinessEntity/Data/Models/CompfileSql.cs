@@ -7,7 +7,7 @@ public partial class CompfileSql
 {
     public string CompKey1 { get; set; } = null!;
 
-    public string? RptName { get; set; }
+    public string? RptName { get ; set; }
 
     public string? DisplayName { get; set; }
 

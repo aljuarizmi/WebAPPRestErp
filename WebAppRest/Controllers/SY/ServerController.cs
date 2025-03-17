@@ -37,8 +37,7 @@ namespace WebAppRest.Controllers.SY
         /// <returns></returns>
         [Route("api/servers")]
         [HttpGet]
-        public IEnumerable<ServerInfo> GetServerInfo()
-        {
+        public IEnumerable<ServerInfo> GetServerInfo(){
             string? servers = _configuration["Credenciales:Servers"];
             servers = servers == null ? "|" : servers;
             string[] data = servers.Split("|");
@@ -102,7 +101,7 @@ namespace WebAppRest.Controllers.SY
                     return NotFound();
                 }
             }
-            return Ok(new { token=tokenJwt.Token });
+            return Ok(new { token=tokenJwt.Token, expirationTime=tokenJwt.ExpirationTime });
         }
     }
 }
