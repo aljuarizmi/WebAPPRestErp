@@ -83,3 +83,7 @@ Para publicar, ejecutar desde la ventana de comandos de VS2022 y desde el proyec
 dotnet publish -c Release -o "E:\Apps\Publicar\WebAppRest"
 
 Previamente borrar la carpeta WebAppRest de E:
+
+//Para crear un componente en algular si necesidad de crear la carpeta "nombre_componente"
+ng g c components/usercontrol/pruebacontrol --flat
+
