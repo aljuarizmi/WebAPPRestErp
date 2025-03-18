@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace WebAppRest.Controllers.SY
 {
-    [Route("api/sy/compaines")]
+    [Route("api/sy/companies")]
     [ApiController]
     public class CompfileController : ControllerBase
     {
