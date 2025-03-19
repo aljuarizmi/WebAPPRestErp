@@ -26,29 +26,33 @@ namespace BusinessData.Data
             // Crear el contexto con la conexión obtenida
             bool resultado = false;
             using (var context = new DbConexion(_connectionmanager.F_ObtenerCredenciales())){
-                // Buscar el registro a modificar
-                var compania = context.CompfileSqls.FirstOrDefault(c => c.CompKey1 == compfileSql.CompKey1);
-                if (compania != null){
-                    // Modificar los valores
-                    compania.RptName = compfileSql.RptName;
-                    compania.DisplayName = compfileSql.DisplayName;
-                    compania.AddrLine1 = compfileSql.AddrLine1;
-                    compania.AddrLine2 = compfileSql.AddrLine2;
-                    compania.AddrLine3 = compfileSql.AddrLine3;
-                    compania.PhoneNo = compfileSql.PhoneNo;
-                    compania.GlAcctLev1Dgts = compfileSql.GlAcctLev1Dgts;
-                    compania.GlAcctLev2Dgts = compfileSql.GlAcctLev2Dgts;
-                    compania.GlAcctLev3Dgts = compfileSql.GlAcctLev3Dgts;
-                    compania.StartJnlHistNo = compfileSql.StartJnlHistNo;
-                    compania.TypeEconomicActivity = compfileSql.TypeEconomicActivity;
-                    compania.Employees= compfileSql.Employees;
-                    compania.EiCusNo = compfileSql.EiCusNo;
-                    compania.RatePct1 = compfileSql.RatePct1;
-                    compania.RatePct2 = compfileSql.RatePct2;
-                    // Guardar los cambios en la base de datos
-                    context.SaveChanges();
-                    resultado = true;
-                }
+                string sql = @"UPDATE COMPFILE_SQL 
+                            SET rpt_name = @RptName, display_name = @DisplayName, addr_line_1 = @AddrLine1, addr_line_2 = @AddrLine2, addr_line_3 = @AddrLine3,
+                                phone_no = @PhoneNo, gl_acct_lev_1_dgts = @GlAcctLev1Dgts, gl_acct_lev_2_dgts = @GlAcctLev2Dgts, gl_acct_lev_3_dgts = @GlAcctLev3Dgts,
+                                start_jnl_hist_no = @StartJnlHistNo, Type_economic_activity = @TypeEconomicActivity, employees = @Employees, ei_cus_no = @EiCusNo,
+                                rate_pct_1 = @RatePct1, rate_pct_2 = @RatePct2
+                            WHERE comp_key_1 = @CompKey1";
+                var parameters = new[]
+                {
+                    new SqlParameter("@RptName", compfileSql.RptName ?? (object)DBNull.Value),
+                    new SqlParameter("@DisplayName", compfileSql.DisplayName ?? (object)DBNull.Value),
+                    new SqlParameter("@AddrLine1", compfileSql.AddrLine1 ?? (object)DBNull.Value),
+                    new SqlParameter("@AddrLine2", compfileSql.AddrLine2 ?? (object)DBNull.Value),
+                    new SqlParameter("@AddrLine3", compfileSql.AddrLine3 ?? (object)DBNull.Value),
+                    new SqlParameter("@PhoneNo", compfileSql.PhoneNo ?? (object)DBNull.Value),
+                    new SqlParameter("@GlAcctLev1Dgts", compfileSql.GlAcctLev1Dgts ?? (object)DBNull.Value),
+                    new SqlParameter("@GlAcctLev2Dgts", compfileSql.GlAcctLev2Dgts ?? (object)DBNull.Value),
+                    new SqlParameter("@GlAcctLev3Dgts", compfileSql.GlAcctLev3Dgts ?? (object)DBNull.Value),
+                    new SqlParameter("@StartJnlHistNo", compfileSql.StartJnlHistNo ?? (object)DBNull.Value),
+                    new SqlParameter("@TypeEconomicActivity", compfileSql.TypeEconomicActivity ?? (object)DBNull.Value),
+                    new SqlParameter("@Employees", compfileSql.Employees ?? (object)DBNull.Value),
+                    new SqlParameter("@EiCusNo", compfileSql.EiCusNo ?? (object)DBNull.Value),
+                    new SqlParameter("@RatePct1", compfileSql.RatePct1 ?? (object)DBNull.Value),
+                    new SqlParameter("@RatePct2", compfileSql.RatePct2 ?? (object)DBNull.Value),
+                    new SqlParameter("@CompKey1", compfileSql.CompKey1) // La clave principal no debe ser nula
+                };
+                int filasAfectadas =await context.Database.ExecuteSqlRawAsync(sql, parameters);
+                resultado = filasAfectadas > 0;
             }
             return resultado;
         }

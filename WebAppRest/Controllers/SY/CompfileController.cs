@@ -30,7 +30,7 @@ namespace WebAppRest.Controllers.SY
         [HttpPut("{CompKey1}")]
         public async Task<IActionResult> UpdCompania(string CompKey1, [FromBody]CompfileSql parametros){
             parametros.CompKey1 = CompKey1;
-            var consulta = await _compfileService.F_Actualizar(parametros);
+            bool consulta = await _compfileService.F_Actualizar(parametros);
             return Ok(consulta);
         }
     }
