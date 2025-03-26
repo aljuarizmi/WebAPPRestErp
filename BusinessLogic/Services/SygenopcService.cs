@@ -106,29 +106,28 @@ namespace BusinessLogic.Services
             foreach (var modulo in modulos){
                 var module = CrearSygenopcDTO(modulo);
                 module.Children = new List<SygenopcDTO>();
-
                 if (subModulos.Contains(modulo["id"].ToString())){
                     foreach (var subModulo in subModulos[modulo["id"].ToString()]){
                         var subModule = CrearSygenopcDTO(subModulo);
                         subModule.Children = new List<SygenopcDTO>();
-
                         if (nodos.Contains(subModulo["id"].ToString())){
                             foreach (var nodo in nodos[subModulo["id"].ToString()]){
                                 var node = CrearSygenopcDTO(nodo);
-
                                 if (!tipoCambio && nodo.ContainsKey("cod")){
                                     string cod = nodo["cod"]?.ToString() ?? "";
                                     if ((cod.Contains("S03") || cod.Contains("S04")) && cod.Trim() != "M03S03N01"){
                                         node.SyOpcActive = "N";
-                                        node.SyMenuName = "Revise el Tipo de Cambio del día";
                                         node.SyMenuParent = null;
                                         node.SyMenuCode = null;
+                                        node.SyTipoCambio = "N";
                                     }
                                 }
                                 subModule.Children.Add(node);
                             }
                         }
-                        module.Children.Add(subModule);
+                        if (subModule.Children.Count > 0) {
+                            module.Children.Add(subModule);
+                        }
                     }
                 }
                 menu.Add(module);
@@ -146,7 +145,8 @@ namespace BusinessLogic.Services
                 SyMenuLevel = Convert.ToInt32(datos["sy_menu_level"]),
                 SyUrl = "/principal/"+ datos["id"]?.ToString() ?? "",
                 SyOpcActive = "Y",
-                Children = null
+                Children = null,
+                SyTipoCambio = "Y",
             };
         }
 
