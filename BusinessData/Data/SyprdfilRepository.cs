@@ -139,13 +139,13 @@ namespace BusinessData.Data
             };
 
             using (var context = new DbConexion(_connectionmanager.F_ObtenerCredenciales())){
-                int filasAfectadas = await _context.Database.ExecuteSqlRawAsync("EXEC usp_sy_update_periodo @var_prd_key, @var_str_dt_1, @var_end_dt_1, @var_wrnprv_glprd_fg_1, @var_str_dt_2, @var_end_dt_2,"
+                int filasAfectadas = await context.Database.ExecuteSqlRawAsync("EXEC usp_sy_update_periodo @var_prd_key, @var_str_dt_1, @var_end_dt_1, @var_wrnprv_glprd_fg_1, @var_str_dt_2, @var_end_dt_2,"
                     +" @var_wrnprv_glprd_fg_2, @var_str_dt_3, @var_end_dt_3, @var_wrnprv_glprd_fg_3, @var_str_dt_4, @var_end_dt_4,"
                     +" @var_wrnprv_glprd_fg_4, @var_str_dt_5, @var_end_dt_5, @var_wrnprv_glprd_fg_5, @var_str_dt_6, @var_end_dt_6,"
                     +" @var_wrnprv_glprd_fg_6, @var_str_dt_7, @var_end_dt_7, @var_wrnprv_glprd_fg_7, @var_str_dt_8, @var_end_dt_8,"
                     +" @var_wrnprv_glprd_fg_8, @var_str_dt_9, @var_end_dt_9, @var_wrnprv_glprd_fg_9, @var_str_dt_10, @var_end_dt_10,"
                     +" @var_wrnprv_glprdfg_10, @var_str_dt_11, @var_end_dt_11, @var_wrnprv_glprdfg_11, @var_str_dt_12, @var_end_dt_12,"
-                    +" @var_wrnprv_glprdfg_12, @var_str_dt_13, @var_end_dt_13, @var_wrnprv_glprdfg_13, @var_no_of_val_prd, @var_current_prd", parametros);
+                    +" @var_wrnprv_glprdfg_12, @var_str_dt_13, @var_end_dt_13, @var_wrnprv_glprdfg_13, @var_no_of_val_prd, @var_current_prd", parameters);
                 resultado = filasAfectadas > 0;
             }
             return resultado;
