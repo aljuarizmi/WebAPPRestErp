@@ -11,5 +11,6 @@ namespace Common.ViewModels
         public string Token { get; set; } = string.Empty;
         public long ExpirationTime { get; set; }
         public string TokenType { get; set; } = string.Empty;
+        
     }
 }

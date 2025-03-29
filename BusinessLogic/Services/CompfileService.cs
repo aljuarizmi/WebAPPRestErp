@@ -1,6 +1,7 @@
 ﻿using BusinessData.Interfaces;
 using BusinessEntity.Data.Models;
 using BusinessLogic.Interfaces;
+using Common.Services;
 using Common.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace BusinessLogic.Services
         }
         public async Task<bool> F_Actualizar(CompfileSql parametros) => await _repository.F_Actualizar(parametros);
         public async Task<CompfileSql> F_ListarUno(CompfileSql parametros) => await _repository.F_ListarUno(parametros);
+        public async Task<CompfileSql> F_ListarTamaniosCuenta(CompfileSql parametros) => await _repository.F_ListarTamaniosCuenta(parametros);
     }
 }

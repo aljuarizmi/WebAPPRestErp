@@ -1,4 +1,5 @@
 ﻿using BusinessEntity.Data.Models;
+using Common.Services;
 using Common.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace BusinessLogic.Interfaces
     {
         Task<bool> F_Actualizar(CompfileSql parametros);
         Task<CompfileSql> F_ListarUno(CompfileSql parametros);
+        Task<CompfileSql> F_ListarTamaniosCuenta(CompfileSql parametros);
     }
 }

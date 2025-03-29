@@ -3,11 +3,15 @@ using BusinessEntity.Data;
 using BusinessEntity.Data.Models;
 using Common.Services;
 using Common.ViewModels;
+using Dapper;
 using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +76,25 @@ namespace BusinessData.Data
                 }
             }
             return compania;
+        }
+        public async Task<CompfileSql> F_ListarTamaniosCuenta(CompfileSql compfileSql)
+        {
+            CompfileSql compania = new CompfileSql();
+            this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
+            using var connection = this._context.Database.GetDbConnection();
+            // Definir la consulta SQL con parámetros
+            string sql = "EXEC usp_hz_list_uno_COMPFILE_SQL @comp_key";
+            // Parámetros para el procedimiento almacenado
+            var parametrosSP = new
+            {
+                comp_key = compfileSql.CompKey1
+            };
+            if (connection.State == ConnectionState.Closed)
+                await connection.OpenAsync();
+            // Ejecutamos la consulta con Dapper y mapeamos a una lista de diccionarios
+            //var resultado = (await connection.QueryAsync(sql, parametrosSP));
+            var resultado = (await connection.QueryFirstOrDefaultAsync<CompfileSql>(sql, parametrosSP));
+            return resultado;
         }
     }
 }

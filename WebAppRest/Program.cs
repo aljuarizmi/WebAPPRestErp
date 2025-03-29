@@ -120,6 +120,12 @@ builder.Services.AddScoped<CompfileService>();
 builder.Services.AddScoped<ISyprdfilRepository, SyprdfilRepository>();
 builder.Services.AddScoped<SyprdfilService>();
 
+builder.Services.AddScoped<ISycshfilRepository, SycshfilRepository>();
+builder.Services.AddScoped<SycshfilService>();
+
+builder.Services.AddScoped<ISyactfilRepository, SyactfilRepository>();
+builder.Services.AddScoped<SyactfilService>();
+
 builder.Services.AddScoped<ExcelService>();
 
 builder.Services.AddScoped<ConnectionManager>();

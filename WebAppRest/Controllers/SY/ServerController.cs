@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessEntity.Data.Models;
+using BusinessLogic.Services;
 using Common.Services;
 using Common.ViewModels;
 using Microsoft.AspNetCore.Cors;
@@ -18,18 +19,24 @@ namespace WebAppRest.Controllers.SY
         private readonly SygengadService _sygengadService;
         private readonly ConnectionManager _connectionmanager;
         private readonly AuthService _authService;
+        private readonly CompfileService _compfileService;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="sygendbcService"></param>
-        public ServerController(IConfiguration configuration, SygendbcService sygendbcService, ConnectionManager connectionmanager, SygengadService sygengadService, AuthService authService)
+        /// <param name="connectionmanager"></param>
+        /// <param name="sygengadService"></param>
+        /// <param name="authService"></param>
+        /// <param name="compfileService"></param>
+        public ServerController(IConfiguration configuration, SygendbcService sygendbcService, ConnectionManager connectionmanager, SygengadService sygengadService, AuthService authService, CompfileService compfileService)
         {
             _configuration = configuration;
             _sygendbcService = sygendbcService;
             _connectionmanager = connectionmanager;
             _sygengadService = sygengadService;
             _authService = authService;
+            _compfileService = compfileService;
         }
         /// <summary>
         /// Devuelve la lista de servidores disponibles
@@ -78,6 +85,10 @@ namespace WebAppRest.Controllers.SY
         public async Task<IActionResult> Login(SygengadDTO parametros)
         {
             TokenResponse tokenJwt = new TokenResponse();
+            CompfileSql compania = new CompfileSql();
+            short? GlAcctLev1Dgts = 0;
+            short? GlAcctLev2Dgts = 0;
+            short? GlAcctLev3Dgts = 0;
             IEnumerable<IDictionary<string, object>> _userInfo = new List<IDictionary<string, object>>();
             if (parametros.BizGrpId != null){
                 _connectionmanager.SERVER_NAME = parametros.ServerName;
@@ -88,7 +99,16 @@ namespace WebAppRest.Controllers.SY
                         string userInfo = userData["sy_user_psc"].ToString();
                         if (parametros.SyUserPsc == userInfo){
                             tokenJwt = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase, parametros.SyUser, parametros.SyUser, parametros.BizGrpId.ToString());
-                        }else{
+                            ////Consultamos el control de digitos para el buscador de cuentas
+                            //compania.CompKey1 = "1";
+                            //compania = await _compfileService.F_ListarTamaniosCuenta(compania);
+                            //if (compania != null) {
+                            //    GlAcctLev1Dgts = compania.GlAcctLev1Dgts;
+                            //    GlAcctLev2Dgts = compania.GlAcctLev2Dgts;
+                            //    GlAcctLev3Dgts = compania.GlAcctLev3Dgts;
+                            //}
+                        }
+                        else{
                             //La contraseña es incorrecta
                             return BadRequest(new { message = "La contraseña es incorrecta. Por favor verifique sus credenciales de acceso al sistema." });
                         }
