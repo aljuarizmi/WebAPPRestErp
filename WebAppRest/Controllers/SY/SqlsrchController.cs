@@ -1,6 +1,8 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
 using Common.Services;
 using Common.ViewModels;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +17,12 @@ namespace WebAppRest.Controllers.SY
     {
         //private readonly ConnectionManager _connectionmanager;
         private readonly SqlsrchService _sqlsrchService;
+        //private readonly ISyactfilService _syactfilService;
         //private readonly IHttpContextAccessor _httpContextAccessor;
         //private readonly CmcurrteService _cmcurrteService;
         //private readonly CmcurratService _cmcurratService;
         //private readonly IConfiguration _configuration;
-        public SqlsrchController(ConnectionManager connectionmanager, SqlsrchService sqlsrchService, IHttpContextAccessor httpContextAccessor, CmcurrteService cmcurrteService, CmcurratService cmcurratService, IConfiguration configuration)
+        public SqlsrchController(ConnectionManager connectionmanager, SqlsrchService sqlsrchService, IHttpContextAccessor httpContextAccessor, CmcurrteService cmcurrteService, CmcurratService cmcurratService, IConfiguration configuration,ISyactfilService syactfilService)
         {
             //_connectionmanager = connectionmanager;
             _sqlsrchService = sqlsrchService;
@@ -33,6 +36,7 @@ namespace WebAppRest.Controllers.SY
         public async Task<IActionResult> GetConsultaDatos(SqlsrchDTO parametros)
         {
             SqlsrchDTO consulta = new SqlsrchDTO();
+            //Consulta los datos para llenar en la grilla
             consulta =await _sqlsrchService.F_Buscar(parametros);
             return Ok(consulta);
         }
@@ -41,6 +45,7 @@ namespace WebAppRest.Controllers.SY
         public async Task<IActionResult> GetConsultaCodigo(SqlsrchDTO parametros)
         {
             IDictionary<string, object> consulta;
+            //Consulta el codigo ingresado o seleccionado en el buscador
             consulta = await _sqlsrchService.F_BuscarCodigo(parametros);
             return Ok(consulta);
         }
@@ -48,6 +53,7 @@ namespace WebAppRest.Controllers.SY
         [HttpPost("searchers")]
         public async Task<IActionResult> GetConsultaBuscadores(SqlsrchDTO parametros)
         {
+            //Consulta la lista de buscadores
             var consulta = await _sqlsrchService.F_ListarBuscadores(parametros);
             return Ok(consulta);
         }

@@ -34,5 +34,7 @@ namespace Common.ViewModels
         public string? table { get; set; }
         public object? codigo { get; set; }
         public string? selectRowDatos { get; set; }
+        public string? SearchFormats { get; set; }
+        public string? SearchRetVal { get; set; }
     }
 }

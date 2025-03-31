@@ -2,6 +2,7 @@
 using BusinessData.Interfaces;
 using BusinessEntity.Data;
 using BusinessLogic.Services;
+using BusinessLogic.Interfaces;
 using Common.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -121,10 +122,10 @@ builder.Services.AddScoped<ISyprdfilRepository, SyprdfilRepository>();
 builder.Services.AddScoped<SyprdfilService>();
 
 builder.Services.AddScoped<ISycshfilRepository, SycshfilRepository>();
-builder.Services.AddScoped<SycshfilService>();
+builder.Services.AddScoped<ISycshfilService, SycshfilService>();
 
 builder.Services.AddScoped<ISyactfilRepository, SyactfilRepository>();
-builder.Services.AddScoped<SyactfilService>();
+builder.Services.AddScoped<ISyactfilService, SyactfilService>();
 
 builder.Services.AddScoped<ExcelService>();
 

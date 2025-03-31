@@ -16,6 +16,6 @@ namespace BusinessLogic.Services
             _repository = repository;
         }
         public async Task<SycshfilTDO> F_ListarCuentaPlan(SycshfilTDO parametros) => await _repository.F_ListarCuentaPlan(parametros);
-        public async Task<SycshfilTDO> F_ListarCuenta(SycshfilTDO parametros) => await _repository.F_ListarCuenta(parametros);
+        public async Task<IDictionary<string, object>> F_ListarCuenta(SycshfilTDO parametros) => await _repository.F_ListarCuenta(parametros);
     }
 }

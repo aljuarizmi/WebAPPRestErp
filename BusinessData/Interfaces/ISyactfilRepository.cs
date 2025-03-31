@@ -10,6 +10,6 @@ namespace BusinessData.Interfaces
     public interface ISyactfilRepository
     {
         Task<SyactfilTDO> F_ListarCuentaPlan(SyactfilTDO parametros);
-        Task<SyactfilTDO> F_ListarCuenta(SyactfilTDO parametros);
+        Task<IDictionary<string, object>> F_ListarCuenta(SyactfilTDO parametros);
     }
 }

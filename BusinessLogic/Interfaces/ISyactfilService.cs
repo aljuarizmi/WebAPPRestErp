@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Interfaces
 {
-    internal interface ISyactfilService
+    public interface ISyactfilService
     {
         Task<SyactfilTDO> F_ListarCuentaPlan(SyactfilTDO parametros);
-        Task<SyactfilTDO> F_ListarCuenta(SyactfilTDO parametros);
+        Task<IDictionary<string, object>> F_ListarCuenta(SyactfilTDO parametros);
     }
 }

@@ -3,6 +3,7 @@ using BusinessEntity.Data;
 using BusinessEntity.Data.Models;
 using Common.Services;
 using Common.ViewModels;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,14 +32,32 @@ namespace BusinessData.Data
                 new SqlParameter("@plan_year", parametros.PlanYear)).AsEnumerable().FirstOrDefault();
             return resultado;
         }
-        public async Task<SyactfilTDO> F_ListarCuenta(SyactfilTDO parametros){
+        public async Task<IDictionary<string, object>> F_ListarCuenta(SyactfilTDO parametros){
             this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
+            using var connection = _context.Database.GetDbConnection();
             //Si un procedimiento puede o no devolver datos, entonces usar AsEnumerable().
-            var resultado = _context.Database.SqlQueryRaw<SyactfilTDO>("EXEC usp_SY_list_uno_SYACTFIL_SQL @mn_no,@sb_no,@dp_no",
-                new SqlParameter("@mn_no", parametros.MnNo),
-                new SqlParameter("@sb_no", parametros.SbNo),
-                new SqlParameter("@dp_no", parametros.DpNo)).AsEnumerable().FirstOrDefault();
-            return resultado;
+            var parametrosSP = new
+            {
+                mn_no = parametros.MnNo,
+                sb_no = parametros.SbNo,
+                dp_no = parametros.DpNo
+            };
+            var resultado = await connection.QueryAsync("EXEC usp_SY_list_uno_SYACTFIL_SQL @mn_no,@sb_no,@dp_no", parametrosSP);
+            // Convertimos la primera fila en un diccionario
+            var primeraFila = resultado.FirstOrDefault();
+            var datosLimpios = new Dictionary<string, object>();
+            if (primeraFila == null)
+            {
+                return new Dictionary<string, object>(); // Devuelve un diccionario vacío si no hay resultados
+            }
+            else {
+                foreach (var kvp in (IDictionary<string, object>)primeraFila){
+                    // Si el valor es un string, aplicar Trim(); si no, dejarlo igual
+                    datosLimpios[kvp.Key] = kvp.Value is string str ? str.Trim() : kvp.Value;
+                }
+            }
+            // Convertimos el objeto en un IDictionary<string, object>
+            return datosLimpios;
         }
     }
 }

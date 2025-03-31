@@ -1,5 +1,5 @@
 ﻿using BusinessEntity.Data.Models;
-using BusinessLogic.Services;
+using BusinessLogic.Interfaces;
 using Common.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,18 +11,32 @@ namespace WebAppRest.Controllers.SY
     [ApiController]
     public class SycshfilController : ControllerBase
     {
-        private readonly SycshfilService _sycshfilService;
-        public SycshfilController(SycshfilService sycshfilService){
+        private readonly ISycshfilService _sycshfilService;
+        public SycshfilController(ISycshfilService sycshfilService){
             _sycshfilService = sycshfilService;
         }
         [Authorize]
-        [HttpGet("{mnNo}/{sbNo}/{dpNo}")]
-        public async Task<IActionResult> GetCuenta(string mnNo, string sbNo, string dpNo)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetCuenta(string Id)
         {
             SycshfilTDO parametros = new SycshfilTDO();
-            parametros.MnNo = mnNo;
-            parametros.SbNo = sbNo;
-            parametros.DpNo = dpNo;
+            if (string.IsNullOrEmpty(Id))
+            {
+                return BadRequest("El codigo de cuenta debe tener un valor");
+            }
+            else
+            {
+                if (Id.Trim().Length < 24)
+                {
+                    return BadRequest("El codigo de cuenta debe tener un valor igual a 24 caracteres");
+                }
+                else
+                {
+                    parametros.MnNo = Id.Substring(0, 8);
+                    parametros.SbNo = Id.Substring(8, 8);
+                    parametros.DpNo = Id.Substring(16, 8);
+                }
+            }
             var consulta = await _sycshfilService.F_ListarCuenta(parametros);
             return Ok(consulta);
         }

@@ -15,9 +15,13 @@ namespace BusinessLogic.Services
     public class SqlsrchService: ISqlsrchService
     {
         private readonly ISqlsrchRepository _repository;
-        public SqlsrchService(ISqlsrchRepository repository)
+        private readonly ISyactfilService _syactfilService;
+        private readonly ISycshfilService _sycshfilService;
+        public SqlsrchService(ISqlsrchRepository repository, ISyactfilService syactfilService, ISycshfilService sycshfilService)
         {
             _repository = repository;
+            _syactfilService= syactfilService;
+            _sycshfilService= sycshfilService;
         }
         public enum EnumWhereDefault
         {
@@ -264,6 +268,8 @@ namespace BusinessLogic.Services
                     resultado.listFiltroTipoBuscar = listFiltroTipoBuscar;
                     resultado.listColumnas = listColumnas;
                     resultado.listTipos = listTipos;
+                    resultado.SearchFormats = buscador["SEARCH_FORMATS"]?.ToString();
+                    resultado.SearchRetVal = buscador["SEARCH_RET_VAL"]?.ToString();
                 }
             }
             return resultado;
@@ -275,20 +281,77 @@ namespace BusinessLogic.Services
             IDictionary<string, object> buscador = await _repository.F_ListarBuscador(parametros);
             if (buscador != null) {
                 if (buscador.Any()) {
-                    parametros.SearchSelect = buscador["SELECT"]?.ToString();
-                    parametros.SearchTable = buscador["FROM"]?.ToString();
-                    parametros.SearchJoins = buscador["INNER_JOIN"]?.ToString();
-                    parametros.SearchWhere = buscador["WHERE"]?.ToString();
-                    parametros.SearchWhere = DeterminarFiltroPrincipal(parametros);
-                    parametros.SearchSelect = F_PulirSelect(parametros);
-                    parametros.SearchWhereDefaults = buscador["WHERE_DEFAULT"]?.ToString();
-                    parametros.SearchOrderBy = buscador["ORDER_BY"]?.ToString();
-                    parametros.SearchNumeroRegistros = "1";
-                    F_Armar_SQLFILTER(ref parametros);
-                    busqueda = await _repository.F_ListarConsulta(parametros);
-                    if (busqueda != null) {
-                        if (busqueda.Any()) {
-                            resultado = busqueda.FirstOrDefault();
+                    if (parametros.SearchFieldId == "SY-ACCOUNT" || parametros.SearchFieldId == "SY-ACCOUNT-OPER" || parametros.SearchFieldId == "SY-ACC-GRP-002" || parametros.SearchFieldId == "SY-ACCOUNT-GRP" || parametros.SearchFieldId == "SY-CASH-ACCOUNT") {
+                        SyactfilTDO cuentaContable = new SyactfilTDO();
+                        SycshfilTDO cuentaCaja = new SycshfilTDO();
+                        short plan_year = 0;
+                        if (parametros.SQLFILTER?.Trim() != "") {
+                            if (parametros.SQLFILTER?.Trim().Length >= 10) {
+                                string fecha = "";
+                                if (parametros.SQLFILTER?.Trim().Length == 10){
+                                    fecha = parametros.SQLFILTER?.Trim();
+                                }
+                                else {
+                                    fecha = parametros.SQLFILTER?.Substring(0, 10).Trim();
+                                }
+                                if (DateTime.TryParse(fecha, out DateTime fechaDate)){
+                                    plan_year =Convert.ToInt16(fechaDate.Year);
+                                }
+                            }
+                        }
+                        if (parametros.SearchFieldId == "SY-ACCOUNT" || parametros.SearchFieldId == "SY-ACCOUNT-GRP" || parametros.SearchFieldId == "SY-ACC-GRP-002" || parametros.SearchFieldId == "SY-ACCOUNT-OPER")
+                        {
+                            cuentaContable.MnNo = parametros.codigo.ToString().Substring(0, 8);
+                            cuentaContable.SbNo = parametros.codigo.ToString().Substring(8, 8);
+                            cuentaContable.DpNo = parametros.codigo.ToString().Substring(16, 8);
+                            if (plan_year != 0) {
+                                cuentaContable.PlanYear = plan_year;
+                                //resultado = await this._syactfilService.F_ListarCuentaPlan(cuenta);
+                            } else {
+                                resultado = await this._syactfilService.F_ListarCuenta(cuentaContable);
+                            }
+                        }else {
+                            if (parametros.SearchFieldId.Trim().ToUpper() == "SY-CASH-ACCOUNT" || parametros.SearchFieldId.Trim().ToUpper() == "SY-CSH-ACC-DIF")
+                            {
+                                cuentaCaja.MnNo = parametros.codigo.ToString().Substring(0, 8);
+                                cuentaCaja.SbNo = parametros.codigo.ToString().Substring(8, 8);
+                                cuentaCaja.DpNo = parametros.codigo.ToString().Substring(16, 8);
+                                if (plan_year != 0){
+                                    cuentaCaja.PlanYear = plan_year;
+                                    //resultado = await this._sycshfilService.F_ListarCuentaPlan(cuenta);
+                                }else{
+                                    resultado = await this._sycshfilService.F_ListarCuenta(cuentaCaja);
+                                }
+                            }else {
+                                cuentaContable.MnNo = parametros.codigo.ToString().Substring(0, 8);
+                                cuentaContable.SbNo = parametros.codigo.ToString().Substring(8, 8);
+                                cuentaContable.DpNo = parametros.codigo.ToString().Substring(16, 8);
+                                if (plan_year != 0){
+                                    cuentaContable.PlanYear = plan_year;
+                                    //resultado = await this._syactfilService.F_ListarCuentaPlan(cuenta);
+                                }else{
+                                    resultado = await this._syactfilService.F_ListarCuenta(cuentaContable);
+                                }
+                            }
+                        }
+                    } else {
+                        parametros.SearchSelect = buscador["SELECT"]?.ToString();
+                        parametros.SearchTable = buscador["FROM"]?.ToString();
+                        parametros.SearchJoins = buscador["INNER_JOIN"]?.ToString();
+                        parametros.SearchWhere = buscador["WHERE"]?.ToString();
+                        parametros.SearchWhere = DeterminarFiltroPrincipal(parametros);
+                        parametros.SearchSelect = F_PulirSelect(parametros);
+                        parametros.SearchWhereDefaults = buscador["WHERE_DEFAULT"]?.ToString();
+                        parametros.SearchOrderBy = buscador["ORDER_BY"]?.ToString();
+                        parametros.SearchNumeroRegistros = "1";
+                        F_Armar_SQLFILTER(ref parametros);
+                        busqueda = await _repository.F_ListarConsulta(parametros);
+                        if (busqueda != null)
+                        {
+                            if (busqueda.Any())
+                            {
+                                resultado = busqueda.FirstOrDefault();
+                            }
                         }
                     }
                 }
