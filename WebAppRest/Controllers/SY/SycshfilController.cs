@@ -15,6 +15,11 @@ namespace WebAppRest.Controllers.SY
         public SycshfilController(ISycshfilService sycshfilService){
             _sycshfilService = sycshfilService;
         }
+        /// <summary>
+        /// Lista una cuenta caja por ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetCuenta(string Id)

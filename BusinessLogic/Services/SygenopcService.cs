@@ -15,85 +15,40 @@ namespace BusinessLogic.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarMenu(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarMenu(parametros, objConexion);
-
-        public async Task<List<SygenopcDTO>> F_ArmarMenu2(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat) {
-            //Recorremos la lista generica para armar el menu
-            List<SygenopcDTO> menu = new List<SygenopcDTO>();
-            bool tipoCambio = true;
-            if (datos.Any()){
-                if (cmcurrte == null || cmcurrat == null){
-                    tipoCambio = false;
-                }else {
-                    if (cmcurrte != null) {
-                        if (cmcurrte.RateVenDia <= 0) {
-                            tipoCambio = false;
-                        }
-                    }
-                    if (cmcurrat != null){
-                        if (cmcurrat.CurrRt <= 0){
-                            tipoCambio = false;
-                        }
-                    }
-                }
-                //Obtenemos los modulos
-                IEnumerable<IDictionary<string, object>> modulos = datos.Where(d => d.ContainsKey("sy_menu_level") && Convert.ToInt16(d["sy_menu_level"]) == 3);
-                foreach (var modulo in modulos){
-                    SygenopcDTO module = new SygenopcDTO();
-                    //Obtenemos los submodulos
-                    IEnumerable<IDictionary<string, object>> sub_modulos = datos.Where(d => d.ContainsKey("sy_menu_level") && Convert.ToInt16(d["sy_menu_level"]) == 6 && (modulo["id"].ToString() == d["id_padre"].ToString()));
-                    foreach (var sub_modulo in sub_modulos){
-                        SygenopcDTO sub_module = new SygenopcDTO();
-                        //Obtenemos los nodos
-                        IEnumerable<IDictionary<string, object>> nodos = datos.Where(d => d.ContainsKey("sy_menu_level") && Convert.ToInt16(d["sy_menu_level"]) == 9 && (sub_modulo["id"].ToString() == d["id_padre"].ToString()));
-                        foreach (var nodo in nodos){
-                            SygenopcDTO node = new SygenopcDTO();
-                            if (nodo.ContainsKey("id") || nodo.ContainsKey("id_padre") || nodo.ContainsKey("Nombre") || nodo.ContainsKey("sy_menu_level") || nodo.ContainsKey("cod")){
-                                if (!tipoCambio) {
-                                    //No hay tipo de cambio
-                                    string cod = nodo["cod"]?.ToString() ?? "";
-                                    if ((cod.Contains("S03")==true || cod.Contains("S04") == true) && cod.Trim() != "M03S03N01") {
-                                        //Revisar el Tipo de Cambio del día
-                                        node.SyOpcActive = "N";
-                                        node.SyMenuName = "Revise el Tipo de Cambio del día";
-                                        node.Children = null;
-                                    } else {
-                                        node.SyMenuCode = nodo["id"]?.ToString() ?? "";
-                                        node.SyMenuParent = nodo["id_padre"]?.ToString() ?? "";
-                                        node.SyMenuName = nodo["Nombre"]?.ToString() ?? "";
-                                        node.SyMenuLevel = Convert.ToInt32(nodo["sy_menu_level"]);
-                                        node.SyOpcActive = "Y";
-                                        node.Children = null;
-                                    }
-                                } else {
-                                    //Si hay tipo de cambio
-                                    node.SyMenuCode = nodo["id"]?.ToString() ?? "";
-                                    node.SyMenuParent = nodo["id_padre"]?.ToString() ?? "";
-                                    node.SyMenuName = nodo["Nombre"]?.ToString() ?? "";
-                                    node.SyMenuLevel = Convert.ToInt32(nodo["sy_menu_level"]);
-                                    node.SyOpcActive = "Y";
-                                    node.Children = null;
-                                }
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuarioSistema(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarAccesosUsuarioSistema(parametros, objConexion);
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesos(ConnectionManager objConexion) => await _repository.F_ListarAccesos(objConexion);
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuario(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarAccesosUsuario(parametros, objConexion);
+        public List<SygenopcDTO> F_ArmarMenu(IEnumerable<IDictionary<string, object>> datos) {
+            var menu = new List<SygenopcDTO>();
+            if (!datos.Any()) return menu;
+            // Agrupar los datos por nivel
+            var modulos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 3).ToList();
+            var subModulos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 6).ToLookup(d => d["sy_menu_parent"].ToString());
+            var nodos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 9).ToLookup(d => d["sy_menu_parent"].ToString());
+            foreach (var modulo in modulos){
+                var module = MapearAccesoDTO(modulo);
+                module.Children = new List<SygenopcDTO>();
+                if (subModulos.Contains(modulo["sy_menu_code"].ToString())){
+                    foreach (var subModulo in subModulos[modulo["sy_menu_code"].ToString()]){
+                        var subModule = MapearAccesoDTO(subModulo);
+                        subModule.Children = new List<SygenopcDTO>();
+                        if (nodos.Contains(subModulo["sy_menu_code"].ToString())){
+                            foreach (var nodo in nodos[subModulo["sy_menu_code"].ToString()]){
+                                var node = MapearAccesoDTO(nodo);
+                                subModule.Children.Add(node);
                             }
-                            sub_module.Children?.Add(node);
                         }
-                        sub_module.SyMenuCode = (string)sub_modulo["id"];
-                        sub_module.SyMenuParent = (string)sub_modulo["id_padre"];
-                        sub_module.SyMenuName = (string)sub_modulo["Nombre"];
-                        sub_module.SyMenuLevel = (Int16)sub_modulo["sy_menu_level"];
-                        module.Children?.Add(sub_module);
+                        if (subModule.Children.Count > 0){
+                            module.Children.Add(subModule);
+                        }
                     }
-                    module.SyMenuCode = (string)modulo["id"];
-                    module.SyMenuParent = (string)modulo["id_padre"];
-                    module.SyMenuName = (string)modulo["Nombre"];
-                    module.SyMenuLevel = (Int16)modulo["sy_menu_level"];
-                    menu.Add(module);
                 }
+                menu.Add(module);
             }
             return menu;
         }
 
-        public List<SygenopcDTO> F_ArmarMenu(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat){
+        public List<SygenopcDTO> F_ArmarMenuUsuario(IEnumerable<IDictionary<string, object>> datos, CmcurrteDTO cmcurrte, CmcurratDTO cmcurrat){
             var menu = new List<SygenopcDTO>();
             // Evaluamos si hay tipo de cambio válido
             bool tipoCambio = cmcurrte?.RateVenDia > 0 && cmcurrat?.CurrRt > 0;
@@ -104,15 +59,15 @@ namespace BusinessLogic.Services
             var nodos = datos.Where(d => Convert.ToInt16(d["sy_menu_level"]) == 9).ToLookup(d => d["id_padre"].ToString());
 
             foreach (var modulo in modulos){
-                var module = CrearSygenopcDTO(modulo);
+                var module = MapearAccesoUsuarioDTO(modulo);
                 module.Children = new List<SygenopcDTO>();
                 if (subModulos.Contains(modulo["id"].ToString())){
                     foreach (var subModulo in subModulos[modulo["id"].ToString()]){
-                        var subModule = CrearSygenopcDTO(subModulo);
+                        var subModule = MapearAccesoUsuarioDTO(subModulo);
                         subModule.Children = new List<SygenopcDTO>();
                         if (nodos.Contains(subModulo["id"].ToString())){
                             foreach (var nodo in nodos[subModulo["id"].ToString()]){
-                                var node = CrearSygenopcDTO(nodo);
+                                var node = MapearAccesoUsuarioDTO(nodo);
                                 if (!tipoCambio && nodo.ContainsKey("cod")){
                                     string cod = nodo["cod"]?.ToString() ?? "";
                                     if ((cod.Contains("S03") || cod.Contains("S04")) && cod.Trim() != "M03S03N01"){
@@ -136,7 +91,7 @@ namespace BusinessLogic.Services
         }
 
         // Función auxiliar para mapear objetos
-        private SygenopcDTO CrearSygenopcDTO(IDictionary<string, object> datos){
+        private SygenopcDTO MapearAccesoUsuarioDTO(IDictionary<string, object> datos){
             return new SygenopcDTO
             {
                 SyMenuCode = datos["id"]?.ToString() ?? "",
@@ -149,6 +104,18 @@ namespace BusinessLogic.Services
                 SyTipoCambio = "Y",
             };
         }
-
+        private SygenopcDTO MapearAccesoDTO(IDictionary<string, object> datos)
+        {
+            return new SygenopcDTO
+            {
+                SyMenuCode = datos["sy_menu_code"]?.ToString() ?? "",
+                SyMenuParent = datos["sy_menu_parent"]?.ToString() ?? "",
+                SyMenuName = datos["sy_menu_name"]?.ToString() ?? "",
+                //SyMenuLevel = Convert.ToInt32(datos["sy_menu_level"]),
+                SyUrl = "/principal/" + datos["sy_menu_code"]?.ToString() ?? "",
+                SyOpcActive = datos["sy_opc_active"]?.ToString() ?? "",
+                Children = null
+            };
+        }
     }
 }

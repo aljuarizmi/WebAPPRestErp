@@ -1,5 +1,6 @@
 ﻿using BusinessEntity.Data.Models;
 using BusinessLogic.Services;
+using BusinessLogic.Interfaces;
 using Common.Services;
 using Common.ViewModels;
 using Microsoft.AspNetCore.Cors;
@@ -15,8 +16,8 @@ namespace WebAppRest.Controllers.SY
     public class ServerController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly SygendbcService _sygendbcService;
-        private readonly SygengadService _sygengadService;
+        private readonly ISygendbcService _sygendbcService;
+        private readonly ISygengadService _sygengadService;
         private readonly ConnectionManager _connectionmanager;
         private readonly AuthService _authService;
         private readonly CompfileService _compfileService;
@@ -29,7 +30,7 @@ namespace WebAppRest.Controllers.SY
         /// <param name="sygengadService"></param>
         /// <param name="authService"></param>
         /// <param name="compfileService"></param>
-        public ServerController(IConfiguration configuration, SygendbcService sygendbcService, ConnectionManager connectionmanager, SygengadService sygengadService, AuthService authService, CompfileService compfileService)
+        public ServerController(IConfiguration configuration, ISygendbcService sygendbcService, ConnectionManager connectionmanager, ISygengadService sygengadService, AuthService authService, CompfileService compfileService)
         {
             _configuration = configuration;
             _sygendbcService = sygendbcService;
@@ -80,6 +81,11 @@ namespace WebAppRest.Controllers.SY
             }
             return companies;
         }
+        /// <summary>
+        /// Permite el logeo del usuario al sistema, devolviendo el token de seguridad
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [Route("api/auth/login")]
         [HttpPost]
         public async Task<IActionResult> Login(SygengadDTO parametros)
@@ -99,14 +105,6 @@ namespace WebAppRest.Controllers.SY
                         string userInfo = userData["sy_user_psc"].ToString();
                         if (parametros.SyUserPsc == userInfo){
                             tokenJwt = _authService.GenerateToken(parametros.SyUser, parametros.SyUserPsc, parametros.ServerName, parametros.DataBase, parametros.SyUser, parametros.SyUser, parametros.BizGrpId.ToString());
-                            ////Consultamos el control de digitos para el buscador de cuentas
-                            //compania.CompKey1 = "1";
-                            //compania = await _compfileService.F_ListarTamaniosCuenta(compania);
-                            //if (compania != null) {
-                            //    GlAcctLev1Dgts = compania.GlAcctLev1Dgts;
-                            //    GlAcctLev2Dgts = compania.GlAcctLev2Dgts;
-                            //    GlAcctLev3Dgts = compania.GlAcctLev3Dgts;
-                            //}
                         }
                         else{
                             //La contraseña es incorrecta

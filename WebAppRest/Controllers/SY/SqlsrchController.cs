@@ -31,6 +31,11 @@ namespace WebAppRest.Controllers.SY
             //_cmcurratService = cmcurratService;
             //_configuration = configuration;
         }
+        /// <summary>
+        /// Lista los datos segun el buscador seleccionado
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("search")]
         public async Task<IActionResult> GetConsultaDatos(SqlsrchDTO parametros)
@@ -40,6 +45,11 @@ namespace WebAppRest.Controllers.SY
             consulta =await _sqlsrchService.F_Buscar(parametros);
             return Ok(consulta);
         }
+        /// <summary>
+        /// Busca un código ingresado en el buscador
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("searchCodigo")]
         public async Task<IActionResult> GetConsultaCodigo(SqlsrchDTO parametros)
@@ -49,6 +59,11 @@ namespace WebAppRest.Controllers.SY
             consulta = await _sqlsrchService.F_BuscarCodigo(parametros);
             return Ok(consulta);
         }
+        /// <summary>
+        /// Lista todos los buscadores configurados por un mismo ID
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("searchers")]
         public async Task<IActionResult> GetConsultaBuscadores(SqlsrchDTO parametros)

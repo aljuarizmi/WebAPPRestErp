@@ -15,6 +15,11 @@ namespace WebAppRest.Controllers.SY
         public SyactfilController(ISyactfilService syactfilService){
             _syactfilService = syactfilService;
         }
+        /// <summary>
+        /// Lista una cuenta contable por ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetCuenta(string Id)

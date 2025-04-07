@@ -15,6 +15,11 @@ namespace WebAppRest.Controllers.SY
         {
             _syprdfilService = syprdfilService;
         }
+        /// <summary>
+        /// Lista un periodo por ID
+        /// </summary>
+        /// <param name="PrdKey"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{PrdKey}")]
         public async Task<IActionResult> GetPeriodo(string PrdKey)
@@ -24,6 +29,12 @@ namespace WebAppRest.Controllers.SY
             var consulta = await _syprdfilService.F_ListarUno(parametros);
             return Ok(consulta);
         }
+        /// <summary>
+        /// Actualiza un periodo por ID
+        /// </summary>
+        /// <param name="PrdKey"></param>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPut("{PrdKey}")]
         public async Task<IActionResult> UpdPeriodo(string PrdKey, [FromBody] SyprdfilSql parametros){
@@ -31,6 +42,11 @@ namespace WebAppRest.Controllers.SY
             bool consulta = await _syprdfilService.F_ActualizarPeriodo(parametros);
             return Ok(consulta);
         }
+        /// <summary>
+        /// Inserta un periodo
+        /// </summary>
+        /// <param name="parametros"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> InsPeriodo([FromBody] SyprdfilSql parametros){

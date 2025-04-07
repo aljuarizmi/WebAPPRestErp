@@ -98,13 +98,13 @@ builder.Services.AddScoped<IApopnfilRepository, ApopnfilRepository>();
 builder.Services.AddScoped<ApopnfilService>();
 
 builder.Services.AddScoped<ISygendbcRepository, SygendbcRepository>();
-builder.Services.AddScoped<SygendbcService>();
+builder.Services.AddScoped<ISygendbcService, SygendbcService>();
 
 builder.Services.AddScoped<ISygengadRepository, SygengadRepository>();
-builder.Services.AddScoped<SygengadService>();
+builder.Services.AddScoped<ISygengadService, SygengadService>();
 
 builder.Services.AddScoped<ISygenopcRepository, SygenopcRepository>();
-builder.Services.AddScoped<SygenopcService>();
+builder.Services.AddScoped<ISygenopcService, SygenopcService>();
 
 builder.Services.AddScoped<ICmcurrteRepository, CmcurrteRepository>();
 builder.Services.AddScoped<CmcurrteService>();
@@ -126,6 +126,12 @@ builder.Services.AddScoped<ISycshfilService, SycshfilService>();
 
 builder.Services.AddScoped<ISyactfilRepository, SyactfilRepository>();
 builder.Services.AddScoped<ISyactfilService, SyactfilService>();
+
+builder.Services.AddScoped<ISygenusrRepository, SygenusrRepository>();
+builder.Services.AddScoped<ISygenusrService, SygenusrService>();
+
+builder.Services.AddScoped<ISygenacsRepository, SygenacsRepository>();
+builder.Services.AddScoped<ISygenacsService, SygenacsService>();
 
 builder.Services.AddScoped<ExcelService>();
 
