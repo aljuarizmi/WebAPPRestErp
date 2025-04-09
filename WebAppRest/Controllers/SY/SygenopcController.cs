@@ -68,22 +68,6 @@ namespace WebAppRest.Controllers.SY
             List<SygenopcDTO> nodos = _sygenopcService.F_ArmarMenuUsuario(opciones, cmcurrte, cmcurrat);
             return Ok(nodos);
         }
-        /// <summary>
-        /// Lista las opciones configuradas para un usuario (para asignación de permisos en el administrador)
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("users/{userId}/config")]
-        public async Task<IActionResult> GetAccesosUsuario(string userId)
-        {
-            IEnumerable<IDictionary<string, object>> opciones = new List<IDictionary<string, object>>();
-            var identity = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
-            _connectionmanager.SERVER_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "SERVER_NAME")?.Value;
-            SygenacsDTO parametros = new SygenacsDTO();
-            parametros.SyUser = userId;
-            parametros.SyCompany = identity?.Claims.FirstOrDefault(c => c.Type == "DB_NUMBER")?.Value;
-            opciones = await _sygenopcService.F_ListarAccesosUsuario(parametros, _connectionmanager);
-            return Ok(opciones);
-        }
+        
     }
 }

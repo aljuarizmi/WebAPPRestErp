@@ -37,7 +37,28 @@ namespace WebAppRest.Controllers.SY
             _connectionmanager.SERVER_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "SERVER_NAME")?.Value;
             parametros.SyUser = userId;
             companies = await _sygenacsService.F_ListarEmpresasUsuario(parametros, _connectionmanager);
-            return Ok(companies);
+            List<SygenacsDTO> resultado = new List<SygenacsDTO>();
+            resultado = _sygenacsService.MapearSygenacsDTO(companies);
+            return Ok(resultado);
+        }
+        /// <summary>
+        /// Lista las opciones configuradas para un usuario (para asignación de permisos en el administrador)
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("users/{userId}/config")]
+        public async Task<IActionResult> GetAccesosUsuario(string userId)
+        {
+            IEnumerable<IDictionary<string, object>> opciones = new List<IDictionary<string, object>>();
+            var identity = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
+            _connectionmanager.SERVER_NAME = identity?.Claims.FirstOrDefault(c => c.Type == "SERVER_NAME")?.Value;
+            SygenacsDTO parametros = new SygenacsDTO();
+            parametros.SyUser = userId;
+            parametros.SyCompany = identity?.Claims.FirstOrDefault(c => c.Type == "DB_NUMBER")?.Value;
+            opciones = await _sygenacsService.F_ListarAccesosUsuario(parametros, _connectionmanager);
+            List<SygenacsDTO> resultado = new List<SygenacsDTO>();
+            resultado = _sygenacsService.MapearSygenacsDTO(opciones);
+            return Ok(resultado);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace BusinessLogic.Services
         }
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuarioSistema(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarAccesosUsuarioSistema(parametros, objConexion);
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesos(ConnectionManager objConexion) => await _repository.F_ListarAccesos(objConexion);
-        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuario(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarAccesosUsuario(parametros, objConexion);
         public List<SygenopcDTO> F_ArmarMenu(IEnumerable<IDictionary<string, object>> datos) {
             var menu = new List<SygenopcDTO>();
             if (!datos.Any()) return menu;
