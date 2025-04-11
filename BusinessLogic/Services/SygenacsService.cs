@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace BusinessLogic.Services
 {
@@ -19,6 +20,7 @@ namespace BusinessLogic.Services
         }
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarEmpresasUsuario(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarEmpresasUsuario(parametros, objConexion);
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuario(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_ListarAccesosUsuario(parametros, objConexion);
+        public async Task<bool> F_AgregarAccesosUsuario(SygenacsDTO parametros, ConnectionManager objConexion) => await _repository.F_AgregarAccesosUsuario(parametros, objConexion);
         public List<SygenacsDTO> MapearSygenacsDTO(IEnumerable<IDictionary<string, object>> data)
         {
             List<SygenacsDTO> result = new List<SygenacsDTO>();
@@ -35,6 +37,23 @@ namespace BusinessLogic.Services
                 result.Add(dto);
             }
             return result;
+        }
+        public string SerializarSygenacsDTO(List<SygenacsDTO> data) {
+            // Crear un StringWriter para capturar el XML serializado
+            StringWriter swStringWriterActividad = new StringWriter();
+
+            // Crear una instancia del serializador para una lista del tipo SygenacsDTO
+            XmlSerializer serializerActividad = new XmlSerializer(typeof(List<SygenacsDTO>), new XmlRootAttribute("ArrayOfSYGENACSBE"));
+
+            // Crear una lista vacía del tipo SygenacsDTO
+            //List<SygenacsDTO> arrObjEntidad_BE = new List<SygenacsDTO>();
+
+            // Serializar la lista vacía en formato XML dentro del StringWriter
+            serializerActividad.Serialize(swStringWriterActividad, data);
+
+            // Puedes ver el resultado del XML así:
+            string xmlOutput = swStringWriterActividad.ToString();
+            return xmlOutput;
         }
     }
 }

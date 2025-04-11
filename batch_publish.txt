@@ -87,3 +87,6 @@ Previamente borrar la carpeta WebAppRest de E:
 //Para crear un componente en algular si necesidad de crear la carpeta "nombre_componente"
 ng g c components/usercontrol/pruebacontrol --flat
 
+http://192.168.18.187:8080/api
+
+https//localhost:7113/api

@@ -12,6 +12,8 @@ namespace BusinessLogic.Interfaces
     {
         Task<IEnumerable<IDictionary<string, object>>> F_ListarEmpresasUsuario(SygenacsDTO parametros, ConnectionManager objConexion);
         Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuario(SygenacsDTO parametros, ConnectionManager objConexion);
+        Task<bool> F_AgregarAccesosUsuario(SygenacsDTO sygenacs, ConnectionManager objConexion);
         List<SygenacsDTO> MapearSygenacsDTO(IEnumerable<IDictionary<string, object>> data);
+        string SerializarSygenacsDTO(List<SygenacsDTO> data);
     }
 }

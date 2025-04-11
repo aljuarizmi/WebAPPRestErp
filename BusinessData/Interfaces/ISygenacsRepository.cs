@@ -12,5 +12,6 @@ namespace BusinessData.Interfaces
     {
         Task<IEnumerable<IDictionary<string, object>>> F_ListarEmpresasUsuario(SygenacsDTO parametros, ConnectionManager objConexion);
         Task<IEnumerable<IDictionary<string, object>>> F_ListarAccesosUsuario(SygenacsDTO parametros, ConnectionManager objConexion);
+        Task<bool> F_AgregarAccesosUsuario(SygenacsDTO sygenacs, ConnectionManager objConexion);
     }
 }

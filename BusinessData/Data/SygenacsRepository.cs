@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessData.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace BusinessData.Data
 {
@@ -110,5 +111,31 @@ namespace BusinessData.Data
             }).ToList();
             return resultado;
         }
+        public async Task<bool> F_AgregarAccesosUsuario(SygenacsDTO sygenacs, ConnectionManager objConexion)
+        {
+            bool resultado = false;
+            int filasAfectadas = 0;
+            this._context = new DbAcceso(objConexion.F_ObtenerCredencialesConfig());
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try {
+                foreach (var empresa in sygenacs.Empresas) {
+                    var parametros = new[]
+                    {
+                    new SqlParameter("@DatosXML", SqlDbType.Xml) { Value = sygenacs.DatosXml },
+                    new SqlParameter("@USER", SqlDbType.VarChar) { Value = sygenacs.SyUser },
+                    new SqlParameter("@COMPANY", SqlDbType.VarChar) { Value = empresa.SyCompany }
+                    };
+                    filasAfectadas = filasAfectadas + await _context.Database.ExecuteSqlRawAsync("EXEC USP_GEN_INS_PROPERTIES @DatosXML, @USER, @COMPANY", parametros);
+                }
+                resultado = filasAfectadas > 0;
+                await transaction.CommitAsync();
+                return resultado;
+            } catch (Exception ex) {
+                await transaction.RollbackAsync();
+                throw new Exception("Error: "+ex);
+            }
+            
+        }
+
     }
 }
