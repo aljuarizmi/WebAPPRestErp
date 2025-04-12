@@ -14,6 +14,8 @@ using System.Text;
 using System.Text.Json;
 using WebAppRest.Middlewares;
 using Serilog;
+using Common.Interfaces;
+using Common.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +41,7 @@ builder.Services.AddCors(options =>
     });
 });
 // Add services to the container.
-
+builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -107,7 +109,7 @@ builder.Services.AddScoped<ISygenopcRepository, SygenopcRepository>();
 builder.Services.AddScoped<ISygenopcService, SygenopcService>();
 
 builder.Services.AddScoped<ICmcurrteRepository, CmcurrteRepository>();
-builder.Services.AddScoped<CmcurrteService>();
+builder.Services.AddScoped<ICmcurrteService, CmcurrteService>();
 
 builder.Services.AddScoped<ICmcurratRepository, CmcurratRepository>();
 builder.Services.AddScoped<CmcurratService>();
@@ -138,6 +140,8 @@ builder.Services.AddScoped<ExcelService>();
 builder.Services.AddScoped<ConnectionManager>();
 
 builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddScoped<ISunatService, SunatService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
     options =>

@@ -16,10 +16,10 @@ namespace WebAppRest.Controllers.SY
         private readonly ConnectionManager _connectionmanager;
         private readonly ISygenopcService _sygenopcService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly CmcurrteService _cmcurrteService;
+        private readonly ICmcurrteService _cmcurrteService;
         private readonly CmcurratService _cmcurratService;
         private readonly IConfiguration _configuration;
-        public SygenopcController(ConnectionManager connectionmanager, ISygenopcService sygenopcService, IHttpContextAccessor httpContextAccessor, CmcurrteService cmcurrteService, CmcurratService cmcurratService, IConfiguration configuration)
+        public SygenopcController(ConnectionManager connectionmanager, ISygenopcService sygenopcService, IHttpContextAccessor httpContextAccessor, ICmcurrteService cmcurrteService, CmcurratService cmcurratService, IConfiguration configuration)
         {
             _connectionmanager = connectionmanager;
             _sygenopcService = sygenopcService;
