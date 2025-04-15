@@ -33,9 +33,10 @@ namespace Common.Utils
                 var response = await _httpClient.GetAsync(url);
                 if (!response.IsSuccessStatusCode)
                 {
-                    result.out_band = 1;
-                    result.mensaje = $"Error al consultar: {response.ReasonPhrase}";
-                    return result;
+                    //result.out_band = 1;
+                    //result.mensaje = $"Error al consultar: {response.ReasonPhrase}";
+                    //return result;
+                    throw new Exception($"Error al consultar: {response.ReasonPhrase}");
                 }
 
                 string json = await response.Content.ReadAsStringAsync();
@@ -44,13 +45,14 @@ namespace Common.Utils
                     PropertyNameCaseInsensitive = true
                 });
 
-                return objSunat ?? new SunatTDO { mensaje = "No se pudo deserializar la respuesta", out_band = 1 };
+                return objSunat; //?? new SunatTDO { mensaje = "No se pudo deserializar la respuesta", out_band = 1 };
             }
             catch (Exception ex)
             {
-                result.out_band = 1;
+                /*result.out_band = 1;
                 result.mensaje = ex.Message;
-                return result;
+                return result;*/
+                throw ex;
             }
         }
     }

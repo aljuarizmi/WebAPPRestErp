@@ -59,11 +59,13 @@ namespace WebAppRest.Controllers.SY
             opciones = await _sygenopcService.F_ListarAccesosUsuarioSistema(parametros, _connectionmanager);
             CmcurrteDTO cmcurrte = new CmcurrteDTO();
             CmcurratDTO cmcurrat = new CmcurratDTO();
+            IEnumerable<IDictionary<string, object>> listCmcurrte = new List<IDictionary<string, object>>();
             cmcurrte.RateExtEfe = Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));
             cmcurrte.RateExtCode = _configuration["CONFIG:TCMONOBLI"];
             cmcurrat.CurrRtEffDt = Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));
             cmcurrat.CurrCd = _configuration["CONFIG:TCMONOBLI"];
-            cmcurrte =await _cmcurrteService.F_ListarTipoCambio(cmcurrte);
+            listCmcurrte = await _cmcurrteService.F_ListarTipoCambio(cmcurrte);
+            cmcurrte = _cmcurrteService.MapearCmcurrteDTO(listCmcurrte).FirstOrDefault();
             cmcurrat = await _cmcurratService.F_ListarTipoCambio(cmcurrat);
             List<SygenopcDTO> nodos = _sygenopcService.F_ArmarMenuUsuario(opciones, cmcurrte, cmcurrat);
             return Ok(nodos);

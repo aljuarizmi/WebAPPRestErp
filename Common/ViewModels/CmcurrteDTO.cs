@@ -12,7 +12,7 @@ namespace Common.ViewModels
         [Column("rate_ext_code")]
         public string RateExtCode { get; set; } = null!;
         [Column("rate_ext_efe")]
-        public int RateExtEfe { get; set; }
+        public int? RateExtEfe { get; set; }
         [Column("rate_ven_dia")]
         public decimal? RateVenDia { get; set; }
         [Column("rate_com_pub")]
@@ -34,8 +34,9 @@ namespace Common.ViewModels
         public int? PageIndex { get; set; }
         public string? Ordercolumn { get; set; }
         [Column("curr_cd")]
-        public string CurrCd { get; set; }
+        public string? CurrCd { get; set; }
         [Column("curr_rt_eff_dt")]
-        public int CurrRtEffDt { get; set; }
+        public int? CurrRtEffDt { get; set; }
+        public int? totalReg { get; set; }
     }
 }

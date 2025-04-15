@@ -18,5 +18,20 @@ namespace BusinessLogic.Services
             _repository = repository;
         }
         public async Task<CmcurratDTO> F_ListarTipoCambio(CmcurratDTO parametros) => await _repository.F_ListarTipoCambio(parametros);
+        public List<CmcurratDTO> MapearCmcurratDTO(IEnumerable<IDictionary<string, object>> data)
+        {
+            List<CmcurratDTO> result = new List<CmcurratDTO>();
+            foreach (var item in data)
+            {
+                CmcurratDTO dto = new CmcurratDTO
+                {
+                    CurrCd = item.ContainsKey("curr_cd") ? item["curr_cd"] as string : null,
+                    CurrRtEffDt = item.ContainsKey("curr_rt_eff_dt") ? item["curr_rt_eff_dt"] as int? : null,
+                    CurrRt = item.ContainsKey("curr_rt") ? item["curr_rt"] as decimal? : null
+                };
+                result.Add(dto);
+            }
+            return result;
+        }
     }
 }

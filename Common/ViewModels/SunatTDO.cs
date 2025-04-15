@@ -14,10 +14,10 @@ namespace Common.ViewModels
     }
     public class SunatTDO
     {
-        public string? mensaje { get; set; }
-        public int out_band { get; set; }
-        public string compra { get; set; }
-        public string venta { get; set; }
+        /*public string? mensaje { get; set; }
+        public int out_band { get; set; }*/
+        public decimal compra { get; set; }
+        public decimal venta { get; set; }
         public string origen { get; set; }
         public string moneda { get; set; }
         public string fecha { get; set; }

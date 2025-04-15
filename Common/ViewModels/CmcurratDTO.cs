@@ -12,7 +12,7 @@ namespace Common.ViewModels
         [Column("curr_cd")]
         public string CurrCd { get; set; } = null!;
         [Column("curr_rt_eff_dt")]
-        public int CurrRtEffDt { get; set; }
+        public int? CurrRtEffDt { get; set; }
         [Column("curr_rt")]
         public decimal? CurrRt { get; set; }
     }

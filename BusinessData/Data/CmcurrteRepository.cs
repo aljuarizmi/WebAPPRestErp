@@ -31,18 +31,58 @@ namespace BusinessData.Data
         /// </summary>
         /// <param name="parametros"></param>
         /// <returns></returns>
-        public async Task<CmcurrteDTO> F_ListarTipoCambio(CmcurrteDTO parametros)
+        public async Task<IEnumerable<IDictionary<string, object>>> F_ListarTipoCambio(CmcurrteDTO parametros)
         {
-            this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
+            /*this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
             var sqlParams = new[]
             {
                 new SqlParameter("@FECHA", parametros.RateExtEfe),
                 new SqlParameter("@TIPOCAMBIO", parametros.RateExtCode)
             };
             var resultado = _context.Database.SqlQueryRaw<CmcurrteDTO>("EXEC USP_SY_LEER_CMCURRTE_SQL @FECHA, @TIPOCAMBIO",sqlParams).AsEnumerable().FirstOrDefault();
-            //var resultado = await _context.Set<CmcurrteDTO>().FromSqlRaw("EXEC USP_SY_LEER_CMCURRTE_SQL @FECHA, @TIPOCAMBIO", sqlParams).ToListAsync();
+            return resultado;*/
+            this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
+            using var connection = _context.Database.GetDbConnection();
+            // Definir la consulta SQL con parámetros
+            string sql = "EXEC USP_SY_LEER_CMCURRTE_SQL @FECHA, @TIPOCAMBIO";
+            // Parámetros para el procedimiento almacenado
+            var parametrosSP = new
+            {
+                FECHA = parametros.RateExtEfe,
+                TIPOCAMBIO = parametros.RateExtCode
+            };
+            if (connection.State == ConnectionState.Closed)
+                await connection.OpenAsync();
+            // Ejecutamos la consulta con Dapper y mapeamos a una lista de diccionarios
+            var resultado = (await connection.QueryAsync(sql, parametrosSP))
+            .Select(row =>
+            {
+                var expando = new ExpandoObject();
+                var dict = (IDictionary<string, object?>)expando;
+                foreach (var prop in (IDictionary<string, object?>)row)
+                {
+                    if (prop.Key != null)
+                    {
+                        if (prop.Value != null)
+                        {
+                            if ((prop.Value is String) || (prop.Value is string))
+                            {
+                                dict[prop.Key] = prop.Value.ToString().Trim();
+                            }
+                            else
+                            {
+                                dict[prop.Key] = prop.Value;
+                            }
+                        }
+                        else
+                        {
+                            dict[prop.Key] = new object();
+                        }
+                    }
+                }
+                return dict;
+            }).ToList();
             return resultado;
-            //return resultado.FirstOrDefault();
         }
         public async Task<bool> F_AgregarTipoCambio(CmcurrteDTO cmcurrte)
         {
@@ -124,18 +164,9 @@ namespace BusinessData.Data
                 pageIndex = parametros.PageIndex,
                 ordercolumn = parametros.Ordercolumn
             };
-            var sqlParams = new[]
-            {
-                new SqlParameter("@monedaAnio", parametros.RateExtEfe.ToString().Substring(0,4)),
-                new SqlParameter("@monedaMes", parametros.RateExtEfe.ToString().Substring(4,2)),
-                new SqlParameter("@pageSize", parametros.PageSize),
-                new SqlParameter("@pageIndex", parametros.PageIndex),
-                new SqlParameter("@ordercolumn", parametros.Ordercolumn)
-            };
             if (connection.State == ConnectionState.Closed)
                 await connection.OpenAsync();
             // Ejecutamos la consulta con Dapper y mapeamos a una lista de diccionarios
-            //var resultado = await _context.Database.SqlQueryRaw<CmcurrteDTO>(sql, sqlParams).ToListAsync();
             var resultado = (await connection.QueryAsync(sql, parametrosSP))
             .Select(row =>
             {

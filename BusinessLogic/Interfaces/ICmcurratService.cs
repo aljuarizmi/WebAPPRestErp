@@ -11,5 +11,6 @@ namespace BusinessLogic.Interfaces
     internal interface ICmcurratService
     {
         Task<CmcurratDTO> F_ListarTipoCambio(CmcurratDTO parametros); // Usar procedimiento almacenado
+        List<CmcurratDTO> MapearCmcurratDTO(IEnumerable<IDictionary<string, object>> data);
     }
 }
