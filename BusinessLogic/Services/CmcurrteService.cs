@@ -19,6 +19,7 @@ namespace BusinessLogic.Services
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarTipoCambio(CmcurrteDTO parametros) => await _repository.F_ListarTipoCambio(parametros);
         public async Task<bool> F_AgregarTipoCambio(CmcurrteDTO parametros) => await _repository.F_AgregarTipoCambio(parametros);
         public async Task<bool> F_ActualizarTipoCambio(CmcurrteDTO parametros) => await _repository.F_ActualizarTipoCambio(parametros);
+        public async Task<bool> F_EliminarTipoCambio(CmcurrteDTO parametros) => await _repository.F_EliminarTipoCambio(parametros);
         public async Task<IEnumerable<IDictionary<string, object>>> F_ListarTiposCambio(CmcurrteDTO parametros) => await _repository.F_ListarTiposCambio(parametros);
         public List<CmcurrteDTO> MapearCmcurrteDTO(IEnumerable<IDictionary<string, object>> data)
         {

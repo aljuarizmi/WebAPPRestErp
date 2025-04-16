@@ -15,21 +15,10 @@ namespace WebAppRest.Controllers.SY
     [ApiController]
     public class SqlsrchController : ControllerBase
     {
-        //private readonly ConnectionManager _connectionmanager;
         private readonly SqlsrchService _sqlsrchService;
-        //private readonly ISyactfilService _syactfilService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly CmcurrteService _cmcurrteService;
-        //private readonly CmcurratService _cmcurratService;
-        //private readonly IConfiguration _configuration;
-        public SqlsrchController(ConnectionManager connectionmanager, SqlsrchService sqlsrchService, IHttpContextAccessor httpContextAccessor, CmcurrteService cmcurrteService, CmcurratService cmcurratService, IConfiguration configuration,ISyactfilService syactfilService)
+        public SqlsrchController(SqlsrchService sqlsrchService)
         {
-            //_connectionmanager = connectionmanager;
             _sqlsrchService = sqlsrchService;
-            //_httpContextAccessor = httpContextAccessor;
-            //_cmcurrteService = cmcurrteService;
-            //_cmcurratService = cmcurratService;
-            //_configuration = configuration;
         }
         /// <summary>
         /// Lista los datos segun el buscador seleccionado

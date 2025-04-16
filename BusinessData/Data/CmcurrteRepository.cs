@@ -112,7 +112,6 @@ namespace BusinessData.Data
             {
                 throw new Exception("Error: " + ex);
             }
-
         }
         public async Task<bool> F_ActualizarTipoCambio(CmcurrteDTO cmcurrte)
         {
@@ -142,7 +141,27 @@ namespace BusinessData.Data
             {
                 throw new Exception("Error: " + ex);
             }
-
+        }
+        public async Task<bool> F_EliminarTipoCambio(CmcurrteDTO cmcurrte)
+        {
+            bool resultado = false;
+            int filasAfectadas = 0;
+            this._context = new DbConexion(_connectionmanager.F_ObtenerCredenciales());
+            try
+            {
+                var parametros = new[]
+                    {
+                    new SqlParameter("@CodigoMoneda", SqlDbType.Char) { Value = cmcurrte.RateExtCode },
+                    new SqlParameter("@FechaMoneda", SqlDbType.Int) { Value = cmcurrte.RateExtEfe }
+                    };
+                filasAfectadas = await _context.Database.ExecuteSqlRawAsync("EXEC USP_CM_M03S03N01_DEL_TIPOCAMBIO @CodigoMoneda, @FechaMoneda", parametros);
+                resultado = filasAfectadas > 0;
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error: " + ex);
+            }
         }
         /// <summary>
         /// Lista todos los tipos de cambio de un periodo (año y mes)
